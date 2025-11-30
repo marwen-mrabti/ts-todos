@@ -24,7 +24,7 @@ function RouteComponent() {
   const { data: todo } = useSuspenseQuery(todoQueryOptions({ todoId }));
 
   return (
-    <div className='w-full'>
+    <div className="w-full">
       <div className="p-4">
         <h2 className="mb-4 text-2xl font-bold">Todo Details</h2>
         <p>
@@ -43,7 +43,7 @@ function RouteComponent() {
 
 function TodoPendingComponent() {
   return (
-    <div className="flex  w-full items-center justify-center">
+    <div className="flex w-full items-center justify-center">
       <p className="text-primary text-xl">Loading...</p>
     </div>
   );

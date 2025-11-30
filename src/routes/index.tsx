@@ -58,7 +58,7 @@ function App() {
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center gap-4 p-4 bg-card">
+    <div className="bg-card flex h-full w-full flex-col items-center justify-center gap-4 p-4">
       <h2 className="text-primary text-2xl uppercase">Add todo</h2>
       <div>
         <form onSubmit={handleSubmit} className="mt-4">

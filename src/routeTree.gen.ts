@@ -8,123 +8,123 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as TodosRouteImport } from './routes/todos'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as TodosTodoIdRouteImport } from './routes/todos.$todoId'
-import { Route as ApiHelloRouteImport } from './routes/api/hello'
+import { Route as rootRouteImport } from './routes/__root';
+import { Route as TodosRouteImport } from './routes/todos';
+import { Route as IndexRouteImport } from './routes/index';
+import { Route as TodosTodoIdRouteImport } from './routes/todos.$todoId';
+import { Route as ApiHelloRouteImport } from './routes/api/hello';
 
 const TodosRoute = TodosRouteImport.update({
   id: '/todos',
   path: '/todos',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const TodosTodoIdRoute = TodosTodoIdRouteImport.update({
   id: '/$todoId',
   path: '/$todoId',
   getParentRoute: () => TodosRoute,
-} as any)
+} as any);
 const ApiHelloRoute = ApiHelloRouteImport.update({
   id: '/api/hello',
   path: '/api/hello',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/todos': typeof TodosRouteWithChildren
-  '/api/hello': typeof ApiHelloRoute
-  '/todos/$todoId': typeof TodosTodoIdRoute
+  '/': typeof IndexRoute;
+  '/todos': typeof TodosRouteWithChildren;
+  '/api/hello': typeof ApiHelloRoute;
+  '/todos/$todoId': typeof TodosTodoIdRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/todos': typeof TodosRouteWithChildren
-  '/api/hello': typeof ApiHelloRoute
-  '/todos/$todoId': typeof TodosTodoIdRoute
+  '/': typeof IndexRoute;
+  '/todos': typeof TodosRouteWithChildren;
+  '/api/hello': typeof ApiHelloRoute;
+  '/todos/$todoId': typeof TodosTodoIdRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/todos': typeof TodosRouteWithChildren
-  '/api/hello': typeof ApiHelloRoute
-  '/todos/$todoId': typeof TodosTodoIdRoute
+  __root__: typeof rootRouteImport;
+  '/': typeof IndexRoute;
+  '/todos': typeof TodosRouteWithChildren;
+  '/api/hello': typeof ApiHelloRoute;
+  '/todos/$todoId': typeof TodosTodoIdRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/todos' | '/api/hello' | '/todos/$todoId'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/todos' | '/api/hello' | '/todos/$todoId'
-  id: '__root__' | '/' | '/todos' | '/api/hello' | '/todos/$todoId'
-  fileRoutesById: FileRoutesById
+  fileRoutesByFullPath: FileRoutesByFullPath;
+  fullPaths: '/' | '/todos' | '/api/hello' | '/todos/$todoId';
+  fileRoutesByTo: FileRoutesByTo;
+  to: '/' | '/todos' | '/api/hello' | '/todos/$todoId';
+  id: '__root__' | '/' | '/todos' | '/api/hello' | '/todos/$todoId';
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  TodosRoute: typeof TodosRouteWithChildren
-  ApiHelloRoute: typeof ApiHelloRoute
+  IndexRoute: typeof IndexRoute;
+  TodosRoute: typeof TodosRouteWithChildren;
+  ApiHelloRoute: typeof ApiHelloRoute;
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/todos': {
-      id: '/todos'
-      path: '/todos'
-      fullPath: '/todos'
-      preLoaderRoute: typeof TodosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/todos';
+      path: '/todos';
+      fullPath: '/todos';
+      preLoaderRoute: typeof TodosRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/';
+      path: '/';
+      fullPath: '/';
+      preLoaderRoute: typeof IndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/todos/$todoId': {
-      id: '/todos/$todoId'
-      path: '/$todoId'
-      fullPath: '/todos/$todoId'
-      preLoaderRoute: typeof TodosTodoIdRouteImport
-      parentRoute: typeof TodosRoute
-    }
+      id: '/todos/$todoId';
+      path: '/$todoId';
+      fullPath: '/todos/$todoId';
+      preLoaderRoute: typeof TodosTodoIdRouteImport;
+      parentRoute: typeof TodosRoute;
+    };
     '/api/hello': {
-      id: '/api/hello'
-      path: '/api/hello'
-      fullPath: '/api/hello'
-      preLoaderRoute: typeof ApiHelloRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/api/hello';
+      path: '/api/hello';
+      fullPath: '/api/hello';
+      preLoaderRoute: typeof ApiHelloRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
 interface TodosRouteChildren {
-  TodosTodoIdRoute: typeof TodosTodoIdRoute
+  TodosTodoIdRoute: typeof TodosTodoIdRoute;
 }
 
 const TodosRouteChildren: TodosRouteChildren = {
   TodosTodoIdRoute: TodosTodoIdRoute,
-}
+};
 
-const TodosRouteWithChildren = TodosRoute._addFileChildren(TodosRouteChildren)
+const TodosRouteWithChildren = TodosRoute._addFileChildren(TodosRouteChildren);
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   TodosRoute: TodosRouteWithChildren,
   ApiHelloRoute: ApiHelloRoute,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
+import type { getRouter } from './router.tsx';
+import type { createStart } from '@tanstack/react-start';
 declare module '@tanstack/react-start' {
   interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
+    ssr: true;
+    router: Awaited<ReturnType<typeof getRouter>>;
   }
 }

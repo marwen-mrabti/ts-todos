@@ -57,16 +57,14 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
-      <body className="bg-background text-foreground relative min-h-dvh max-w-screen overflow-x-hidden grid grid-rows-[auto_1fr]">
-        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <body className="bg-background text-foreground relative grid min-h-dvh max-w-screen grid-rows-[auto_1fr] overflow-x-hidden">
+        <ThemeProvider>
           <Header />
-          <main className='w-full h-full bg-red-500'>
-            {children}
-          </main>
+          <main className="h-full w-full bg-red-500">{children}</main>
           <Toaster position="top-right" />
           <TanStackDevtools
             config={{

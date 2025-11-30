@@ -2,16 +2,35 @@
 
 import { tanstackConfig } from '@tanstack/eslint-config';
 
+// Import TS plugin + parser (required for flat config)
+import tsPlugin from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+
 export default [
   ...tanstackConfig,
+
   {
+    files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+
+    plugins: {
+      '@typescript-eslint': tsPlugin,
+    },
+
     rules: {
       // React/JSX
-      'react/react-in-jsx-scope': 'off', // Not needed in modern React
+      'react/react-in-jsx-scope': 'off',
 
       // General code quality
       'no-console': ['warn', { allow: ['warn', 'error'] }],
-      'no-unused-vars': 'off', // TypeScript handles this
+      'no-unused-vars': 'off',
+
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {
@@ -21,7 +40,6 @@ export default [
         },
       ],
 
-      // TypeScript specific
       '@typescript-eslint/consistent-type-imports': [
         'warn',
         { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
@@ -45,6 +63,7 @@ export default [
       ],
     },
   },
+
   {
     ignores: [
       'dist',
