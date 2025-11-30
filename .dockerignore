@@ -1,0 +1,19 @@
+# .dockerignore
+node_modules
+npm-debug.log
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+README.md
+Dockerfile
+docker-compose.yml
+.dockerignore
+coverage
+.DS_Store
+.vscode
+.idea
+dist
+drizzle
+*.log

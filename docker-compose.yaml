@@ -1,0 +1,44 @@
+services:
+  # PostgreSQL database service
+  db:
+    image: postgres:15-alpine # Lightweight Alpine Linux version
+    container_name: ts-todos-postgres
+    restart: unless-stopped
+
+    # Database configuration via environment variables
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
+        # Optional: Set timezone
+      - TZ=${TZ:-UTC}
+
+    # Port mapping: host:container
+    # Change DB_PORT in .env to use different host port
+    ports:
+      - ${DB_PORT}:5432
+
+    # Persistent data storage using Docker volume
+    # Data survives container restarts and removals
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+
+    # Health check to ensure database is ready
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-myapp}',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+    # Resource limits for development (adjust as needed)
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
