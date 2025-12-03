@@ -12,8 +12,8 @@ export const Route = createFileRoute('/api/hello')({
         return new Response('Hello, World!');
       },
 
-      POST: async ({ request }) => {
-        // middleware: [], // Runs after authMiddleware, only for POST
+      POST: async ({ request, context }) => {
+        console.log('User from context:', context.user); // Example usage of user from authMiddleware
         const body = await request.json();
         return new Response(
           JSON.stringify({ message: `Hello, ${body.name}!` })

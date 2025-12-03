@@ -1,8 +1,8 @@
 import { ScriptOnce } from '@tanstack/react-router';
 import { createClientOnlyFn, createIsomorphicFn } from '@tanstack/react-start';
 import * as React from 'react';
-import {  createContext, useEffect, useState } from 'react';
-import type {ReactNode} from 'react';
+import { createContext, useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
 import { z } from 'zod';
 import { THEME_COLORS } from '@/lib/utils';
 

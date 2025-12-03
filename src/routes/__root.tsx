@@ -64,7 +64,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body className="bg-background text-foreground relative grid min-h-dvh max-w-screen grid-rows-[auto_1fr] overflow-x-hidden">
         <ThemeProvider>
           <Header />
-          <main className="h-full w-full bg-red-500">{children}</main>
+          <main className="h-full w-full">{children}</main>
           <Toaster position="top-right" />
           <TanStackDevtools
             config={{

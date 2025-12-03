@@ -7,3 +7,17 @@ Content-Type: application/json
 {
   "name": "basma"
 }
+
+###
+GET http://localhost:3000/api/todos
+
+###
+POST http://localhost:3000/api/todos
+Content-Type: application/json
+
+{
+  "id":"acf44aa2-e342-482d-8f67-357f71fafdda"
+}
+
+###
+DELETE http://localhost:3000/api/todos/44c26879-4066-42ce-84ad-11d1d35369af

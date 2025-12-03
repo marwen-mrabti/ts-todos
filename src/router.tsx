@@ -7,6 +7,7 @@ import * as TanstackQuery from './integrations/tanstack-query/root-provider';
 import { routeTree } from './routeTree.gen';
 
 import ErrorComponent from '@/components/error-component';
+import NotFound from '@/components/not-found-component';
 
 // Create a new router instance
 export const getRouter = () => {
@@ -18,6 +19,7 @@ export const getRouter = () => {
     defaultPreload: 'intent',
     defaultPreloadDelay: 0,
     scrollRestoration: true,
+    defaultNotFoundComponent: NotFound,
     defaultErrorComponent: ({ error, reset }) => (
       <ErrorComponent error={error} reset={reset} />
     ),

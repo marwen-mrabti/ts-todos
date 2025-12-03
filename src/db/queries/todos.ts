@@ -3,17 +3,20 @@ import { eq } from 'drizzle-orm';
 
 import { db } from '@/db';
 import { insertTodoSchema, todoIdSchema, todos } from '@/db/schema/todos';
+import { TodoNotFoundError, validateWithPretty } from '@/lib/helpers';
+import { authMiddleware } from '@/middleware/auth-middleware';
+import { notFound } from '@tanstack/react-router';
 
-export class TodoNotFoundError extends Error {}
-
-export const fetchTodos = createServerFn({ method: 'GET' }).handler(
-  async () => {
+export const fetchTodos = createServerFn({ method: 'GET' })
+  .middleware([authMiddleware])
+  .handler(async () => {
     const allTodos = await db.query.todos.findMany({});
+
     return allTodos;
-  }
-);
+  });
 
 export const fetchTodoById = createServerFn({ method: 'GET' })
+  .middleware([authMiddleware])
   .inputValidator(todoIdSchema)
   .handler(async ({ data }) => {
     const id = data; // data is fully typed and validated here
@@ -23,14 +26,17 @@ export const fetchTodoById = createServerFn({ method: 'GET' })
     });
 
     if (!todo) {
-      throw new TodoNotFoundError(`todo with id "${id}" not found!`);
+      throw notFound();
     }
+
+    await new Promise((resolve) => setTimeout(resolve, 5000));
 
     return todo;
   });
 
 export const createTodo = createServerFn({ method: 'POST' })
-  .inputValidator(insertTodoSchema)
+  .middleware([authMiddleware])
+  .inputValidator((data) => validateWithPretty(insertTodoSchema, data))
   .handler(async ({ data }) => {
     const { title } = data; // data is fully typed and validated here
     const result = await db
@@ -44,9 +50,10 @@ export const createTodo = createServerFn({ method: 'POST' })
     return { message: `Created todo with title: ${title}` };
   });
 
-export const deleteTodo = createServerFn()
-  .inputValidator(todoIdSchema)
-  .handler(async ({ data }) => {
+export const deleteTodo = createServerFn({ method: 'POST' })
+  .middleware([authMiddleware])
+  .inputValidator((data) => validateWithPretty(todoIdSchema, data))
+  .handler(async ({ data, context }) => {
     const id = data; // data is fully typed and validated here
 
     const todo = await db.query.todos.findFirst({

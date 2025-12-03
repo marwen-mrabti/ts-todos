@@ -1,12 +1,14 @@
 import { useMutation } from '@tanstack/react-query';
 import {
   createFileRoute,
+  Link,
   useNavigate,
   useRouteContext,
 } from '@tanstack/react-router';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
+import { Button } from '@/components/ui/button';
 import { createTodo } from '@/db/queries/todos';
 
 export const Route = createFileRoute('/')({ component: App });
@@ -24,10 +26,14 @@ function App() {
     mutationFn: async (todo: string) => {
       await createTodo({ data: { title: todo } });
     },
+    onSuccess: () => {
+      setTitle('');
+      return navigate({ to: '/todos' });
+    },
     onError: (error) => {
       toast('Failed to add the todo', {
         description: (
-          <pre className="bg-destructive text-destructive-foreground mt-2 w-xs overflow-x-auto rounded-md p-4 text-pretty">
+          <pre className="bg-destructive text-destructive-foreground mt-2 w-xs overflow-x-auto rounded-md p-4 text-balance">
             {error.message}
           </pre>
         ),
@@ -40,10 +46,7 @@ function App() {
         } as React.CSSProperties,
       });
     },
-    onSuccess: () => {
-      setTitle('');
-      return navigate({ to: '/todos' });
-    },
+
     onSettled: () => {
       context.queryClient.invalidateQueries({
         queryKey: ['todos'],
@@ -59,6 +62,17 @@ function App() {
 
   return (
     <div className="bg-card flex h-full w-full flex-col items-center justify-center gap-4 p-4">
+      <Button variant="link" asChild>
+
+        <Link to="/products" search={{
+          page: 1,
+          searchQuery: "",
+          category: "all"
+        }}>
+          products
+        </Link>
+      </Button>
+
       <h2 className="text-primary text-2xl uppercase">Add todo</h2>
       <div>
         <form onSubmit={handleSubmit} className="mt-4">

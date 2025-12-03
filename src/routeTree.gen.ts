@@ -9,12 +9,20 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TodosRouteImport } from './routes/todos'
+import { Route as ProductsRouteImport } from './routes/products'
+import { Route as TodosRouteRouteImport } from './routes/todos/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TodosTodoIdRouteImport } from './routes/todos.$todoId'
+import { Route as TodosTodoIdRouteImport } from './routes/todos/$todoId'
 import { Route as ApiHelloRouteImport } from './routes/api/hello'
+import { Route as ApiTodosIndexRouteImport } from './routes/api/todos/index'
+import { Route as ApiTodosTodoIdRouteImport } from './routes/api/todos/$todoId'
 
-const TodosRoute = TodosRouteImport.update({
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TodosRouteRoute = TodosRouteRouteImport.update({
   id: '/todos',
   path: '/todos',
   getParentRoute: () => rootRouteImport,
@@ -27,54 +35,105 @@ const IndexRoute = IndexRouteImport.update({
 const TodosTodoIdRoute = TodosTodoIdRouteImport.update({
   id: '/$todoId',
   path: '/$todoId',
-  getParentRoute: () => TodosRoute,
+  getParentRoute: () => TodosRouteRoute,
 } as any)
 const ApiHelloRoute = ApiHelloRouteImport.update({
   id: '/api/hello',
   path: '/api/hello',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiTodosIndexRoute = ApiTodosIndexRouteImport.update({
+  id: '/api/todos/',
+  path: '/api/todos/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiTodosTodoIdRoute = ApiTodosTodoIdRouteImport.update({
+  id: '/api/todos/$todoId',
+  path: '/api/todos/$todoId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/todos': typeof TodosRouteWithChildren
+  '/todos': typeof TodosRouteRouteWithChildren
+  '/products': typeof ProductsRoute
   '/api/hello': typeof ApiHelloRoute
   '/todos/$todoId': typeof TodosTodoIdRoute
+  '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
+  '/api/todos': typeof ApiTodosIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/todos': typeof TodosRouteWithChildren
+  '/todos': typeof TodosRouteRouteWithChildren
+  '/products': typeof ProductsRoute
   '/api/hello': typeof ApiHelloRoute
   '/todos/$todoId': typeof TodosTodoIdRoute
+  '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
+  '/api/todos': typeof ApiTodosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/todos': typeof TodosRouteWithChildren
+  '/todos': typeof TodosRouteRouteWithChildren
+  '/products': typeof ProductsRoute
   '/api/hello': typeof ApiHelloRoute
   '/todos/$todoId': typeof TodosTodoIdRoute
+  '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
+  '/api/todos/': typeof ApiTodosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/todos' | '/api/hello' | '/todos/$todoId'
+  fullPaths:
+    | '/'
+    | '/todos'
+    | '/products'
+    | '/api/hello'
+    | '/todos/$todoId'
+    | '/api/todos/$todoId'
+    | '/api/todos'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/todos' | '/api/hello' | '/todos/$todoId'
-  id: '__root__' | '/' | '/todos' | '/api/hello' | '/todos/$todoId'
+  to:
+    | '/'
+    | '/todos'
+    | '/products'
+    | '/api/hello'
+    | '/todos/$todoId'
+    | '/api/todos/$todoId'
+    | '/api/todos'
+  id:
+    | '__root__'
+    | '/'
+    | '/todos'
+    | '/products'
+    | '/api/hello'
+    | '/todos/$todoId'
+    | '/api/todos/$todoId'
+    | '/api/todos/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  TodosRoute: typeof TodosRouteWithChildren
+  TodosRouteRoute: typeof TodosRouteRouteWithChildren
+  ProductsRoute: typeof ProductsRoute
   ApiHelloRoute: typeof ApiHelloRoute
+  ApiTodosTodoIdRoute: typeof ApiTodosTodoIdRoute
+  ApiTodosIndexRoute: typeof ApiTodosIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/todos': {
       id: '/todos'
       path: '/todos'
       fullPath: '/todos'
-      preLoaderRoute: typeof TodosRouteImport
+      preLoaderRoute: typeof TodosRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -89,7 +148,7 @@ declare module '@tanstack/react-router' {
       path: '/$todoId'
       fullPath: '/todos/$todoId'
       preLoaderRoute: typeof TodosTodoIdRouteImport
-      parentRoute: typeof TodosRoute
+      parentRoute: typeof TodosRouteRoute
     }
     '/api/hello': {
       id: '/api/hello'
@@ -98,23 +157,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiHelloRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/todos/': {
+      id: '/api/todos/'
+      path: '/api/todos'
+      fullPath: '/api/todos'
+      preLoaderRoute: typeof ApiTodosIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/todos/$todoId': {
+      id: '/api/todos/$todoId'
+      path: '/api/todos/$todoId'
+      fullPath: '/api/todos/$todoId'
+      preLoaderRoute: typeof ApiTodosTodoIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
-interface TodosRouteChildren {
+interface TodosRouteRouteChildren {
   TodosTodoIdRoute: typeof TodosTodoIdRoute
 }
 
-const TodosRouteChildren: TodosRouteChildren = {
+const TodosRouteRouteChildren: TodosRouteRouteChildren = {
   TodosTodoIdRoute: TodosTodoIdRoute,
 }
 
-const TodosRouteWithChildren = TodosRoute._addFileChildren(TodosRouteChildren)
+const TodosRouteRouteWithChildren = TodosRouteRoute._addFileChildren(
+  TodosRouteRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  TodosRoute: TodosRouteWithChildren,
+  TodosRouteRoute: TodosRouteRouteWithChildren,
+  ProductsRoute: ProductsRoute,
   ApiHelloRoute: ApiHelloRoute,
+  ApiTodosTodoIdRoute: ApiTodosTodoIdRoute,
+  ApiTodosIndexRoute: ApiTodosIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
