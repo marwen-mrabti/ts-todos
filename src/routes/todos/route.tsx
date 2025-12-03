@@ -1,5 +1,5 @@
 import {
-  useQueryErrorResetBoundary
+  useQueryErrorResetBoundary, useSuspenseQuery
 } from '@tanstack/react-query';
 import type { ErrorComponentProps } from '@tanstack/react-router';
 import { Outlet, createFileRoute } from '@tanstack/react-router';
@@ -9,7 +9,7 @@ import ErrorComponent from '@/components/error-component';
 import NotFound from '@/components/not-found-component';
 import TodoList from '@/components/todo-list';
 import TodoListSkeleton from '@/components/todo-list-skeleton';
-import { useSuspenseQuery } from "@tanstack/react-query";
+
 
 import { todosQueryOptions } from '@/lib/query-options';
 import { seo } from '@/lib/seo';
