@@ -35,7 +35,8 @@ export const Route = createFileRoute('/todos')({
 });
 
 function RouteComponent() {
-  const { data: todos, } = useSuspenseQuery(todosQueryOptions());
+  const { data: todos } = useSuspenseQuery(todosQueryOptions());
+
 
   return (
     <main className="h-full w-full bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
