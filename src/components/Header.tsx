@@ -1,7 +1,7 @@
-import { Link } from '@tanstack/react-router';
 import { useTheme } from '@/components/theme-provider';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { cn } from '@/lib/utils';
+import { Link } from '@tanstack/react-router';
 
 export default function Header() {
   const { themeMode } = useTheme();
@@ -19,16 +19,33 @@ export default function Header() {
           />
         </Link>
       </h1>
+
       <nav className="flex items-center justify-between gap-4">
-        <Link
-          to="/todos"
-          className="font-bold"
+
+        <Link to="/products" search={{
+          page: 1,
+          searchQuery: "",
+          category: "all"
+        }}
+          className="font-bold text-muted-foreground"
           activeProps={{
             className: 'underline text-primary',
           }}
         >
+          products
+        </Link>
+
+        <Link
+          to="/todos"
+          className="font-bold text-muted-foreground"
+          activeProps={{
+            className: 'underline text-primary',
+          }}
+          preload="viewport"
+        >
           todos
         </Link>
+
         <ThemeToggle />
       </nav>
     </header>

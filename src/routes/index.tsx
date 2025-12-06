@@ -62,16 +62,7 @@ function App() {
 
   return (
     <div className="bg-card flex h-full w-full flex-col items-center justify-center gap-4 p-4">
-      <Button variant="link" asChild>
-
-        <Link to="/products" search={{
-          page: 1,
-          searchQuery: "",
-          category: "all"
-        }}>
-          products
-        </Link>
-      </Button>
+     
 
       <h2 className="text-primary text-2xl uppercase">Add todo</h2>
       <div>

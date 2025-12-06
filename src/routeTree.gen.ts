@@ -10,17 +10,30 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProductsRouteImport } from './routes/products'
+import { Route as LogoutRouteImport } from './routes/logout'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as TodosRouteRouteImport } from './routes/todos/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TodosTodoIdRouteImport } from './routes/todos/$todoId'
 import { Route as ApiHelloRouteImport } from './routes/api/hello'
 import { Route as ApiTodosIndexRouteImport } from './routes/api/todos/index'
 import { Route as ApiTodosTodoIdRouteImport } from './routes/api/todos/$todoId'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiTodosTodoIdEditRouteImport } from './routes/api/todos/$todoId.edit'
 
 const ProductsRoute = ProductsRouteImport.update({
   id: '/products',
   path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LogoutRoute = LogoutRouteImport.update({
+  id: '/logout',
+  path: '/logout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TodosRouteRoute = TodosRouteRouteImport.update({
@@ -53,6 +66,11 @@ const ApiTodosTodoIdRoute = ApiTodosTodoIdRouteImport.update({
   path: '/api/todos/$todoId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiTodosTodoIdEditRoute = ApiTodosTodoIdEditRouteImport.update({
   id: '/edit',
   path: '/edit',
@@ -62,9 +80,12 @@ const ApiTodosTodoIdEditRoute = ApiTodosTodoIdEditRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/todos': typeof TodosRouteRouteWithChildren
+  '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
   '/products': typeof ProductsRoute
   '/api/hello': typeof ApiHelloRoute
   '/todos/$todoId': typeof TodosTodoIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRouteWithChildren
   '/api/todos': typeof ApiTodosIndexRoute
   '/api/todos/$todoId/edit': typeof ApiTodosTodoIdEditRoute
@@ -72,9 +93,12 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/todos': typeof TodosRouteRouteWithChildren
+  '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
   '/products': typeof ProductsRoute
   '/api/hello': typeof ApiHelloRoute
   '/todos/$todoId': typeof TodosTodoIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRouteWithChildren
   '/api/todos': typeof ApiTodosIndexRoute
   '/api/todos/$todoId/edit': typeof ApiTodosTodoIdEditRoute
@@ -83,9 +107,12 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/todos': typeof TodosRouteRouteWithChildren
+  '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
   '/products': typeof ProductsRoute
   '/api/hello': typeof ApiHelloRoute
   '/todos/$todoId': typeof TodosTodoIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRouteWithChildren
   '/api/todos/': typeof ApiTodosIndexRoute
   '/api/todos/$todoId/edit': typeof ApiTodosTodoIdEditRoute
@@ -95,9 +122,12 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/todos'
+    | '/login'
+    | '/logout'
     | '/products'
     | '/api/hello'
     | '/todos/$todoId'
+    | '/api/auth/$'
     | '/api/todos/$todoId'
     | '/api/todos'
     | '/api/todos/$todoId/edit'
@@ -105,9 +135,12 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/todos'
+    | '/login'
+    | '/logout'
     | '/products'
     | '/api/hello'
     | '/todos/$todoId'
+    | '/api/auth/$'
     | '/api/todos/$todoId'
     | '/api/todos'
     | '/api/todos/$todoId/edit'
@@ -115,9 +148,12 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/todos'
+    | '/login'
+    | '/logout'
     | '/products'
     | '/api/hello'
     | '/todos/$todoId'
+    | '/api/auth/$'
     | '/api/todos/$todoId'
     | '/api/todos/'
     | '/api/todos/$todoId/edit'
@@ -126,8 +162,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   TodosRouteRoute: typeof TodosRouteRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  LogoutRoute: typeof LogoutRoute
   ProductsRoute: typeof ProductsRoute
   ApiHelloRoute: typeof ApiHelloRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiTodosTodoIdRoute: typeof ApiTodosTodoIdRouteWithChildren
   ApiTodosIndexRoute: typeof ApiTodosIndexRoute
 }
@@ -139,6 +178,20 @@ declare module '@tanstack/react-router' {
       path: '/products'
       fullPath: '/products'
       preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/logout': {
+      id: '/logout'
+      path: '/logout'
+      fullPath: '/logout'
+      preLoaderRoute: typeof LogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/todos': {
@@ -183,6 +236,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiTodosTodoIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/todos/$todoId/edit': {
       id: '/api/todos/$todoId/edit'
       path: '/edit'
@@ -220,8 +280,11 @@ const ApiTodosTodoIdRouteWithChildren = ApiTodosTodoIdRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   TodosRouteRoute: TodosRouteRouteWithChildren,
+  LoginRoute: LoginRoute,
+  LogoutRoute: LogoutRoute,
   ProductsRoute: ProductsRoute,
   ApiHelloRoute: ApiHelloRoute,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiTodosTodoIdRoute: ApiTodosTodoIdRouteWithChildren,
   ApiTodosIndexRoute: ApiTodosIndexRoute,
 }

@@ -1,5 +1,6 @@
 import {
-  useQueryErrorResetBoundary, useSuspenseQuery
+  useQueryErrorResetBoundary,
+  useSuspenseQuery
 } from '@tanstack/react-query';
 import type { ErrorComponentProps } from '@tanstack/react-router';
 import { Outlet, createFileRoute } from '@tanstack/react-router';
@@ -15,12 +16,13 @@ import { todosQueryOptions } from '@/lib/query-options';
 import { seo } from '@/lib/seo';
 import { TodoPendingComponent } from '@/routes/todos/$todoId';
 
+
 export const Route = createFileRoute('/todos')({
   loader: async ({ context: { queryClient } }) => {
     return queryClient.ensureQueryData(todosQueryOptions());
   },
 
-  head: ({ loaderData }) => {
+  head: ({ }) => {
     return ({
       meta: seo({
         title: 'Todos',
@@ -36,7 +38,10 @@ export const Route = createFileRoute('/todos')({
 
 function RouteComponent() {
   const { data: todos } = useSuspenseQuery(todosQueryOptions());
-
+  // const { data: todos } = useLiveSuspenseQuery((q) =>
+  //   q.from({ todo: todosCollection })
+  //     .orderBy(({ todo }) => todo.createdAt, 'desc')
+  // )
 
   return (
     <main className="h-full w-full bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">

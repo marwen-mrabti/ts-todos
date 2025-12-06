@@ -8,6 +8,13 @@
       "when": 1764475770683,
       "tag": "0000_kind_overlord",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1765021124611,
+      "tag": "0001_heavy_harpoon",
+      "breakpoints": true
     }
   ]
 }
