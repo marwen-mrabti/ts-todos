@@ -41,7 +41,7 @@ export default function Header() {
           activeProps={{
             className: 'underline text-primary',
           }}
-          preload="viewport"
+        // preload="viewport"
         >
           todos
         </Link>

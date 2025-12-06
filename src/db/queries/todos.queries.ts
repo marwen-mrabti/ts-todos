@@ -43,16 +43,16 @@ export const createTodo = createServerFn({ method: 'POST' })
   .middleware([authMiddleware])
   .inputValidator((data) => validateWithPretty(insertTodoSchema, data))
   .handler(async ({ data }) => {
-    const { title } = data; // data is fully typed and validated here
+    const { title } = data;
     const result = await db
       .insert(todos)
       .values({ title })
-      .returning({ id: todos.id });
+      .returning({ id: todos.id, title: todos.title });
     const todo = result[0];
     if (!todo.id) {
       throw new Error('Failed to create todo');
     }
-    return { message: `Created todo with title: ${title}` };
+    return { message: `Created todo with title: ${todo.title}` };
   });
 
 export const updateTodo = createServerFn({ method: 'POST' })

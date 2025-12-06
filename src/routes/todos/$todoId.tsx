@@ -1,7 +1,7 @@
 import {
   useMutation,
   useQueryErrorResetBoundary,
-  useSuspenseQuery,
+  useSuspenseQuery
 } from '@tanstack/react-query';
 import type { ErrorComponentProps } from '@tanstack/react-router';
 import { createFileRoute, useNavigate, useRouteContext } from '@tanstack/react-router';
@@ -11,20 +11,20 @@ import { useEffect } from 'react';
 import ErrorComponent from '@/components/error-component';
 import NotFound from '@/components/not-found-component';
 import { Button } from '@/components/ui/button';
-import { deleteTodo } from "@/db/queries/todos.queries";
+import { deleteTodo } from '@/db/queries/todos.queries';
 import { todoQueryOptions } from '@/lib/query-options';
 import { seo } from '@/lib/seo';
 import { toast } from 'sonner';
 
 export const Route = createFileRoute('/todos/$todoId')({
   loader: async ({ params: { todoId }, context: { queryClient } }) => {
-    return queryClient.ensureQueryData(todoQueryOptions({ todoId }));
+    return await queryClient.ensureQueryData(todoQueryOptions({ todoId }));
   },
 
   head: ({ loaderData }) => {
     return ({
       meta: seo({
-        title: loaderData?.title || 'Todo Details',
+        title: loaderData?.title ?? 'Todo Details',
       }),
     })
   },
@@ -44,6 +44,9 @@ function TodoPage() {
   const { todoId } = Route.useParams();
 
   const { data: todo } = useSuspenseQuery(todoQueryOptions({ todoId }));
+
+
+
 
   // DELETE MUTATION
   const mutation = useMutation({
@@ -91,6 +94,11 @@ function TodoPage() {
     },
   });
 
+  const handleDeleteTodo = async () => {
+    await mutation.mutateAsync();
+  }
+
+
   return (
     <div className="w-full p-6">
       <div className="mb-6 flex items-center justify-between">
@@ -101,7 +109,7 @@ function TodoPage() {
           size="sm"
           className="flex gap-2"
           disabled={mutation.isPending}
-          onClick={() => mutation.mutate()}
+          onClick={handleDeleteTodo}
         >
           <Trash2 className="h-4 w-4" />
           Delete
@@ -113,24 +121,28 @@ function TodoPage() {
           Here are the details of your selected todo.
         </p>
 
-        <div className="space-y-3">
-          <p>
-            <strong className="text-slate-700 dark:text-slate-300">ID:</strong>{' '}
-            {todo.id}
-          </p>
-          <p>
-            <strong className="text-slate-700 dark:text-slate-300">
-              Title:
-            </strong>{' '}
-            {todo.title}
-          </p>
-          <p>
-            <strong className="text-slate-700 dark:text-slate-300">
-              Completed:
-            </strong>{' '}
-            {todo.isCompleted ? 'Yes' : 'No'}
-          </p>
-        </div>
+        {
+          todo && (
+            <div className="space-y-3">
+              <p>
+                <strong className="text-slate-700 dark:text-slate-300">ID:</strong>{' '}
+                {todo.id}
+              </p>
+              <p>
+                <strong className="text-slate-700 dark:text-slate-300">
+                  Title:
+                </strong>{' '}
+                {todo.title}
+              </p>
+              <p>
+                <strong className="text-slate-700 dark:text-slate-300">
+                  Completed:
+                </strong>{' '}
+                {todo.isCompleted ? 'Yes' : 'No'}
+              </p>
+            </div>
+          )
+        }
       </div>
     </div>
   );

@@ -1,9 +1,8 @@
 import {
-  useQueryErrorResetBoundary,
-  useSuspenseQuery
+  useQueryErrorResetBoundary, useSuspenseQuery
 } from '@tanstack/react-query';
 import type { ErrorComponentProps } from '@tanstack/react-router';
-import { Outlet, createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link, Outlet } from '@tanstack/react-router';
 import { useEffect } from 'react';
 
 import ErrorComponent from '@/components/error-component';
@@ -15,7 +14,6 @@ import TodoListSkeleton from '@/components/todo-list-skeleton';
 import { todosQueryOptions } from '@/lib/query-options';
 import { seo } from '@/lib/seo';
 import { TodoPendingComponent } from '@/routes/todos/$todoId';
-
 
 export const Route = createFileRoute('/todos')({
   loader: async ({ context: { queryClient } }) => {
@@ -38,10 +36,7 @@ export const Route = createFileRoute('/todos')({
 
 function RouteComponent() {
   const { data: todos } = useSuspenseQuery(todosQueryOptions());
-  // const { data: todos } = useLiveSuspenseQuery((q) =>
-  //   q.from({ todo: todosCollection })
-  //     .orderBy(({ todo }) => todo.createdAt, 'desc')
-  // )
+
 
   return (
     <main className="h-full w-full bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
@@ -71,8 +66,19 @@ function RouteComponent() {
             </h1>
           </div>
 
-
-          <TodoList todos={todos} />
+          {
+            todos.length === 0 ? (
+              <div className="flex flex-col h-full items-center justify-center">
+                <p className="text-muted-foreground">
+                  You have no todos yet. Create one!
+                </p>
+                <Link to="/" className="ml-2 text-primary hover:underline">
+                  create your first todo
+                </Link>
+              </div>
+            ) :
+              <TodoList todos={todos} />
+          }
 
 
         </aside>

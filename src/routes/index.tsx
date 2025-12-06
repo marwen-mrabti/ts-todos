@@ -1,14 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
 import {
   createFileRoute,
-  Link,
   useNavigate,
-  useRouteContext,
+  useRouteContext
 } from '@tanstack/react-router';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { Button } from '@/components/ui/button';
 import { createTodo } from '@/db/queries/todos.queries';
 
 export const Route = createFileRoute('/')({ component: App });
@@ -30,6 +28,7 @@ function App() {
       setTitle('');
       return navigate({ to: '/todos' });
     },
+
     onError: (error) => {
       toast('Failed to add the todo', {
         description: (
@@ -54,7 +53,7 @@ function App() {
     },
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleAddTodo = async (e: React.FormEvent) => {
     e.preventDefault();
     await mutation.mutateAsync(title);
     return;
@@ -62,11 +61,11 @@ function App() {
 
   return (
     <div className="bg-card flex h-full w-full flex-col items-center justify-center gap-4 p-4">
-     
+
 
       <h2 className="text-primary text-2xl uppercase">Add todo</h2>
       <div>
-        <form onSubmit={handleSubmit} className="mt-4">
+        <form onSubmit={handleAddTodo} className="mt-4">
           <input
             type="text"
             value={title}
