@@ -1,5 +1,7 @@
+import { Button } from "@/components/ui/button";
 import type { Products, ProductSearch } from "@/routes/products";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useRef } from "react";
 
 interface ProductListProps {
   Route: any;
@@ -20,11 +22,26 @@ export default function ProductList({ Route, products, page, searchQuery, catego
     return matchesSearch && matchesCategory && matchesPrice;
   });
 
+  const searchRef = useRef<HTMLInputElement>(null as unknown as HTMLInputElement);
+
+  const navigate = useNavigate({ from: "/products" });
+
+  const updateSearchParams = () => {
+    navigate({
+      to: ".",
+      search: (prev) => {
+        return { ...prev, searchQuery: searchRef.current.value };
+      }
+    });
+  };
+
   // Pagination
   const itemsPerPage = 3;
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   const startIndex = (page - 1) * itemsPerPage;
   const paginatedProducts = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
+
+
 
   return (
     <div className="h-full p-8">
@@ -35,28 +52,23 @@ export default function ProductList({ Route, products, page, searchQuery, catego
         <div className=" rounded-lg shadow p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Search Input */}
-            <div>
+            <div className="">
               <label className="block text-sm font-medium text-muted-foreground mb-2">
                 Search
               </label>
               <input
+                ref={searchRef}
                 type="text"
-                value={searchQuery}
-                onChange={(e) => {
-
-                  const newQuery = e.target.value;
-
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    const input = e.currentTarget;
-                    // Navigate using the Link component programmatically
-                    window.location.href = `/products?searchQuery=${encodeURIComponent(input.value)}&category=${category}&minPrice=${minPrice}&page=1`;
-                  }
-                }}
+                defaultValue={searchQuery}
                 placeholder="Search products... (press Enter)"
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') { updateSearchParams() }
+                }}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
+              <Button className="mt-2" onClick={updateSearchParams}>
+                Search
+              </Button>
             </div>
 
             {/* Category Select */}

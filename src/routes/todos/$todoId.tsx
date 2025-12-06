@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 import ErrorComponent from '@/components/error-component';
 import NotFound from '@/components/not-found-component';
 import { Button } from '@/components/ui/button';
-import { deleteTodo } from "@/db/queries/todos";
+import { deleteTodo } from "@/db/queries/todos.queries";
 import { todoQueryOptions } from '@/lib/query-options';
 import { seo } from '@/lib/seo';
 import { toast } from 'sonner';

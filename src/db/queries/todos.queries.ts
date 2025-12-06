@@ -2,7 +2,12 @@ import { createServerFn } from '@tanstack/react-start';
 import { eq } from 'drizzle-orm';
 
 import { db } from '@/db';
-import { insertTodoSchema, todoIdSchema, todos } from '@/db/schema/todos';
+import {
+  insertTodoSchema,
+  todoIdSchema,
+  todos,
+  updateTodoSchema,
+} from '@/db/schema/todos.schema';
 import { TodoNotFoundError, validateWithPretty } from '@/lib/helpers';
 import { authMiddleware } from '@/middleware/auth-middleware';
 import { notFound } from '@tanstack/react-router';
@@ -48,6 +53,33 @@ export const createTodo = createServerFn({ method: 'POST' })
       throw new Error('Failed to create todo');
     }
     return { message: `Created todo with title: ${title}` };
+  });
+
+export const updateTodo = createServerFn({ method: 'POST' })
+  .middleware([authMiddleware])
+  .inputValidator((data) => validateWithPretty(updateTodoSchema, data))
+  .handler(async ({ data }) => {
+    const { id, ...todoData } = data; // data is fully typed and validated here
+
+    const isTodoInDb = await db.query.todos.findFirst({
+      where: eq(todos.id, id),
+    });
+
+    if (!isTodoInDb) {
+      throw new TodoNotFoundError(`todo with id "${id}" not found!`); // when using it via an api route => this will return a 404 with the message
+      // throw notFound(); // when using it via as a mutationFn for useMutation => this will navigate to the 404 page
+    }
+
+    const result = await db
+      .update(todos)
+      .set(todoData)
+      .where(eq(todos.id, id))
+      .returning({ id: todos.id });
+    const todo = result[0];
+    if (!todo.id) {
+      throw new Error('Failed to update todo');
+    }
+    return { message: `Updated todo with id: ${id}` };
   });
 
 export const deleteTodo = createServerFn({ method: 'POST' })

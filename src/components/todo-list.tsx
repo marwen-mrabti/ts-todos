@@ -1,4 +1,4 @@
-import type { TODO } from '@/db/schema/todos';
+import type { TODO } from '@/db/schema/todos.schema';
 import { Link } from '@tanstack/react-router';
 
 

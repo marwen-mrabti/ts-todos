@@ -20,4 +20,13 @@ Content-Type: application/json
 }
 
 ###
+PATCH http://localhost:3000/api/todos/ec8689c0-37b5-48f0-8fd0-f3a86f3bf003/edit
+Content-Type: application/json
+
+{
+  "title":"this todo has been edited.",
+  "isCompleted":false
+}
+
+###
 DELETE http://localhost:3000/api/todos/44c26879-4066-42ce-84ad-11d1d35369af

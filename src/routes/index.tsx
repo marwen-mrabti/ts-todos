@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
-import { createTodo } from '@/db/queries/todos';
+import { createTodo } from '@/db/queries/todos.queries';
 
 export const Route = createFileRoute('/')({ component: App });
 
