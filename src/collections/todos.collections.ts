@@ -1,5 +1,5 @@
 import { createTodo, fetchTodos } from '@/db/queries/todos.queries';
-import { todoCollectionSchema } from '@/db/schema/todos.schema';
+import { TodoSchema } from '@/db/schema/todos.schema';
 import { queryCollectionOptions } from '@tanstack/query-db-collection';
 import { createCollection } from '@tanstack/react-db';
 import { QueryClient } from '@tanstack/react-query';
@@ -14,7 +14,7 @@ export const todosCollection = createCollection(
     queryFn: async () => await fetchTodos(),
 
     getKey: (item) => item.id,
-    schema: todoCollectionSchema,
+    schema: TodoSchema,
 
     // Handle mutations
     onInsert: async ({ transaction }) => {

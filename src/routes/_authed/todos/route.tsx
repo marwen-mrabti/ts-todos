@@ -13,11 +13,11 @@ import TodoListSkeleton from '@/components/todo-list-skeleton';
 
 import { todosQueryOptions } from '@/lib/query-options';
 import { seo } from '@/lib/seo';
-import { TodoPendingComponent } from '@/routes/todos/$todoId';
+import { TodoPendingComponent } from '@/routes/_authed/todos/$todoId';
 
-export const Route = createFileRoute('/todos')({
-  loader: async ({ context: { queryClient } }) => {
-    return queryClient.ensureQueryData(todosQueryOptions());
+export const Route = createFileRoute('/_authed/todos')({
+  loader: async ({ context }) => {
+    return context.queryClient.ensureQueryData(todosQueryOptions());
   },
 
   head: ({ }) => {

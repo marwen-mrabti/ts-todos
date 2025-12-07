@@ -1,13 +1,17 @@
 import { useTheme } from '@/components/theme-provider';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { Button } from '@/components/ui/button';
+import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 import { Link } from '@tanstack/react-router';
 
 export default function Header() {
   const { themeMode } = useTheme();
+  const { data, isPending } = authClient.useSession();
+  const user = data?.user;
 
   return (
-    <header className="bg-secondary text-secondary-foreground sticky top-0 z-10 flex w-full items-center justify-between p-4 shadow-lg">
+    <header className="bg-secondary text-secondary-foreground sticky top-0 z-10 flex w-full items-center justify-between p-4 shadow-lg" >
       <h1 className="ml-4 text-xl font-semibold">
         <Link to="/">
           <img
@@ -34,20 +38,46 @@ export default function Header() {
         >
           products
         </Link>
+        {!user ?
+          <Link
+            to="/login"
+            className="font-bold text-muted-foreground"
+            activeProps={{
+              className: 'underline text-primary',
+            }}
 
-        <Link
-          to="/todos"
-          className="font-bold text-muted-foreground"
-          activeProps={{
-            className: 'underline text-primary',
-          }}
-        // preload="viewport"
-        >
-          todos
-        </Link>
+          >
+            login
+          </Link> :
+          <div className="flex items-center gap-4">
+            <Button variant="secondary" asChild>
+              <Link
+                to="/logout"
+                className="font-bold text-muted-foreground"
+                activeProps={{
+                  className: 'underline text-primary',
+                }}
+              >
+                logout
+              </Link>
+            </Button>
+
+            <Link
+              to="/todos"
+              className="font-bold text-muted-foreground"
+              activeProps={{
+                className: 'underline text-primary',
+              }}
+              // preload="viewport"
+              preloadDelay={500}
+            >
+              todos
+            </Link>
+          </div>
+        }
 
         <ThemeToggle />
       </nav>
-    </header>
+    </header >
   );
 }

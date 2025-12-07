@@ -16,7 +16,7 @@ import { todoQueryOptions } from '@/lib/query-options';
 import { seo } from '@/lib/seo';
 import { toast } from 'sonner';
 
-export const Route = createFileRoute('/todos/$todoId')({
+export const Route = createFileRoute('/_authed/todos/$todoId')({
   loader: async ({ params: { todoId }, context: { queryClient } }) => {
     return await queryClient.ensureQueryData(todoQueryOptions({ todoId }));
   },
@@ -40,7 +40,7 @@ export const Route = createFileRoute('/todos/$todoId')({
 // -----------------------------
 function TodoPage() {
   const navigate = useNavigate({ from: "/todos/$todoId" });
-  const context = useRouteContext({ from: '/todos/$todoId' });
+  const context = useRouteContext({ from: '/_authed/todos/$todoId' });
   const { todoId } = Route.useParams();
 
   const { data: todo } = useSuspenseQuery(todoQueryOptions({ todoId }));
