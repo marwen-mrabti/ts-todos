@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { authClient } from "@/lib/auth-client";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { LogOut } from "lucide-react";
 import { motion } from "motion/react";
 import { useEffect } from "react";
 
 export const Route = createFileRoute("/logout")({
-  async loader() {
+  loader: async () => {
     await authClient.signOut();
     throw redirect({ to: "/" });
   },
@@ -15,10 +15,11 @@ export const Route = createFileRoute("/logout")({
 });
 
 function SignOutPage() {
+  const navigate = useNavigate({ from: "/logout" });
   // Client fallback: if JS runs, also logout + redirect
   useEffect(() => {
     authClient.signOut().finally(() => {
-      window.location.href = "/";
+      navigate({ to: "/" });
     });
   }, []);
 
@@ -48,7 +49,7 @@ function SignOutPage() {
               variant="secondary"
               onClick={() => {
                 authClient.signOut().finally(() => {
-                  window.location.href = "/";
+                  navigate({ to: "/" });
                 });
               }}
             >
