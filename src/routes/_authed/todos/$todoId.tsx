@@ -1,10 +1,14 @@
 import {
   useMutation,
   useQueryErrorResetBoundary,
-  useSuspenseQuery
+  useSuspenseQuery,
 } from '@tanstack/react-query';
 import type { ErrorComponentProps } from '@tanstack/react-router';
-import { createFileRoute, useNavigate, useRouteContext } from '@tanstack/react-router';
+import {
+  createFileRoute,
+  useNavigate,
+  useRouteContext,
+} from '@tanstack/react-router';
 import { Trash2 } from 'lucide-react';
 import { useEffect } from 'react';
 
@@ -22,11 +26,11 @@ export const Route = createFileRoute('/_authed/todos/$todoId')({
   },
 
   head: ({ loaderData }) => {
-    return ({
+    return {
       meta: seo({
         title: loaderData?.title ?? 'Todo Details',
       }),
-    })
+    };
   },
 
   component: TodoPage,
@@ -39,14 +43,11 @@ export const Route = createFileRoute('/_authed/todos/$todoId')({
 // MAIN PAGE COMPONENT
 // -----------------------------
 function TodoPage() {
-  const navigate = useNavigate({ from: "/todos/$todoId" });
+  const navigate = useNavigate({ from: '/todos/$todoId' });
   const context = useRouteContext({ from: '/_authed/todos/$todoId' });
   const { todoId } = Route.useParams();
 
   const { data: todo } = useSuspenseQuery(todoQueryOptions({ todoId }));
-
-
-
 
   // DELETE MUTATION
   const mutation = useMutation({
@@ -54,7 +55,7 @@ function TodoPage() {
     onSuccess: () => {
       toast('Todo Deleted', {
         description: (
-          <pre className="bg-green-400/50 text-secondary-foreground mt-2 w-xs overflow-x-auto rounded-md p-4 text-pretty">
+          <pre className="text-secondary-foreground mt-2 w-xs overflow-x-auto rounded-md bg-green-400/50 p-4 text-pretty">
             Todo has been removed.
           </pre>
         ),
@@ -96,13 +97,14 @@ function TodoPage() {
 
   const handleDeleteTodo = async () => {
     await mutation.mutateAsync();
-  }
-
+  };
 
   return (
     <div className="w-full p-6">
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-primary text-3xl font-semibold tracking-tight">Todo Details</h2>
+        <h2 className="text-primary text-3xl font-semibold tracking-tight">
+          Todo Details
+        </h2>
 
         <Button
           variant="destructive"
@@ -117,32 +119,32 @@ function TodoPage() {
       </div>
 
       <div className="rounded-xl border p-5 shadow-sm dark:border-slate-700">
-        <p className="mb-3 text-sm text-muted-foreground">
+        <p className="text-muted-foreground mb-3 text-sm">
           Here are the details of your selected todo.
         </p>
 
-        {
-          todo && (
-            <div className="space-y-3">
-              <p>
-                <strong className="text-slate-700 dark:text-slate-300">ID:</strong>{' '}
-                {todo.id}
-              </p>
-              <p>
-                <strong className="text-slate-700 dark:text-slate-300">
-                  Title:
-                </strong>{' '}
-                {todo.title}
-              </p>
-              <p>
-                <strong className="text-slate-700 dark:text-slate-300">
-                  Completed:
-                </strong>{' '}
-                {todo.isCompleted ? 'Yes' : 'No'}
-              </p>
-            </div>
-          )
-        }
+        {todo && (
+          <div className="space-y-3">
+            <p>
+              <strong className="text-slate-700 dark:text-slate-300">
+                ID:
+              </strong>{' '}
+              {todo.id}
+            </p>
+            <p>
+              <strong className="text-slate-700 dark:text-slate-300">
+                Title:
+              </strong>{' '}
+              {todo.title}
+            </p>
+            <p>
+              <strong className="text-slate-700 dark:text-slate-300">
+                Completed:
+              </strong>{' '}
+              {todo.isCompleted ? 'Yes' : 'No'}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -155,21 +157,18 @@ export function TodoPendingComponent() {
   return (
     <div className="w-full p-6">
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-primary text-3xl font-semibold tracking-tight">Todo Details</h2>
+        <h2 className="text-primary text-3xl font-semibold tracking-tight">
+          Todo Details
+        </h2>
 
-        <Button
-          variant="destructive"
-          size="sm"
-          className="flex gap-2"
-          disabled
-        >
+        <Button variant="destructive" size="sm" className="flex gap-2" disabled>
           <Trash2 className="h-4 w-4" />
           Delete
         </Button>
       </div>
 
       <div className="rounded-xl border p-5 shadow-sm dark:border-slate-700">
-        <p className="mb-3 text-sm text-muted-foreground">
+        <p className="text-muted-foreground mb-3 text-sm">
           Here are the details of your selected todo.
         </p>
 
@@ -181,7 +180,6 @@ export function TodoPendingComponent() {
         </div>
       </div>
     </div>
-
   );
 }
 

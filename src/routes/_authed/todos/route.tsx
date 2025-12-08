@@ -1,5 +1,6 @@
 import {
-  useQueryErrorResetBoundary, useSuspenseQuery
+  useQueryErrorResetBoundary,
+  useSuspenseQuery,
 } from '@tanstack/react-query';
 import type { ErrorComponentProps } from '@tanstack/react-router';
 import { createFileRoute, Link, Outlet } from '@tanstack/react-router';
@@ -9,7 +10,6 @@ import ErrorComponent from '@/components/error-component';
 import NotFound from '@/components/not-found-component';
 import TodoList from '@/components/todo-list';
 import TodoListSkeleton from '@/components/todo-list-skeleton';
-
 
 import { todosQueryOptions } from '@/lib/query-options';
 import { seo } from '@/lib/seo';
@@ -21,11 +21,11 @@ export const Route = createFileRoute('/_authed/todos')({
   },
 
   head: ({ }) => {
-    return ({
+    return {
       meta: seo({
         title: 'Todos',
       }),
-    })
+    };
   },
 
   component: RouteComponent,
@@ -36,7 +36,6 @@ export const Route = createFileRoute('/_authed/todos')({
 
 function RouteComponent() {
   const { data: todos } = useSuspenseQuery(todosQueryOptions());
-
 
   return (
     <main className="h-full w-full bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
@@ -66,21 +65,18 @@ function RouteComponent() {
             </h1>
           </div>
 
-          {
-            todos.length === 0 ? (
-              <div className="flex flex-col h-full items-center justify-center">
-                <p className="text-muted-foreground">
-                  You have no todos yet. Create one!
-                </p>
-                <Link to="/" className="ml-2 text-primary hover:underline">
-                  create your first todo
-                </Link>
-              </div>
-            ) :
-              <TodoList todos={todos} />
-          }
-
-
+          {todos.length === 0 ? (
+            <div className="flex h-full flex-col items-center justify-center">
+              <p className="text-muted-foreground">
+                You have no todos yet. Create one!
+              </p>
+              <Link to="/" className="text-primary ml-2 hover:underline">
+                create your first todo
+              </Link>
+            </div>
+          ) : (
+            <TodoList todos={todos} />
+          )}
         </aside>
 
         {/* Main Content */}
@@ -128,8 +124,8 @@ function TodosPendingComponent() {
         <div className="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900/50">
           <TodoPendingComponent />
         </div>
-      </div >
-    </main >
+      </div>
+    </main>
   );
 }
 

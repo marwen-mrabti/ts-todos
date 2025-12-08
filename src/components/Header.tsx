@@ -1,83 +1,119 @@
 import { useTheme } from '@/components/theme-provider';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
-import { Link } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
+import { Package, User } from 'lucide-react';
 
 export default function Header() {
   const { themeMode } = useTheme();
-  const { data, isPending } = authClient.useSession();
-  const user = data?.user;
+  const { data: session } = authClient.useSession();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          navigate({ to: '/login' });
+        },
+      },
+    });
+  };
 
   return (
-    <header className="bg-secondary text-secondary-foreground sticky top-0 z-10 flex w-full items-center justify-between p-4 shadow-lg" >
-      <h1 className="ml-4 text-xl font-semibold">
-        <Link to="/">
-          <img
-            src="/tanstack-word-logo-white.svg"
-            alt="TanStack Logo"
-            className={cn('h-10', {
-              invert: themeMode === 'light',
-            })}
-          />
-        </Link>
-      </h1>
-
-      <nav className="flex items-center justify-between gap-4">
-
-        <Link to="/products" search={{
-          page: 1,
-          searchQuery: "",
-          category: "all"
-        }}
-          className="font-bold text-muted-foreground"
-          activeProps={{
-            className: 'underline text-primary',
-          }}
-        >
-          products
-        </Link>
-        {!user ?
+    <header className="bg-background/95 supports-backdrop-filter:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
+      <div className="container flex h-16 items-center justify-between px-4">
+        <div className="flex items-center gap-6">
           <Link
-            to="/login"
-            className="font-bold text-muted-foreground"
-            activeProps={{
-              className: 'underline text-primary',
-            }}
-
+            to="/"
+            className="flex items-center space-x-2 transition-opacity hover:opacity-80"
           >
-            login
-          </Link> :
-          <div className="flex items-center gap-4">
-            <Button variant="secondary" asChild>
-              <Link
-                to="/logout"
-                className="font-bold text-muted-foreground"
-                activeProps={{
-                  className: 'underline text-primary',
-                }}
-              >
-                logout
-              </Link>
+            <img
+              src="/tanstack-word-logo-white.svg"
+              alt="TanStack Logo"
+              className={cn('h-8', {
+                invert: themeMode === 'light',
+              })}
+            />
+          </Link>
+
+          <nav className="hidden items-center gap-1 md:flex">
+            {session?.user && (
+              <Button variant="ghost" size="sm" asChild>
+                <Link to="/todos" preloadDelay={500}>
+                  Todos
+                </Link>
+              </Button>
+            )}
+          </nav>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {!session?.user ? (
+            <Button asChild variant="ghost">
+              <Link to="/login">Login</Link>
             </Button>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-10 w-10 rounded-full"
+                >
+                  <Avatar className="h-9 w-9">
+                    <AvatarImage
+                      src={session.user.image || undefined}
+                      alt={session.user.name || 'User'}
+                    />
+                    <AvatarFallback>
+                      <User className="h-5 w-5" />
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="sr-only">User menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link
+                    to="/products"
+                    search={{
+                      page: 1,
+                      searchQuery: '',
+                      category: 'all',
+                    }}
+                    className="cursor-pointer"
+                  >
+                    <Package className="mr-2 h-4 w-4" />
+                    Products
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="text-destructive focus:text-destructive cursor-pointer"
+                >
+                  Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
 
-            <Link
-              to="/todos"
-              className="font-bold text-muted-foreground"
-              activeProps={{
-                className: 'underline text-primary',
-              }}
-              // preload="viewport"
-              preloadDelay={500}
-            >
-              todos
-            </Link>
-          </div>
-        }
-
-        <ThemeToggle />
-      </nav>
-    </header >
+          <ThemeToggle />
+        </div>
+      </div>
+    </header>
   );
 }

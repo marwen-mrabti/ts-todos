@@ -9,11 +9,12 @@ import {
   updateTodoSchema,
 } from '@/db/schema/todos.schema';
 import { TodoNotFoundError, validateWithPretty } from '@/lib/helpers';
-import { authMiddleware } from '@/middleware/auth-middleware';
+import { serverFnAuthMiddleware } from '@/middleware/auth-middleware';
+import { middlewareDemo } from '@/middleware/demo-middleware';
 import { notFound } from '@tanstack/react-router';
 
 export const fetchTodos = createServerFn({ method: 'GET' })
-  .middleware([authMiddleware])
+  .middleware([serverFnAuthMiddleware, middlewareDemo])
   .handler(async () => {
     const allTodos = await db.query.todos.findMany({});
 
@@ -21,10 +22,10 @@ export const fetchTodos = createServerFn({ method: 'GET' })
   });
 
 export const fetchTodoById = createServerFn({ method: 'GET' })
-  .middleware([authMiddleware])
+  .middleware([serverFnAuthMiddleware])
   .inputValidator(todoIdSchema)
   .handler(async ({ data }) => {
-    const id = data; // data is fully typed and validated here
+    const id = data;
 
     const todo = await db.query.todos.findFirst({
       where: eq(todos.id, id),
@@ -40,7 +41,7 @@ export const fetchTodoById = createServerFn({ method: 'GET' })
   });
 
 export const createTodo = createServerFn({ method: 'POST' })
-  .middleware([authMiddleware])
+  .middleware([serverFnAuthMiddleware])
   .inputValidator((data) => validateWithPretty(insertTodoSchema, data))
   .handler(async ({ data }) => {
     const { title } = data;
@@ -56,7 +57,7 @@ export const createTodo = createServerFn({ method: 'POST' })
   });
 
 export const updateTodo = createServerFn({ method: 'POST' })
-  .middleware([authMiddleware])
+  .middleware([serverFnAuthMiddleware])
   .inputValidator((data) => validateWithPretty(updateTodoSchema, data))
   .handler(async ({ data }) => {
     const { id, ...todoData } = data; // data is fully typed and validated here
@@ -67,7 +68,7 @@ export const updateTodo = createServerFn({ method: 'POST' })
 
     if (!isTodoInDb) {
       throw new TodoNotFoundError(`todo with id "${id}" not found!`); // when using it via an api route => this will return a 404 with the message
-      // throw notFound(); // when using it via as a mutationFn for useMutation => this will navigate to the 404 page
+      // throw notFound(); // when using it as a mutationFn for useMutation => this will navigate to the 404 page
     }
 
     const result = await db
@@ -83,9 +84,9 @@ export const updateTodo = createServerFn({ method: 'POST' })
   });
 
 export const deleteTodo = createServerFn({ method: 'POST' })
-  .middleware([authMiddleware])
+  .middleware([serverFnAuthMiddleware])
   .inputValidator((data) => validateWithPretty(todoIdSchema, data))
-  .handler(async ({ data, context }) => {
+  .handler(async ({ data }) => {
     const id = data; // data is fully typed and validated here
 
     const todo = await db.query.todos.findFirst({

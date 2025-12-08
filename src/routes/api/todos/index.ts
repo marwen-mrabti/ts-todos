@@ -15,8 +15,7 @@ export const Route = createFileRoute('/api/todos/')({
         },
 
         POST: {
-          handler: async ({ request, context }) => {
-            console.log(context.user); // From authMiddleware
+          handler: async ({}) => {
             return new Response(
               JSON.stringify({ message: 'Create todo not implemented' })
             );

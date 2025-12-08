@@ -12,9 +12,11 @@ import TanStackQueryDevtools from '../integrations/tanstack-query/devtools';
 
 import appCss from '@/assets/styles.css?url';
 import ErrorComponent from '@/components/error-component';
+
 import NotFound from '@/components/not-found-component';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
+import { getCurrentUser } from '@/db/queries/auth.queries';
 
 interface MyRouterContext {
   queryClient: QueryClient;
@@ -47,6 +49,13 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       },
     ],
   }),
+
+  beforeLoad: async () => {
+    const user = await getCurrentUser();
+    return {
+      user,
+    };
+  },
 
   shellComponent: RootDocument,
   notFoundComponent: NotFound,

@@ -13,7 +13,6 @@ export const Route = createFileRoute('/api/hello')({
       },
 
       POST: async ({ request, context }) => {
-        console.log('User from context:', context.user); // Example usage of user from authMiddleware
         const body = await request.json();
         return new Response(
           JSON.stringify({ message: `Hello, ${body.name}!` })
