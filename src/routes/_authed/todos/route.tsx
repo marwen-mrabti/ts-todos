@@ -20,7 +20,7 @@ export const Route = createFileRoute('/_authed/todos')({
     return context.queryClient.ensureQueryData(todosQueryOptions());
   },
 
-  head: ({ }) => {
+  head: ({}) => {
     return {
       meta: seo({
         title: 'Todos',

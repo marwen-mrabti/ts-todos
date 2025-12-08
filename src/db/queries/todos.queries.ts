@@ -10,13 +10,13 @@ import {
 } from '@/db/schema/todos.schema';
 import { TodoNotFoundError, validateWithPretty } from '@/lib/helpers';
 import { serverFnAuthMiddleware } from '@/middleware/auth-middleware';
-import { middlewareDemo } from '@/middleware/demo-middleware';
 import { notFound } from '@tanstack/react-router';
 
 export const fetchTodos = createServerFn({ method: 'GET' })
-  .middleware([serverFnAuthMiddleware, middlewareDemo])
+  .middleware([serverFnAuthMiddleware])
   .handler(async () => {
     const allTodos = await db.query.todos.findMany({});
+    await new Promise((resolve) => setTimeout(resolve, 15000));
 
     return allTodos;
   });
@@ -34,8 +34,6 @@ export const fetchTodoById = createServerFn({ method: 'GET' })
     if (!todo) {
       throw notFound();
     }
-
-    await new Promise((resolve) => setTimeout(resolve, 5000));
 
     return todo;
   });
@@ -98,5 +96,7 @@ export const deleteTodo = createServerFn({ method: 'POST' })
     }
 
     await db.delete(todos).where(eq(todos.id, id));
-    return { message: `Deleted todo with id: ${id}` };
+    // return { message: `Deleted todo with id: ${id}` };
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+    throw new Error('Failed to delete todo');
   });

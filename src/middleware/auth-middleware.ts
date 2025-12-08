@@ -35,7 +35,7 @@ export const serverFnAuthMiddleware = createMiddleware({
   }
 
   return next({
-    context: {
+    sendContext: {
       session: session.session,
       user: session.user,
     },

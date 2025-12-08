@@ -21,8 +21,8 @@ import { seo } from '@/lib/seo';
 import { toast } from 'sonner';
 
 export const Route = createFileRoute('/_authed/todos/$todoId')({
-  loader: async ({ params: { todoId }, context: { queryClient } }) => {
-    return await queryClient.ensureQueryData(todoQueryOptions({ todoId }));
+  loader: async ({ params: { todoId }, context }) => {
+    return context.queryClient.ensureQueryData(todoQueryOptions({ todoId }));
   },
 
   head: ({ loaderData }) => {
@@ -97,6 +97,7 @@ function TodoPage() {
 
   const handleDeleteTodo = async () => {
     await mutation.mutateAsync();
+    return navigate({ to: '/todos' });
   };
 
   return (

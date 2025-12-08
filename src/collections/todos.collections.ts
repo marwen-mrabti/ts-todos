@@ -1,4 +1,9 @@
-import { createTodo, fetchTodos } from '@/db/queries/todos.queries';
+import {
+  createTodo,
+  deleteTodo,
+  fetchTodos,
+  updateTodo,
+} from '@/db/queries/todos.queries';
 import { TodoSchema } from '@/db/schema/todos.schema';
 import { queryCollectionOptions } from '@tanstack/query-db-collection';
 import { createCollection } from '@tanstack/react-db';
@@ -9,41 +14,33 @@ const queryClient = new QueryClient();
 // Define a collection that loads data using TanStack Query
 export const todosCollection = createCollection(
   queryCollectionOptions({
-    queryClient,
     queryKey: ['todos'],
-    queryFn: async () => await fetchTodos(),
-
-    getKey: (item) => item.id,
+    syncMode: 'on-demand',
+    queryClient,
     schema: TodoSchema,
+
+    queryFn: async () => await fetchTodos(),
+    getKey: (item) => item.id,
 
     // Handle mutations
     onInsert: async ({ transaction }) => {
       const { changes: newTodo } = transaction.mutations[0];
-
-      const response = await createTodo({ data: newTodo });
-      return response;
+      return await createTodo({ data: newTodo });
     },
 
     onUpdate: async ({ transaction }) => {
-      const { original, changes } = transaction.mutations[0];
-
-      const response = await fetch(`/api/todos/${original.id}/edit`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(changes),
+      const updates = transaction.mutations.map((m) => ({
+        id: m.key,
+        changes: m.changes,
+      }));
+      return await updateTodo({
+        data: { id: updates[0].id, ...updates[0].changes },
       });
-
-      return response.json();
     },
 
     onDelete: async ({ transaction }) => {
       const { original } = transaction.mutations[0];
-      console.log(original);
-      await fetch(`/api/todos/${original.id}`, {
-        method: 'DELETE',
-      });
+      return await deleteTodo({ data: original.id });
     },
-
-    syncMode: 'on-demand',
   })
 );
