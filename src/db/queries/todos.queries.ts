@@ -16,7 +16,6 @@ export const fetchTodos = createServerFn({ method: 'GET' })
   .middleware([serverFnAuthMiddleware])
   .handler(async () => {
     const allTodos = await db.query.todos.findMany({});
-    await new Promise((resolve) => setTimeout(resolve, 15000));
 
     return allTodos;
   });

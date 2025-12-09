@@ -7,8 +7,8 @@ import {
 import { useState } from 'react';
 import { toast } from 'sonner';
 
+import { Button } from '@/components/ui/button';
 import { createTodo } from '@/db/queries/todos.queries';
-import { authClient } from '@/lib/auth-client';
 
 export const Route = createFileRoute('/')({ component: App });
 
@@ -17,8 +17,7 @@ function App() {
   const context = useRouteContext({ from: '/' });
   const navigate = useNavigate({ from: '/' });
 
-  const { data } = authClient.useSession();
-  const user = data?.user;
+  const user = context.user;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -63,6 +62,8 @@ function App() {
     return;
   };
 
+
+
   return (
     <div className="bg-card flex h-full w-full flex-col items-center justify-center gap-4 p-4">
       <h2 className="text-primary text-2xl uppercase">Add todo</h2>
@@ -75,13 +76,14 @@ function App() {
             placeholder="New Todo Title"
             className="mr-2 rounded-md border p-2"
           />
-          <button
+          <Button
             type="submit"
-            className="rounded-md bg-blue-500 p-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
+            variant="default"
+            className="ml-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
             disabled={mutation.isPending || !user}
           >
             {mutation.isPending ? 'Adding...' : 'Add Todo'}
-          </button>
+          </Button>
         </form>
       </div>
     </div>

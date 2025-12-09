@@ -24,7 +24,7 @@ import { authClient } from '@/lib/auth-client';
 import * as z from 'zod';
 const formSchema = z.object({
   email: z.email('Invalid email address'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
+  name: z.string().min(3, 'username must be at least 3 characters'),
 });
 
 export function LoginForm({
@@ -34,28 +34,29 @@ export function LoginForm({
   const form = useForm({
     defaultValues: {
       email: '',
-      password: '',
+      name: '',
     },
     validators: {
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      await authClient.signIn.email(
-        {
-          email: value.email,
-          password: value.password,
-          callbackURL: '/todos',
-        },
-        {
-          onSuccess: () => {
-            toast.success('Login successful');
-          },
-          onError: (ctx) => {
-            toast.error(ctx.error.message);
-          },
-        }
-      );
+      const { data, error } = await authClient.signIn.magicLink({
+        email: value.email,
+        name: value.name,
+        callbackURL: "/",
+        newUserCallbackURL: "/welcome",
+        errorCallbackURL: "/error",
+      });
+
+      if (error) {
+        console.log(error)
+        toast.error(error.message);
+      }
+
     },
+    onSubmitInvalid: () => {
+      toast.error('Invalid form');
+    }
   });
 
   const handleSocialSignIn = async (provider: 'github' | 'google') => {
@@ -106,9 +107,38 @@ export function LoginForm({
                 </Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-                Or continue with
+                Or continue with MagicLink
+                <small className="mx-1 text-xs text-muted-foreground">
+                  [we will send you an email with a link to login]
+                </small>
               </FieldSeparator>
 
+              <form.Field
+                name="name"
+                children={(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
+                  return (
+                    <Field data-invalid={isInvalid}>
+                      <FieldLabel htmlFor={field.name}>Username</FieldLabel>
+                      <Input
+                        id={field.name}
+                        name={field.name}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        aria-invalid={isInvalid}
+                        placeholder="joe"
+                        autoComplete="off"
+                        type="text"
+                      />
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
+                    </Field>
+                  );
+                }}
+              />
               <form.Field
                 name="email"
                 children={(field) => {
@@ -135,34 +165,6 @@ export function LoginForm({
                   );
                 }}
               />
-
-              <form.Field
-                name="password"
-                children={(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
-                  return (
-                    <Field data-invalid={isInvalid}>
-                      <FieldLabel htmlFor={field.name}>Password</FieldLabel>
-                      <Input
-                        id={field.name}
-                        name={field.name}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                        aria-invalid={isInvalid}
-                        placeholder="********"
-                        autoComplete="off"
-                        type="password"
-                      />
-                      {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
-                      )}
-                    </Field>
-                  );
-                }}
-              />
-
               <Field>
                 <Button type="submit">Login</Button>
                 <FieldDescription className="text-center">

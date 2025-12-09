@@ -1,7 +1,8 @@
 import { db } from '@/db';
+import { sendEmail } from '@/lib/email/send-email';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import { createAuthMiddleware } from 'better-auth/plugins';
+import { createAuthMiddleware, magicLink } from 'better-auth/plugins';
 import { tanstackStartCookies } from 'better-auth/tanstack-start';
 
 export const auth = betterAuth({
@@ -47,10 +48,29 @@ export const auth = betterAuth({
   // Logging
   logger: {
     level: process.env.NODE_ENV === 'development' ? 'debug' : 'error',
-    disabled: false,
+    disabled: true,
   },
 
-  plugins: [tanstackStartCookies()],
+  plugins: [
+    magicLink({
+      sendMagicLink: async ({ email, token, url }, ctx) => {
+        try {
+          await sendEmail({
+            data: {
+              to: email,
+              subject: 'Verify your email address',
+              html: `<a href="${url}">Click here to verify your email</a>`,
+            },
+          });
+        } catch (error) {
+          throw new Error(
+            'Failed to send magic link email. Please try again later.'
+          );
+        }
+      },
+    }),
+    tanstackStartCookies(),
+  ],
 });
 
 export type Session = typeof auth.$Infer.Session;

@@ -9,8 +9,10 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ErrorRouteImport } from './routes/error'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiHelloRouteImport } from './routes/api/hello'
@@ -21,6 +23,11 @@ import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as AuthedTodosTodoIdRouteImport } from './routes/_authed/todos/$todoId'
 import { Route as ApiTodosTodoIdEditRouteImport } from './routes/api/todos/$todoId.edit'
 
+const WelcomeRoute = WelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsRoute = ProductsRouteImport.update({
   id: '/products',
   path: '/products',
@@ -29,6 +36,11 @@ const ProductsRoute = ProductsRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ErrorRoute = ErrorRouteImport.update({
+  id: '/error',
+  path: '/error',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthedRoute = AuthedRouteImport.update({
@@ -78,8 +90,10 @@ const ApiTodosTodoIdEditRoute = ApiTodosTodoIdEditRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/error': typeof ErrorRoute
   '/login': typeof LoginRoute
   '/products': typeof ProductsRoute
+  '/welcome': typeof WelcomeRoute
   '/todos': typeof AuthedTodosRouteRouteWithChildren
   '/api/hello': typeof ApiHelloRoute
   '/todos/$todoId': typeof AuthedTodosTodoIdRoute
@@ -90,8 +104,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/error': typeof ErrorRoute
   '/login': typeof LoginRoute
   '/products': typeof ProductsRoute
+  '/welcome': typeof WelcomeRoute
   '/todos': typeof AuthedTodosRouteRouteWithChildren
   '/api/hello': typeof ApiHelloRoute
   '/todos/$todoId': typeof AuthedTodosTodoIdRoute
@@ -104,8 +120,10 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authed': typeof AuthedRouteWithChildren
+  '/error': typeof ErrorRoute
   '/login': typeof LoginRoute
   '/products': typeof ProductsRoute
+  '/welcome': typeof WelcomeRoute
   '/_authed/todos': typeof AuthedTodosRouteRouteWithChildren
   '/api/hello': typeof ApiHelloRoute
   '/_authed/todos/$todoId': typeof AuthedTodosTodoIdRoute
@@ -118,8 +136,10 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/error'
     | '/login'
     | '/products'
+    | '/welcome'
     | '/todos'
     | '/api/hello'
     | '/todos/$todoId'
@@ -130,8 +150,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/error'
     | '/login'
     | '/products'
+    | '/welcome'
     | '/todos'
     | '/api/hello'
     | '/todos/$todoId'
@@ -143,8 +165,10 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authed'
+    | '/error'
     | '/login'
     | '/products'
+    | '/welcome'
     | '/_authed/todos'
     | '/api/hello'
     | '/_authed/todos/$todoId'
@@ -157,8 +181,10 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthedRoute: typeof AuthedRouteWithChildren
+  ErrorRoute: typeof ErrorRoute
   LoginRoute: typeof LoginRoute
   ProductsRoute: typeof ProductsRoute
+  WelcomeRoute: typeof WelcomeRoute
   ApiHelloRoute: typeof ApiHelloRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiTodosTodoIdRoute: typeof ApiTodosTodoIdRouteWithChildren
@@ -167,6 +193,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/welcome': {
+      id: '/welcome'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products': {
       id: '/products'
       path: '/products'
@@ -179,6 +212,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/error': {
+      id: '/error'
+      path: '/error'
+      fullPath: '/error'
+      preLoaderRoute: typeof ErrorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authed': {
@@ -284,8 +324,10 @@ const ApiTodosTodoIdRouteWithChildren = ApiTodosTodoIdRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthedRoute: AuthedRouteWithChildren,
+  ErrorRoute: ErrorRoute,
   LoginRoute: LoginRoute,
   ProductsRoute: ProductsRoute,
+  WelcomeRoute: WelcomeRoute,
   ApiHelloRoute: ApiHelloRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiTodosTodoIdRoute: ApiTodosTodoIdRouteWithChildren,
