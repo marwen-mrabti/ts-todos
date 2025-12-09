@@ -6,8 +6,8 @@ import type { ErrorComponentProps } from '@tanstack/react-router';
 import { createFileRoute, Link, Outlet } from '@tanstack/react-router';
 import { useEffect } from 'react';
 
-import ErrorComponent from '@/components/error-component';
-import NotFound from '@/components/not-found-component';
+import ErrorComponent from '@/components/app/error-component';
+import NotFound from '@/components/app/not-found-component';
 import TodoList from '@/components/todo-list';
 import TodoListSkeleton from '@/components/todo-list-skeleton';
 
@@ -20,7 +20,7 @@ export const Route = createFileRoute('/_authed/todos')({
     return context.queryClient.ensureQueryData(todosQueryOptions());
   },
 
-  head: ({}) => {
+  head: ({ }) => {
     return {
       meta: seo({
         title: 'Todos',

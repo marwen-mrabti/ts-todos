@@ -1,5 +1,5 @@
-import { useTheme } from '@/components/theme-provider';
-import { ThemeToggle } from '@/components/theme-toggle';
+import { useTheme } from '@/components/app/theme-provider';
+import { ThemeToggle } from '@/components/app/theme-toggle';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {

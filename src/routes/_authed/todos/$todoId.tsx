@@ -12,12 +12,12 @@ import {
 import { Trash2 } from 'lucide-react';
 import { useEffect } from 'react';
 
-import ErrorComponent from '@/components/error-component';
-import NotFound from '@/components/not-found-component';
+import ErrorComponent from '@/components/app/error-component';
+import NotFound from '@/components/app/not-found-component';
 import { Button } from '@/components/ui/button';
-import { deleteTodo } from '@/db/queries/todos.queries';
 import { todoQueryOptions } from '@/lib/query-options';
 import { seo } from '@/lib/seo';
+import { deleteTodo } from '@/serverFns/todos.queries';
 import { toast } from 'sonner';
 
 export const Route = createFileRoute('/_authed/todos/$todoId')({

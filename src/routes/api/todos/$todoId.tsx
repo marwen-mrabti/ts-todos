@@ -1,6 +1,6 @@
-import { deleteTodo } from '@/db/queries/todos.queries';
 import { todoIdSchema } from '@/db/schema/todos.schema';
 import { authMiddleware } from '@/middleware/auth-middleware';
+import { deleteTodo } from '@/serverFns/todos.queries';
 import { createFileRoute } from '@tanstack/react-router';
 import { z } from 'zod';
 

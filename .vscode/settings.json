@@ -9,6 +9,7 @@
     "**/routeTree.gen.ts": true
   },
   "cSpell.words": [
-    "BREVO"
+    "BREVO",
+    "Cooldown"
   ]
 }

@@ -7,16 +7,18 @@ import {
 } from '@tanstack/react-router';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
 
-import Header from '../components/Header';
+import Header from '../components/app/Header';
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools';
 
 import appCss from '@/assets/styles.css?url';
-import ErrorComponent from '@/components/error-component';
+import ErrorComponent from '@/components/app/error-component';
 
-import NotFound from '@/components/not-found-component';
-import { ThemeProvider } from '@/components/theme-provider';
+import NotFound from '@/components/app/not-found-component';
+import { ThemeProvider } from '@/components/app/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
-import { getCurrentUser } from '@/db/queries/auth.queries';
+import { COOLDOWN_KEY, MAGICLINK_EMAIL_KEY, MAGICLINK_NAME_KEY } from '@/hooks/useMagicLink';
+import { removeDataFromLocalStorage } from '@/lib/helpers';
+import { getCurrentUser } from '@/serverFns/auth.queries';
 
 interface MyRouterContext {
   queryClient: QueryClient;
@@ -52,6 +54,9 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
   beforeLoad: async () => {
     const user = await getCurrentUser();
+    if (user) {
+      removeDataFromLocalStorage([COOLDOWN_KEY, MAGICLINK_EMAIL_KEY, MAGICLINK_NAME_KEY]);
+    }
     return {
       user,
     };

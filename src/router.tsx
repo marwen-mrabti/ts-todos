@@ -6,8 +6,8 @@ import * as TanstackQuery from './integrations/tanstack-query/root-provider';
 // Import the generated route tree
 import { routeTree } from './routeTree.gen';
 
-import ErrorComponent from '@/components/error-component';
-import NotFound from '@/components/not-found-component';
+import ErrorComponent from '@/components/app/error-component';
+import NotFound from '@/components/app/not-found-component';
 
 // Create a new router instance
 export const getRouter = () => {

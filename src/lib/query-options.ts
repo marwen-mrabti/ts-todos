@@ -1,7 +1,7 @@
 import { queryOptions } from '@tanstack/react-query';
 
-import { fetchTodoById, fetchTodos } from '@/db/queries/todos.queries';
 import type { TodoId } from '@/db/schema/todos.schema';
+import { fetchTodoById, fetchTodos } from '@/serverFns/todos.queries';
 
 export const todosQueryOptions = () =>
   queryOptions({

@@ -1,5 +1,5 @@
 import { db } from '@/db';
-import { sendEmail } from '@/lib/email/send-email';
+import { sendEmailWithMagicLink } from '@/lib/emails/send-magicLink';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { createAuthMiddleware, magicLink } from 'better-auth/plugins';
@@ -35,42 +35,22 @@ export const auth = betterAuth({
     }),
   },
 
-  // Error handling
-  onAPIError: {
-    throw: true,
-    onError: (error, _ctx) => {
-      const err = error as { status?: number; message?: string };
-      throw new Error(err.message || 'Internal Server Error');
-    },
-    errorURL: '/error',
-  },
+  plugins: [
+    magicLink({
+      expiresIn: 60 * 30, // 30 minutes in seconds
+      sendMagicLink: async ({ email, token, url }, ctx) => {
+        await sendEmailWithMagicLink({ data: { email, url } });
+      },
+    }),
+
+    tanstackStartCookies(),
+  ],
 
   // Logging
   logger: {
     level: process.env.NODE_ENV === 'development' ? 'debug' : 'error',
     disabled: true,
   },
-
-  plugins: [
-    magicLink({
-      sendMagicLink: async ({ email, token, url }, ctx) => {
-        try {
-          await sendEmail({
-            data: {
-              to: email,
-              subject: 'Verify your email address',
-              html: `<a href="${url}">Click here to verify your email</a>`,
-            },
-          });
-        } catch (error) {
-          throw new Error(
-            'Failed to send magic link email. Please try again later.'
-          );
-        }
-      },
-    }),
-    tanstackStartCookies(),
-  ],
 });
 
 export type Session = typeof auth.$Infer.Session;

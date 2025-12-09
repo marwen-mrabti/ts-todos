@@ -1,6 +1,3 @@
-import { useForm } from '@tanstack/react-form';
-import { toast } from 'sonner';
-
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -18,45 +15,36 @@ import {
   FieldSeparator,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
-
+import { useMagicLink } from '@/hooks/useMagicLink';
 import { authClient } from '@/lib/auth-client';
-import * as z from 'zod';
-const formSchema = z.object({
-  email: z.email('Invalid email address'),
-  name: z.string().min(3, 'username must be at least 3 characters'),
-});
+import { cn, magicLinkLoginSchema } from '@/lib/utils';
+import { useForm } from '@tanstack/react-form';
+import { useNavigate } from '@tanstack/react-router';
+import { Loader2, Mail } from 'lucide-react';
+import { toast } from 'sonner';
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
+  const navigate = useNavigate();
+  const { sendMagicLink, pending, cooldown, formatCooldown } = useMagicLink();
+
   const form = useForm({
     defaultValues: {
       email: '',
       name: '',
     },
     validators: {
-      onSubmit: formSchema,
+      onSubmit: magicLinkLoginSchema,
     },
     onSubmit: async ({ value }) => {
-      const { data, error } = await authClient.signIn.magicLink({
-        email: value.email,
-        name: value.name,
-        callbackURL: "/",
-        newUserCallbackURL: "/welcome",
-        errorCallbackURL: "/error",
-      });
+      const result = await sendMagicLink(value);
 
-      if (error) {
-        console.log(error)
-        toast.error(error.message);
+      if (result.success) {
+        navigate({ to: '/check-email' });
       }
-
     },
-    onSubmitInvalid: () => {
-      toast.error('Invalid form');
-    }
   });
 
   const handleSocialSignIn = async (provider: 'github' | 'google') => {
@@ -77,7 +65,7 @@ export function LoginForm({
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome back</CardTitle>
           <CardDescription>
-            Login with your Apple or Google account
+            Login with your GitHub or Google account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -106,6 +94,7 @@ export function LoginForm({
                   Login with GitHub
                 </Button>
               </Field>
+
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with MagicLink
                 <small className="mx-1 text-xs text-muted-foreground">
@@ -139,6 +128,7 @@ export function LoginForm({
                   );
                 }}
               />
+
               <form.Field
                 name="email"
                 children={(field) => {
@@ -165,8 +155,23 @@ export function LoginForm({
                   );
                 }}
               />
+
               <Field>
-                <Button type="submit">Login</Button>
+                <Button
+                  type="submit"
+                  disabled={pending || cooldown > 0}
+                >
+                  {pending ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Mail className="w-4 h-4 mr-2" />
+                  )}
+                  {pending
+                    ? "Sending..."
+                    : cooldown > 0
+                      ? `Wait ${formatCooldown(cooldown)}`
+                      : "Send Magic Link"}
+                </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account? <a href="#">Sign up</a>
                 </FieldDescription>
@@ -175,6 +180,7 @@ export function LoginForm({
           </form>
         </CardContent>
       </Card>
+
       <FieldDescription className="px-6 text-center">
         By clicking continue, you agree to our <a href="#">Terms of Service</a>{' '}
         and <a href="#">Privacy Policy</a>.

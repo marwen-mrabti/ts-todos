@@ -1,8 +1,8 @@
-import { updateTodo } from '@/db/queries/todos.queries';
 import { updateTodoSchema } from '@/db/schema/todos.schema';
 import { authMiddleware } from '@/middleware/auth-middleware';
+import { updateTodo } from '@/serverFns/todos.queries';
 import { createFileRoute } from '@tanstack/react-router';
-import {z} from "zod"
+import { z } from 'zod';
 
 export const Route = createFileRoute('/api/todos/$todoId/edit')({
   server: {

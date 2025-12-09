@@ -1,5 +1,5 @@
+import { createIsomorphicFn } from '@tanstack/react-start';
 import { z } from 'zod';
-
 export function validateWithPretty<T>(schema: z.ZodType<T>, value: unknown): T {
   const result = schema.safeParse(value);
 
@@ -22,3 +22,12 @@ export class TodoNotFoundError extends Error {
     Object.setPrototypeOf(this, TodoNotFoundError.prototype);
   }
 }
+
+export const removeDataFromLocalStorage = createIsomorphicFn().client(
+  (keys: string[]) => {
+    console.log('removeDataFromLocalStorage', keys);
+    for (const key of keys) {
+      localStorage.removeItem(key);
+    }
+  }
+);
