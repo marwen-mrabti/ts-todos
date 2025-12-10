@@ -24,7 +24,7 @@ export default function Header() {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          navigate({ to: '/login' });
+          return navigate({ to: '/login' });
         },
       },
     });

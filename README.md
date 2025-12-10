@@ -1,305 +1,270 @@
-Welcome to your new TanStack app!
+# 📝 TanStack Todos
 
-# Getting Started
+A modern, full-stack todo application built with the latest TanStack ecosystem, featuring authentication, database integration, and a beautiful UI.
 
-To run this application:
+## ✨ Features
+
+- 🔐 **Authentication** - Secure user authentication with Better Auth (GitHub OAuth & Magic Link)
+- 📊 **Database** - PostgreSQL with Drizzle ORM for type-safe database operations
+- 🎨 **Modern UI** - Beautiful, responsive interface built with Radix UI and Tailwind CSS
+- 🌓 **Dark Mode** - Theme switching with next-themes
+- 🔄 **Real-time Updates** - Optimistic UI updates with TanStack Query
+- 📱 **Responsive Design** - Mobile-first design that works on all devices
+- 🛠️ **Developer Experience** - Hot reload, TypeScript, ESLint, Prettier, and more
+- 🚀 **Production Ready** - Docker support and Netlify deployment configuration
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+- **[React 19](https://react.dev/)** - UI library
+- **[TanStack Router](https://tanstack.com/router)** - Type-safe routing with SSR support
+- **[TanStack Query](https://tanstack.com/query)** - Powerful data synchronization
+- **[TanStack Form](https://tanstack.com/form)** - Type-safe form management
+- **[Tailwind CSS 4](https://tailwindcss.com/)** - Utility-first CSS framework
+- **[Radix UI](https://www.radix-ui.com/)** - Accessible component primitives
+- **[Lucide React](https://lucide.dev/)** - Beautiful icon library
+- **[Motion](https://motion.dev/)** - Smooth animations
+
+### Backend
+
+- **[TanStack Start](https://tanstack.com/start)** - Full-stack React framework
+- **[Better Auth](https://www.better-auth.com/)** - Modern authentication solution
+- **[Drizzle ORM](https://orm.drizzle.team/)** - Type-safe ORM
+- **[PostgreSQL](https://www.postgresql.org/)** - Reliable database
+- **[Nodemailer](https://nodemailer.com/)** - Email sending for magic links
+
+### Development Tools
+
+- **[Vite](https://vitejs.dev/)** - Fast build tool
+- **[TypeScript](https://www.typescriptlang.org/)** - Type safety
+- **[ESLint](https://eslint.org/)** - Code linting
+- **[Prettier](https://prettier.io/)** - Code formatting
+- **[Vitest](https://vitest.dev/)** - Unit testing
+- **[Docker](https://www.docker.com/)** - Containerization
+
+## 📋 Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js** (v18 or higher)
+- **pnpm** (v8 or higher)
+- **Docker** and **Docker Compose** (for local database)
+- **Git**
+
+## 🚀 Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone git@github.com:marwen-mrabti/ts-todos.git
+cd ts-todos
+```
+
+### 2. Install Dependencies
 
 ```bash
 pnpm install
-pnpm start
 ```
 
-# Building For Production
+### 3. Environment Setup
 
-To build this application for production:
+Copy the example environment file and configure it:
 
 ```bash
-pnpm build
+cp .env.example .env
 ```
 
-## Testing
+Update the `.env` file with your configuration:
 
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+```env
+# Base URL
+BASE_URL=http://localhost:3000
+
+# Database (Docker will handle this automatically)
+DB_HOST=localhost
+DB_USER=postgres
+DB_PASSWORD=db_password
+DB_NAME=ts_todos
+DB_PORT=5432
+DATABASE_URL=postgresql://postgres:db_password@localhost:5432/ts_todos
+
+# Auth
+BETTER_AUTH_SECRET="your-secret-key-here"
+AUTH_GITHUB_CLIENT_ID="your-github-client-id"
+AUTH_GITHUB_CLIENT_SECRET="your-github-client-secret"
+
+# Email SMTP (for magic link authentication)
+SMTP_SERVICE="gmail"
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT=465
+SMTP_USER="your-email@gmail.com"
+SMTP_PASSWORD="your-app-password"
+```
+
+> **Note**: For GitHub OAuth, create an OAuth App at [GitHub Developer Settings](https://github.com/settings/developers)
+
+### 4. Start the Database
+
+The project uses Docker Compose to run PostgreSQL locally:
+
+```bash
+pnpm db:up
+```
+
+### 5. Run Database Migrations
+
+```bash
+pnpm db:push
+```
+
+### 6. Start the Development Server
+
+```bash
+pnpm dev
+```
+
+The application will be available at **http://localhost:3000**
+
+## 📜 Available Scripts
+
+### Development
+
+- `pnpm dev` - Start development server with database
+- `pnpm build` - Build for production
+- `pnpm serve` - Preview production build
+- `pnpm test` - Run tests
+- `pnpm lint` - Lint code
+- `pnpm format` - Format code with Prettier
+- `pnpm check` - Format and lint code
+
+### Database
+
+- `pnpm db:up` - Start PostgreSQL container
+- `pnpm db:down` - Stop PostgreSQL container
+- `pnpm db:restart` - Restart PostgreSQL container
+- `pnpm db:reset` - Reset database (removes all data)
+- `pnpm db:logs` - View database logs
+- `pnpm db:studio` - Open Drizzle Studio (database GUI) at http://localhost:4982
+- `pnpm db:generate` - Generate migrations
+- `pnpm db:migrate` - Run migrations
+- `pnpm db:push` - Push schema changes
+- `pnpm db:pull` - Pull schema from database
+
+## 🏗️ Project Structure
+
+```
+01-ts-template_todos/
+├── src/
+│   ├── assets/           # Static assets and styles
+│   ├── collections/      # Database collections
+│   ├── components/       # React components
+│   │   ├── app/         # App-level components (Header, etc.)
+│   │   └── ui/          # Reusable UI components
+│   ├── db/              # Database schema and configuration
+│   ├── hooks/           # Custom React hooks
+│   ├── integrations/    # Third-party integrations
+│   ├── lib/             # Utility functions and helpers
+│   ├── middleware/      # Server middleware
+│   ├── routes/          # File-based routing
+│   │   ├── _auth/      # Authentication routes
+│   │   ├── _authed/    # Protected routes
+│   │   └── api/        # API routes
+│   ├── serverFns/       # Server functions
+│   └── router.tsx       # Router configuration
+├── public/              # Public static files
+├── .env.example         # Environment variables template
+├── docker-compose.yaml  # Docker configuration
+├── drizzle.config.ts    # Drizzle ORM configuration
+├── vite.config.ts       # Vite configuration
+└── package.json         # Dependencies and scripts
+```
+
+## 🔐 Authentication
+
+The app supports two authentication methods:
+
+1. **GitHub OAuth** - Sign in with your GitHub account
+2. **Magic Link** - Passwordless authentication via email
+
+Configure the authentication providers in your `.env` file.
+
+## 🗄️ Database Management
+
+### Using Drizzle Studio
+
+Drizzle Studio provides a visual interface to manage your database:
+
+```bash
+pnpm db:studio
+```
+
+Visit **http://localhost:4982** to access the database GUI.
+
+### Database Reset
+
+To reset the database and start fresh:
+
+```bash
+pnpm db:reset
+```
+
+> ⚠️ **Warning**: This will delete all data!
+
+## 🎨 UI Components
+
+The project uses [shadcn/ui](https://ui.shadcn.com/) components built on top of Radix UI. Components are located in `src/components/ui/` and can be customized via `components.json`.
+
+## 🧪 Testing
+
+Run the test suite:
 
 ```bash
 pnpm test
 ```
 
-## Styling
+The project uses Vitest with React Testing Library for unit and integration tests.
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+## 🚢 Deployment
 
-## Linting & Formatting
+### Netlify
 
-This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
+The project is configured for Netlify deployment:
 
-```bash
-pnpm lint
-pnpm format
-pnpm check
-```
+1. Push your code to GitHub
+2. Connect your repository to Netlify
+3. Configure environment variables in Netlify dashboard
+4. Deploy!
 
-## Shadcn
+The `netlify.toml` file contains the deployment configuration.
 
-Add components using the latest version of [Shadcn](https://ui.shadcn.com/).
+### Docker
 
-```bash
-pnpx shadcn@latest add button
-```
-
-## Routing
-
-This project uses [TanStack Router](https://tanstack.com/router). The initial setup is a file based router. Which means that the routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add another a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from '@tanstack/react-router';
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you use the `<Outlet />` component.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { Outlet, createRootRoute } from '@tanstack/react-router';
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-
-import { Link } from '@tanstack/react-router';
-
-export const Route = createRootRoute({
-  component: () => (
-    <>
-      <header>
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-        </nav>
-      </header>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
-  ),
-});
-```
-
-The `<TanStackRouterDevtools />` component is not required so you can remove it if you don't want it in your layout.
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-const peopleRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/people',
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people');
-    return response.json() as Promise<{
-      results: {
-        name: string;
-      }[];
-    }>;
-  },
-  component: () => {
-    const data = peopleRoute.useLoaderData();
-    return (
-      <ul>
-        {data.results.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    );
-  },
-});
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-### React-Query
-
-React-Query is an excellent addition or alternative to route loading and integrating it into you application is a breeze.
-
-First add your dependencies:
+Build and run with Docker:
 
 ```bash
-pnpm add @tanstack/react-query @tanstack/react-query-devtools
+docker-compose up -d
 ```
 
-Next we'll need to create a query client and provider. We recommend putting those in `main.tsx`.
+## 🤝 Contributing
 
-```tsx
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+Contributions are welcome! Please follow these steps:
 
-// ...
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-const queryClient = new QueryClient();
+## 📝 License
 
-// ...
+This project is open source and available under the [MIT License](LICENSE).
 
-if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement);
+## 🙏 Acknowledgments
 
-  root.render(
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  );
-}
-```
+- [TanStack](https://tanstack.com/) - For the amazing ecosystem
+- [Better Auth](https://www.better-auth.com/) - For the authentication solution
+- [Drizzle ORM](https://orm.drizzle.team/) - For the type-safe ORM
+- [shadcn/ui](https://ui.shadcn.com/) - For the beautiful components
 
-You can also add TanStack Query Devtools to the root route (optional).
-
-```tsx
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-
-const rootRoute = createRootRoute({
-  component: () => (
-    <>
-      <Outlet />
-      <ReactQueryDevtools buttonPosition="top-right" />
-      <TanStackRouterDevtools />
-    </>
-  ),
-});
-```
-
-Now you can use `useQuery` to fetch your data.
-
-```tsx
-import { useQuery } from '@tanstack/react-query';
-
-import './App.css';
-
-function App() {
-  const { data } = useQuery({
-    queryKey: ['people'],
-    queryFn: () =>
-      fetch('https://swapi.dev/api/people')
-        .then((res) => res.json())
-        .then((data) => data.results as { name: string }[]),
-    initialData: [],
-  });
-
-  return (
-    <div>
-      <ul>
-        {data.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-export default App;
-```
-
-You can find out everything you need to know on how to use React-Query in the [React-Query documentation](https://tanstack.com/query/latest/docs/framework/react/overview).
-
-## State Management
-
-Another common requirement for React applications is state management. There are many options for state management in React. TanStack Store provides a great starting point for your project.
-
-First you need to add TanStack Store as a dependency:
-
-```bash
-pnpm add @tanstack/store
-```
-
-Now let's create a simple counter in the `src/App.tsx` file as a demonstration.
-
-```tsx
-import { useStore } from '@tanstack/react-store';
-import { Store } from '@tanstack/store';
-import './App.css';
-
-const countStore = new Store(0);
-
-function App() {
-  const count = useStore(countStore);
-  return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-    </div>
-  );
-}
-
-export default App;
-```
-
-One of the many nice features of TanStack Store is the ability to derive state from other state. That derived state will update when the base state updates.
-
-Let's check this out by doubling the count using derived state.
-
-```tsx
-import { useStore } from '@tanstack/react-store';
-import { Store, Derived } from '@tanstack/store';
-import './App.css';
-
-const countStore = new Store(0);
-
-const doubledStore = new Derived({
-  fn: () => countStore.state * 2,
-  deps: [countStore],
-});
-doubledStore.mount();
-
-function App() {
-  const count = useStore(countStore);
-  const doubledCount = useStore(doubledStore);
-
-  return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-      <div>Doubled - {doubledCount}</div>
-    </div>
-  );
-}
-
-export default App;
-```
-
-We use the `Derived` class to create a new store that is derived from another store. The `Derived` class has a `mount` method that will start the derived store updating.
-
-Once we've created the derived store we can use it in the `App` component just like we would any other store using the `useStore` hook.
-
-You can find out everything you need to know on how to use TanStack Store in the [TanStack Store documentation](https://tanstack.com/store/latest).
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
+---
