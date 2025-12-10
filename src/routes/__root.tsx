@@ -18,7 +18,8 @@ import { ThemeProvider } from '@/components/app/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 import { COOLDOWN_KEY } from '@/hooks/useMagicLink';
 import { removeDataFromLocalStorage } from '@/lib/helpers';
-import { deleteMagicLinkData, getCurrentUser } from '@/serverFns/auth.queries';
+import { deleteMagicLinkData } from '@/serverFns/auth.actions';
+import { getCurrentUser } from '@/serverFns/auth.queries';
 
 interface MyRouterContext {
   queryClient: QueryClient;

@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import type { MagicLinkCredentials } from '@/lib/utils';
-import { getMagicLinkData } from '@/serverFns/auth.queries';
+import { getMagicLinkData } from '@/serverFns/auth.actions';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { zodValidator } from '@tanstack/zod-adapter';
 import { AlertCircle, Home, RefreshCw } from 'lucide-react';

@@ -156,28 +156,41 @@ The application will be available at **http://localhost:3000**
 ```
 01-ts-template_todos/
 ├── src/
-│   ├── assets/           # Static assets and styles
-│   ├── collections/      # tanstack/db collections
-│   ├── components/       # React components
-│   │   ├── app/         # App-level components (Header, etc.)
-│   │   └── ui/          # Reusable UI components
-│   ├── db/              # Database schema and configuration
-│   ├── hooks/           # Custom React hooks
-│   ├── integrations/    # Third-party integrations
-│   ├── lib/             # Utility functions and helpers
-│   ├── middleware/      # Server middleware
-│   ├── routes/          # File-based routing
-│   │   ├── _auth/      # Authentication routes
-│   │   ├── _authed/    # Protected routes
-│   │   └── api/        # API routes
-│   ├── serverFns/       # Server functions
-│   └── router.tsx       # Router configuration
-├── public/              # Public static files
-├── .env.example         # Environment variables template
-├── docker-compose.yaml  # Docker configuration
-├── drizzle.config.ts    # Drizzle ORM configuration
-├── vite.config.ts       # Vite configuration
-└── package.json         # Dependencies and scripts
+│   ├── assets/                    # Static assets and styles
+│   ├── collections/               # TanStack/db collections
+│   ├── components/                # React components
+│   │   ├── app/                  # App-level components (Header, etc.)
+│   │   ├── auth/                 # Authentication components
+│   │   └── ui/                   # Reusable UI components
+│   ├── db/                        # Database configuration
+│   │   ├── migrations/           # Database migration files
+│   │   │   └── meta/            # Migration metadata
+│   │   └── schema/              # Database schema definitions
+│   ├── hooks/                     # Custom React hooks
+│   ├── integrations/              # Third-party integrations
+│   │   └── tanstack-query/      # TanStack Query configuration
+│   ├── lib/                       # Utility functions and helpers
+│   │   └── emails/              # Email templates and utilities
+│   ├── middleware/                # Server middleware
+│   ├── routes/                    # File-based routing
+│   │   ├── _auth/               # Authentication routes (public)
+│   │   ├── _authed/             # Protected routes (requires auth)
+│   │   │   └── todos/          # Todo-related protected pages
+│   │   └── api/                 # API endpoints
+│   │       ├── auth/           # Authentication API routes
+│   │       └── todos/          # Todo API routes
+│   ├── serverFns/                 # Server functions
+│   └── router.tsx                 # Router configuration
+├── public/                        # Public static files
+│   ├── favicon.ico               # Site favicon
+│   ├── manifest.json             # PWA manifest
+│   ├── robots.txt                # SEO robots file
+│   └── *.svg, *.png              # Logo and icon assets
+├── .env.example                   # Environment variables template
+├── docker-compose.yaml            # Docker configuration
+├── drizzle.config.ts              # Drizzle ORM configuration
+├── vite.config.ts                 # Vite configuration
+└── package.json                   # Dependencies and scripts
 ```
 
 ## 🔐 Authentication

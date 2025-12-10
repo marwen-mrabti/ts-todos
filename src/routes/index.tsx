@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
-import { createTodo } from '@/serverFns/todos.queries';
+import { createTodo } from '@/serverFns/todos.actions';
 
 export const Route = createFileRoute('/')({ component: App });
 

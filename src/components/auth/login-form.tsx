@@ -28,8 +28,8 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<'div'>) {
   const navigate = useNavigate();
-
   const { sendMagicLink, pending, cooldown, formatCooldown } = useMagicLink();
+
   const form = useForm({
     defaultValues: {
       email: '',
@@ -175,9 +175,6 @@ export function LoginForm({
                       ? `Wait ${formatCooldown(cooldown)}`
                       : 'Send Magic Link'}
                 </Button>
-                <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="#">Sign up</a>
-                </FieldDescription>
               </Field>
             </FieldGroup>
           </form>

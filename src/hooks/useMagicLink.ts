@@ -1,5 +1,5 @@
 import type { MagicLinkCredentials } from '@/lib/utils';
-import { signInWithMagicLink } from '@/serverFns/auth.queries';
+import { signInWithMagicLink } from '@/serverFns/auth.actions';
 import { useServerFn } from '@tanstack/react-start';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';

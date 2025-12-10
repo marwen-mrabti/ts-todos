@@ -17,7 +17,7 @@ import NotFound from '@/components/app/not-found-component';
 import { Button } from '@/components/ui/button';
 import { todoQueryOptions } from '@/lib/query-options';
 import { seo } from '@/lib/seo';
-import { deleteTodo } from '@/serverFns/todos.queries';
+import { deleteTodo } from '@/serverFns/todos.actions';
 import { toast } from 'sonner';
 
 export const Route = createFileRoute('/_authed/todos/$todoId')({
