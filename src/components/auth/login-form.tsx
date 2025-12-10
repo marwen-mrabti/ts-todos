@@ -28,8 +28,8 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<'div'>) {
   const navigate = useNavigate();
-  const { sendMagicLink, pending, cooldown, formatCooldown } = useMagicLink();
 
+  const { sendMagicLink, pending, cooldown, formatCooldown } = useMagicLink();
   const form = useForm({
     defaultValues: {
       email: '',
@@ -42,7 +42,13 @@ export function LoginForm({
       const result = await sendMagicLink(value);
 
       if (result.success) {
-        navigate({ to: '/check-email' });
+        return navigate({
+          to: '/check-email',
+          search: {
+            email: value.email,
+            name: value.name,
+          },
+        });
       }
     },
   });
@@ -97,7 +103,7 @@ export function LoginForm({
 
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with MagicLink
-                <small className="mx-1 text-xs text-muted-foreground">
+                <small className="text-muted-foreground mx-1 text-xs">
                   [we will send you an email with a link to login]
                 </small>
               </FieldSeparator>
@@ -157,20 +163,17 @@ export function LoginForm({
               />
 
               <Field>
-                <Button
-                  type="submit"
-                  disabled={pending || cooldown > 0}
-                >
+                <Button type="submit" disabled={pending || cooldown > 0}>
                   {pending ? (
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   ) : (
-                    <Mail className="w-4 h-4 mr-2" />
+                    <Mail className="mr-2 h-4 w-4" />
                   )}
                   {pending
-                    ? "Sending..."
+                    ? 'Sending...'
                     : cooldown > 0
                       ? `Wait ${formatCooldown(cooldown)}`
-                      : "Send Magic Link"}
+                      : 'Send Magic Link'}
                 </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account? <a href="#">Sign up</a>

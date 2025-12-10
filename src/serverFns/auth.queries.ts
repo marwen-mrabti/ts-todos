@@ -3,7 +3,11 @@ import { validateWithPretty } from '@/lib/helpers';
 import { magicLinkLoginSchema } from '@/lib/utils';
 import { createServerFn } from '@tanstack/react-start';
 
-import { getRequestHeaders } from '@tanstack/react-start/server';
+import {
+  getCookie,
+  getRequestHeaders,
+  setCookie,
+} from '@tanstack/react-start/server';
 
 export const getCurrentUser = createServerFn({ method: 'GET' }).handler(
   async () => {
@@ -15,11 +19,26 @@ export const getCurrentUser = createServerFn({ method: 'GET' }).handler(
   }
 );
 
+export const MAGIC_LINK_DATA_KEY = 'magic-link-data';
+
 export const signInWithMagicLink = createServerFn({ method: 'POST' })
   .inputValidator((data) => validateWithPretty(magicLinkLoginSchema, data))
   .handler(async ({ data }) => {
     try {
       const headers = getRequestHeaders();
+
+      setCookie(
+        MAGIC_LINK_DATA_KEY,
+        JSON.stringify({
+          email: data.email,
+          name: data.name,
+        }),
+        {
+          httpOnly: true,
+          maxAge: 60 * 15,
+          path: '/',
+        }
+      );
       const response = await auth.api.signInMagicLink({
         body: {
           email: data.email,
@@ -42,3 +61,10 @@ export const signInWithMagicLink = createServerFn({ method: 'POST' })
       };
     }
   });
+
+export const getMagicLinkData = createServerFn({ method: 'GET' }).handler(
+  async () => {
+    const cookie = getCookie(MAGIC_LINK_DATA_KEY);
+    return cookie;
+  }
+);

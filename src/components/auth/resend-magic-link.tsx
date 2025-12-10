@@ -1,50 +1,48 @@
-import { Button } from "@/components/ui/button";
-import { useMagicLink } from "@/hooks/useMagicLink";
-import { useNavigate } from "@tanstack/react-router";
-import { Loader2, Mail } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import { useMagicLink } from '@/hooks/useMagicLink';
+import type { MagicLinkCredentials } from '@/lib/utils';
+import { useNavigate } from '@tanstack/react-router';
+import { Loader2, Mail } from 'lucide-react';
 
-export function ResendMagicLinkButton() {
+export function ResendMagicLinkButton({ email, name }: MagicLinkCredentials) {
   const navigate = useNavigate();
-  const {
-    sendMagicLink,
-    getStoredCredentials,
-    pending,
-    cooldown,
-    formatCooldown
-  } = useMagicLink();
+  const { sendMagicLink, pending, cooldown, formatCooldown } = useMagicLink();
 
   const handleResendMagicLink = async () => {
-    const credentials = getStoredCredentials();
-
-    if (!credentials) {
-      navigate({ to: "/login" });
-      return;
+    if (!email || !name) {
+      return navigate({ to: '/login' });
     }
 
-    const result = await sendMagicLink(credentials);
+    const result = await sendMagicLink({ email, name });
 
-    if (result.success && window.location.pathname !== "/check-email") {
-      navigate({ to: "/check-email" });
+    if (result.success && window.location.pathname !== '/check-email') {
+      navigate({
+        to: '/check-email',
+        search: {
+          email,
+          name,
+        },
+      });
     }
   };
 
   return (
     <Button
       variant="default"
-      className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+      className="bg-accent text-accent-foreground hover:bg-accent/90 w-full"
       disabled={pending || cooldown > 0}
       onClick={handleResendMagicLink}
     >
       {pending ? (
-        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
       ) : (
-        <Mail className="w-4 h-4 mr-2" />
+        <Mail className="mr-2 h-4 w-4" />
       )}
       {pending
-        ? "Sending..."
+        ? 'Sending...'
         : cooldown > 0
           ? `Resend available in ${formatCooldown(cooldown)}`
-          : "Resend Magic Link"}
+          : 'Resend Magic Link'}
     </Button>
   );
 }

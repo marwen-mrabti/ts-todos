@@ -157,7 +157,7 @@ The application will be available at **http://localhost:3000**
 01-ts-template_todos/
 ├── src/
 │   ├── assets/           # Static assets and styles
-│   ├── collections/      # Database collections
+│   ├── collections/      # tanstack/db collections
 │   ├── components/       # React components
 │   │   ├── app/         # App-level components (Header, etc.)
 │   │   └── ui/          # Reusable UI components

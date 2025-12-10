@@ -5,8 +5,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 export const COOLDOWN_KEY = 'magiclink_last_sent';
-export const MAGICLINK_EMAIL_KEY = 'magiclink_email';
-export const MAGICLINK_NAME_KEY = 'magiclink_name';
 const COOLDOWN_MINUTES = 10;
 
 export function useMagicLink() {
@@ -67,8 +65,6 @@ export function useMagicLink() {
 
         // Store credentials and timestamp
         if (typeof window !== 'undefined') {
-          localStorage.setItem(MAGICLINK_EMAIL_KEY, credentials.email);
-          localStorage.setItem(MAGICLINK_NAME_KEY, credentials.name);
           localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
         }
 
@@ -90,16 +86,6 @@ export function useMagicLink() {
     [cooldown, magicLinkSignInFn]
   );
 
-  const getStoredCredentials = useCallback((): MagicLinkCredentials | null => {
-    if (typeof window === 'undefined') return null;
-
-    const email = localStorage.getItem('magiclink_email');
-    const name = localStorage.getItem('magiclink_name');
-
-    if (!email || !name) return null;
-    return { email, name };
-  }, []);
-
   const formatCooldown = useCallback((seconds: number) => {
     const m = Math.floor(seconds / 60)
       .toString()
@@ -112,7 +98,6 @@ export function useMagicLink() {
     pending,
     cooldown,
     sendMagicLink,
-    getStoredCredentials,
     formatCooldown,
     isOnCooldown: cooldown > 0,
   };

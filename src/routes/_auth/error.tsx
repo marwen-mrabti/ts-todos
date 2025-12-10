@@ -1,64 +1,94 @@
-import { ResendMagicLinkButton } from '@/components/auth/resend-magic-link'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { createFileRoute, useNavigate, useSearch } from '@tanstack/react-router'
-import { AlertCircle, Home, RefreshCw } from 'lucide-react'
+import { ResendMagicLinkButton } from '@/components/auth/resend-magic-link';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import type { MagicLinkCredentials } from '@/lib/utils';
+import { getMagicLinkData } from '@/serverFns/auth.queries';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { zodValidator } from '@tanstack/zod-adapter';
+import { AlertCircle, Home, RefreshCw } from 'lucide-react';
+import { z } from 'zod';
+
+export const searchSchema = z.object({
+  error: z.string().optional(),
+});
 
 export const Route = createFileRoute('/_auth/error')({
+  validateSearch: zodValidator(searchSchema),
+
+  loader: async () => {
+    const cookie = await getMagicLinkData();
+    const data = (
+      cookie ? JSON.parse(cookie) : { email: '', name: '' }
+    ) as MagicLinkCredentials;
+    return data;
+  },
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  const navigate = useNavigate()
-  const searchParams = useSearch({ from: '/_auth/error' })
+  const navigate = useNavigate();
+  const { email, name } = Route.useLoaderData();
+  const searchParams = Route.useSearch();
 
   // Extract error from URL params and normalize to uppercase
-  const errorCode = ((searchParams as any)?.error || 'UNKNOWN_ERROR').toUpperCase()
+  const errorCode = (
+    (searchParams as any)?.error || 'UNKNOWN_ERROR'
+  ).toUpperCase();
 
   // Map error codes to user-friendly messages
   const getErrorDetails = (code: string) => {
-    const errors: Record<string, { title: string; message: string; suggestion: string }> = {
+    const errors: Record<
+      string,
+      { title: string; message: string; suggestion: string }
+    > = {
       INVALID_TOKEN: {
         title: 'Invalid or Expired Link',
         message: 'This magic link is no longer valid.',
-        suggestion: 'Magic links expire after 30 minutes or can only be used once. Please request a new one to sign in.',
+        suggestion:
+          'Magic links expire after 30 minutes or can only be used once. Please request a new one to sign in.',
       },
       EXPIRED_TOKEN: {
         title: 'Link Expired',
         message: 'This magic link has expired.',
-        suggestion: 'Magic links expire after 30 minutes for security. Please request a new one.',
+        suggestion:
+          'Magic links expire after 30 minutes for security. Please request a new one.',
       },
       VERIFICATION_FAILED: {
         title: 'Verification Failed',
-        message: 'We couldn\'t verify your email address.',
+        message: "We couldn't verify your email address.",
         suggestion: 'Please try requesting a new magic link.',
       },
       UNKNOWN_ERROR: {
         title: 'Something Went Wrong',
         message: 'An unexpected error occurred during sign in.',
-        suggestion: 'Please try again or contact support if the problem persists.',
+        suggestion:
+          'Please try again or contact support if the problem persists.',
       },
-    }
+    };
 
-    return errors[code] || errors.UNKNOWN_ERROR
-  }
+    return errors[code] || errors.UNKNOWN_ERROR;
+  };
 
-  const errorDetails = getErrorDetails(errorCode)
+  const errorDetails = getErrorDetails(errorCode);
 
   return (
-    <div className="w-full h-full bg-linear-to-br from-background to-muted flex items-center justify-center p-4">
-      <Card className="max-w-md w-full">
-        <CardHeader className="text-center pb-4">
+    <div className="from-background to-muted flex h-full w-full items-center justify-center bg-linear-to-br p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="pb-4 text-center">
           <div className="mb-4 flex justify-center">
-            <div className="w-20 h-20 bg-destructive/10 rounded-full flex items-center justify-center">
-              <AlertCircle className="w-10 h-10 text-destructive" />
+            <div className="bg-destructive/10 flex h-20 w-20 items-center justify-center rounded-full">
+              <AlertCircle className="text-destructive h-10 w-10" />
             </div>
           </div>
 
-          <CardTitle className="text-3xl mb-2">
-            {errorDetails.title}
-          </CardTitle>
+          <CardTitle className="mb-2 text-3xl">{errorDetails.title}</CardTitle>
 
           <CardDescription className="text-base">
             {errorDetails.message}
@@ -68,42 +98,35 @@ function RouteComponent() {
         <CardContent className="space-y-6">
           <Alert>
             <AlertDescription>
-              <p className="font-medium mb-2">What happened?</p>
-              <p className="text-sm text-muted-foreground">
+              <p className="mb-2 font-medium">What happened?</p>
+              <p className="text-muted-foreground text-sm">
                 {errorDetails.suggestion}
               </p>
             </AlertDescription>
           </Alert>
 
           <div className="space-y-3">
-
-            <ResendMagicLinkButton />
+            <ResendMagicLinkButton email={email} name={name} />
 
             <div className="grid grid-cols-2 gap-2">
-              <Button
-                variant="outline"
-                onClick={() => navigate({ to: '/' })}
-              >
-                <Home className="w-4 h-4 mr-2" />
+              <Button variant="outline" onClick={() => navigate({ to: '/' })}>
+                <Home className="mr-2 h-4 w-4" />
                 Go Home
               </Button>
               <Button
                 variant="outline"
                 onClick={() => window.location.reload()}
               >
-                <RefreshCw className="w-4 h-4 mr-2" />
+                <RefreshCw className="mr-2 h-4 w-4" />
                 Retry
               </Button>
             </div>
           </div>
 
           <div className="text-center">
-            <p className="text-xs text-muted-foreground">
+            <p className="text-muted-foreground text-xs">
               Need help?{' '}
-              <a
-                href="/support"
-                className="text-primary hover:underline"
-              >
+              <a href="/support" className="text-primary hover:underline">
                 Contact support
               </a>
             </p>
@@ -111,5 +134,5 @@ function RouteComponent() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

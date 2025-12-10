@@ -16,7 +16,7 @@ import ErrorComponent from '@/components/app/error-component';
 import NotFound from '@/components/app/not-found-component';
 import { ThemeProvider } from '@/components/app/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
-import { COOLDOWN_KEY, MAGICLINK_EMAIL_KEY, MAGICLINK_NAME_KEY } from '@/hooks/useMagicLink';
+import { COOLDOWN_KEY } from '@/hooks/useMagicLink';
 import { removeDataFromLocalStorage } from '@/lib/helpers';
 import { getCurrentUser } from '@/serverFns/auth.queries';
 
@@ -55,7 +55,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   beforeLoad: async () => {
     const user = await getCurrentUser();
     if (user) {
-      removeDataFromLocalStorage([COOLDOWN_KEY, MAGICLINK_EMAIL_KEY, MAGICLINK_NAME_KEY]);
+      removeDataFromLocalStorage([COOLDOWN_KEY]);
     }
     return {
       user,
