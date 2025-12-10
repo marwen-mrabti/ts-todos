@@ -62,10 +62,7 @@ export const sendEmail = createServerFn({ method: 'POST' })
         response: info.response,
       };
     } catch (error: any) {
-      throw new Error(
-        error instanceof Error
-          ? `Failed to send email: ${error.message}`
-          : 'Failed to send email'
-      );
+      console.log(error.message);
+      throw new Error('Failed to send email.');
     }
   });

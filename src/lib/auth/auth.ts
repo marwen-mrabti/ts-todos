@@ -5,6 +5,19 @@ import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { createAuthMiddleware, magicLink } from 'better-auth/plugins';
 import { tanstackStartCookies } from 'better-auth/tanstack-start';
 
+// Custom error class for API errors
+class AuthError extends Error {
+  statusCode: number;
+  statusMessage: string;
+
+  constructor(statusCode: number, statusMessage: string) {
+    super(statusMessage);
+    this.name = 'AuthError';
+    this.statusCode = statusCode;
+    this.statusMessage = statusMessage;
+  }
+}
+
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: 'pg',
@@ -19,6 +32,22 @@ export const auth = betterAuth({
       clientId: process.env.AUTH_GITHUB_CLIENT_ID!,
       clientSecret: process.env.AUTH_GITHUB_CLIENT_SECRET!,
     },
+  },
+
+  advanced: {
+    cookiePrefix: 'ts-auth',
+  },
+
+  onAPIError: {
+    throw: true,
+    onError: (error, ctx) => {
+      const err = error as { status?: number; message?: string };
+      throw new AuthError(
+        err.status || 500,
+        err.message || 'Internal Server Error'
+      );
+    },
+    errorURL: '/error',
   },
 
   hooks: {
@@ -48,8 +77,12 @@ export const auth = betterAuth({
 
   // Logging
   logger: {
+    disabled: false,
+    disableColors: false,
     level: process.env.NODE_ENV === 'development' ? 'debug' : 'error',
-    disabled: true,
+    log: (level, message, ...args) => {
+      console.log(`[${level}] ${message}`, ...args);
+    },
   },
 });
 

@@ -56,11 +56,7 @@ export function useMagicLink() {
         });
 
         if (!data.success) {
-          toast.error('Oops!!', {
-            description: data.error,
-            position: 'top-right',
-          });
-          return data;
+          throw new Error(data.error);
         }
 
         // Store credentials and timestamp
@@ -75,8 +71,18 @@ export function useMagicLink() {
       } catch (error) {
         const message =
           error instanceof Error ? error.message : 'Unknown error';
-        toast.error('Failed to send magic link', {
-          description: message,
+        toast.error(message, {
+          description:
+            'it is us! this error is from the server. please try again later',
+          position: 'top-right',
+          duration: 3000,
+          classNames: {
+            content: 'w-sm flex flex-col gap-2 p-2',
+            description: 'text-xs text-card-foreground!',
+          },
+          style: {
+            '--border-radius': 'calc(var(--radius) + 4px)',
+          } as React.CSSProperties,
         });
         return { success: false, error: message };
       } finally {

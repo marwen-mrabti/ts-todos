@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { authClient } from '@/lib/auth-client';
+import { authClient } from '@/lib/auth/auth-client';
 import { cn } from '@/lib/utils';
 import { Link, useNavigate } from '@tanstack/react-router';
 import { Package, User } from 'lucide-react';

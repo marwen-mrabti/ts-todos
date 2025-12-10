@@ -1,4 +1,4 @@
-import { auth } from '@/lib/auth';
+import { auth } from '@/lib/auth/auth';
 import { validateWithPretty } from '@/lib/helpers';
 import { magicLinkLoginSchema } from '@/lib/utils';
 import { createServerFn } from '@tanstack/react-start';
@@ -48,7 +48,10 @@ export const signInWithMagicLink = createServerFn({ method: 'POST' })
     } catch (error) {
       return {
         success: false,
-        error: 'Failed to send magic link email. Please try again later.',
+        error:
+          error instanceof Error
+            ? error.message
+            : 'Failed to send magic link email.',
       };
     }
   });

@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { useMagicLink } from '@/hooks/useMagicLink';
-import { authClient } from '@/lib/auth-client';
+import { authClient } from '@/lib/auth/auth-client';
 import { cn, magicLinkLoginSchema } from '@/lib/utils';
 import { useForm } from '@tanstack/react-form';
 import { useNavigate } from '@tanstack/react-router';

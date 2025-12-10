@@ -1,5 +1,5 @@
 // middleware/auth-middleware.ts
-import { auth } from '@/lib/auth';
+import { auth } from '@/lib/auth/auth';
 import { redirect } from '@tanstack/react-router';
 import { createMiddleware } from '@tanstack/react-start';
 import { getRequestHeaders } from '@tanstack/react-start/server';
