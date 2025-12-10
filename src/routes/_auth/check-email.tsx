@@ -11,16 +11,11 @@ import { createFileRoute } from '@tanstack/react-router';
 import { ArrowRight, CheckCircle, Mail } from 'lucide-react';
 
 import { ResendMagicLinkButton } from '@/components/auth/resend-magic-link';
+import { magicLinkLoginSchema } from '@/lib/utils';
 import { zodValidator } from '@tanstack/zod-adapter';
-import { z } from 'zod';
-
-export const searchSchema = z.object({
-  email: z.email(),
-  name: z.string().min(3),
-});
 
 export const Route = createFileRoute('/_auth/check-email')({
-  validateSearch: zodValidator(searchSchema),
+  validateSearch: zodValidator(magicLinkLoginSchema),
   component: RouteComponent,
 });
 

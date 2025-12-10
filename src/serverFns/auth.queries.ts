@@ -4,6 +4,7 @@ import { magicLinkLoginSchema } from '@/lib/utils';
 import { createServerFn } from '@tanstack/react-start';
 
 import {
+  deleteCookie,
   getCookie,
   getRequestHeaders,
   setCookie,
@@ -26,7 +27,7 @@ export const signInWithMagicLink = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
     try {
       const headers = getRequestHeaders();
-
+      // will be used in error page to send new magic link
       setCookie(
         MAGIC_LINK_DATA_KEY,
         JSON.stringify({
@@ -66,5 +67,11 @@ export const getMagicLinkData = createServerFn({ method: 'GET' }).handler(
   async () => {
     const cookie = getCookie(MAGIC_LINK_DATA_KEY);
     return cookie;
+  }
+);
+
+export const deleteMagicLinkData = createServerFn({ method: 'POST' }).handler(
+  async () => {
+    deleteCookie(MAGIC_LINK_DATA_KEY);
   }
 );

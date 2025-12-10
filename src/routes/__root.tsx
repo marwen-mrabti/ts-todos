@@ -18,7 +18,7 @@ import { ThemeProvider } from '@/components/app/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 import { COOLDOWN_KEY } from '@/hooks/useMagicLink';
 import { removeDataFromLocalStorage } from '@/lib/helpers';
-import { getCurrentUser } from '@/serverFns/auth.queries';
+import { deleteMagicLinkData, getCurrentUser } from '@/serverFns/auth.queries';
 
 interface MyRouterContext {
   queryClient: QueryClient;
@@ -55,6 +55,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   beforeLoad: async () => {
     const user = await getCurrentUser();
     if (user) {
+      await deleteMagicLinkData();
       removeDataFromLocalStorage([COOLDOWN_KEY]);
     }
     return {
