@@ -57,19 +57,15 @@ export const updateTodo = createServerFn({ method: 'POST' })
 export const deleteTodo = createServerFn({ method: 'POST' })
   .middleware([serverFnAuthMiddleware])
   .inputValidator((data) => validateWithPretty(todoIdSchema, data))
-  .handler(async ({ data }) => {
-    const id = data; // data is fully typed and validated here
-
+  .handler(async ({ data: todoId }) => {
     const todo = await db.query.todos.findFirst({
-      where: eq(todos.id, id),
+      where: eq(todos.id, todoId),
     });
 
     if (!todo) {
-      throw new TodoNotFoundError(`todo with id "${id}" not found!`);
+      throw new TodoNotFoundError(`todo with id "${todoId}" not found!`);
     }
 
-    await db.delete(todos).where(eq(todos.id, id));
-    // return { message: `Deleted todo with id: ${id}` };
-    await new Promise((resolve) => setTimeout(resolve, 5000));
-    throw new Error('Failed to delete todo');
+    await db.delete(todos).where(eq(todos.id, todoId));
+    return { message: `Deleted todo with id: ${todoId}` };
   });

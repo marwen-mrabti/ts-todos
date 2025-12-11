@@ -1,5 +1,6 @@
 import { db } from '@/db';
 import { sendEmailWithMagicLink } from '@/lib/emails/send-magicLink';
+import { env } from '@/lib/env';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { createAuthMiddleware, magicLink } from 'better-auth/plugins';
@@ -18,19 +19,21 @@ class AuthError extends Error {
   }
 }
 
+
+
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: 'pg',
     usePlural: true,
   }),
 
-  secret: process.env.BETTER_AUTH_SECRET,
-  baseURL: process.env.BASE_URL,
+  secret: env.BETTER_AUTH_SECRET,
+  baseURL: env.BASE_URL,
 
   socialProviders: {
     github: {
-      clientId: process.env.AUTH_GITHUB_CLIENT_ID!,
-      clientSecret: process.env.AUTH_GITHUB_CLIENT_SECRET!,
+      clientId: env.AUTH_GITHUB_CLIENT_ID!,
+      clientSecret: env.AUTH_GITHUB_CLIENT_SECRET!,
     },
   },
 
@@ -74,16 +77,6 @@ export const auth = betterAuth({
 
     tanstackStartCookies(),
   ],
-
-  // Logging
-  logger: {
-    disabled: false,
-    disableColors: false,
-    level: process.env.NODE_ENV === 'development' ? 'debug' : 'error',
-    log: (level, message, ...args) => {
-      console.log(`[${level}] ${message}`, ...args);
-    },
-  },
 });
 
 export type Session = typeof auth.$Infer.Session;

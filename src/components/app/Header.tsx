@@ -31,7 +31,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-background/95 supports-backdrop-filter:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
+    <header className="bg-secondary/70 sticky top-0 z-50 w-full border-b backdrop-blur-sm">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4">
         <div className="flex items-center gap-6">
           <Link
@@ -72,8 +72,8 @@ export default function Header() {
                 >
                   <Avatar className="h-9 w-9">
                     <AvatarImage
-                      src={session.user.image || undefined}
-                      alt={session.user.name || 'User'}
+                      src={session?.user.image || undefined}
+                      alt={session?.user.name || 'User'}
                     />
                     <AvatarFallback>
                       <User className="h-5 w-5" />

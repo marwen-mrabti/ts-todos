@@ -1,5 +1,6 @@
 import { createIsomorphicFn } from '@tanstack/react-start';
 import { z } from 'zod';
+
 export function validateWithPretty<T>(schema: z.ZodType<T>, value: unknown): T {
   const result = schema.safeParse(value);
 

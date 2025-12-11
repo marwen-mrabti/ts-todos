@@ -1,3 +1,4 @@
+import { env } from '@/lib/env';
 import { validateWithPretty } from '@/lib/helpers';
 import { createServerFn } from '@tanstack/react-start';
 import nodemailer from 'nodemailer';
@@ -11,25 +12,16 @@ const sendEmailInputSchema = z.object({
   text: z.string().optional(),
 });
 
-// Check required environment variables
-const requiredEnvVars = ['SMTP_HOST', 'SMTP_USER', 'SMTP_PASSWORD'] as const;
-
-requiredEnvVars.forEach((key) => {
-  if (!process.env[key]) {
-    throw new Error(`Missing required environment variable: ${key}`);
-  }
-});
-
 // Create and configure the transporter
 const createTransporter = () => {
-  const port = parseInt(process.env.SMTP_PORT || '465');
+  const port = env.SMTP_PORT;
   return nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
+    host: env.SMTP_HOST,
     port,
     secure: port === 465,
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASSWORD,
+      user: env.SMTP_USER,
+      pass: env.SMTP_PASSWORD,
     },
   });
 };
@@ -46,7 +38,7 @@ export const sendEmail = createServerFn({ method: 'POST' })
 
       // Prepare email options
       const mailOptions = {
-        from: process.env.SMTP_USER,
+        from: env.SMTP_USER,
         to: data.to,
         subject: data.subject,
         html: data.html,

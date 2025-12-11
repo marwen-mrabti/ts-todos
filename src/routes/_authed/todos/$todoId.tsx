@@ -7,7 +7,7 @@ import type { ErrorComponentProps } from '@tanstack/react-router';
 import {
   createFileRoute,
   useNavigate,
-  useRouteContext
+  useRouteContext,
 } from '@tanstack/react-router';
 import { Trash2 } from 'lucide-react';
 import { useEffect } from 'react';
@@ -22,8 +22,12 @@ import { toast } from 'sonner';
 
 export const Route = createFileRoute('/_authed/todos/$todoId')({
   loader: async ({ params: { todoId }, context }) => {
-    return context.queryClient.ensureQueryData(todoQueryOptions({ todoId }));
+    // const todos = (context.queryClient.getQueryData(['todos']) || []) as TODO[];
+    // const cachedTodo = todos.find((todo) => todo.id === todoId);
 
+    return context.queryClient.ensureQueryData(
+      todoQueryOptions({ todoId, queryClient: context.queryClient })
+    );
   },
 
   head: ({ loaderData }) => {
@@ -48,7 +52,9 @@ function TodoPage() {
   const context = useRouteContext({ from: '/_authed/todos/$todoId' });
   const { todoId } = Route.useParams();
 
-  const { data: todo } = useSuspenseQuery(todoQueryOptions({ todoId }));
+  const { data: todo } = useSuspenseQuery(
+    todoQueryOptions({ todoId, queryClient: context.queryClient })
+  );
 
   // DELETE MUTATION
   const mutation = useMutation({

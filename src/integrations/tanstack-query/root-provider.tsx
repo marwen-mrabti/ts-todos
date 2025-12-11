@@ -5,6 +5,8 @@ export function getContext() {
     defaultOptions: {
       queries: {
         experimental_prefetchInRender: true,
+        staleTime: 60 * 1000,
+        gcTime: 60 * 60 * 1000,
       },
     },
   });

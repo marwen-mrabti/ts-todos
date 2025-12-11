@@ -38,7 +38,7 @@ function RouteComponent() {
   const { data: todos } = useSuspenseQuery(todosQueryOptions());
 
   return (
-    <main className="h-full w-full bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
+    <main className="h-full w-full">
       <div className="mx-auto grid h-full max-w-7xl grid-cols-1 gap-6 p-6 lg:grid-cols-[380px_1fr]">
         {/* Sidebar */}
         <aside className="h-fit rounded-xl border border-slate-200 bg-white p-6 shadow-sm lg:sticky lg:top-6 dark:border-slate-800 dark:bg-slate-900/50">
@@ -90,7 +90,7 @@ function RouteComponent() {
 
 function TodosPendingComponent() {
   return (
-    <main className="h-full w-full bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
+    <main className="h-full w-full">
       <div className="mx-auto grid h-full max-w-7xl grid-cols-1 gap-6 p-6 lg:grid-cols-[380px_1fr]">
         {/* Sidebar Skeleton */}
         <aside className="h-fit rounded-xl border border-slate-200 bg-white p-6 shadow-sm lg:sticky lg:top-6 dark:border-slate-800 dark:bg-slate-900/50">
@@ -137,7 +137,7 @@ function TodosErrorComponent({ error, reset }: ErrorComponentProps) {
   }, [queryErrorResetBoundary]);
 
   return (
-    <div className="flex h-full items-center justify-center bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
+    <div className="flex h-full items-center justify-center">
       <ErrorComponent error={error} reset={reset} />
     </div>
   );

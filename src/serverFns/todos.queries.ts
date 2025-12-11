@@ -18,11 +18,9 @@ export const fetchTodos = createServerFn({ method: 'GET' })
 export const fetchTodoById = createServerFn({ method: 'GET' })
   .middleware([serverFnAuthMiddleware])
   .inputValidator((data) => validateWithPretty(todoIdSchema, data))
-  .handler(async ({ data }) => {
-    const id = data;
-
+  .handler(async ({ data: todoId }) => {
     const todo = await db.query.todos.findFirst({
-      where: eq(todos.id, id),
+      where: eq(todos.id, todoId),
     });
 
     if (!todo) {
