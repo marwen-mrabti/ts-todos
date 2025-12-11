@@ -3,6 +3,7 @@ import { eq } from 'drizzle-orm';
 
 import { db } from '@/db';
 import { todoIdSchema, todos } from '@/db/schema/todos.schema';
+import { validateWithPretty } from '@/lib/helpers';
 import { serverFnAuthMiddleware } from '@/middleware/auth-middleware';
 import { notFound } from '@tanstack/react-router';
 
@@ -16,7 +17,7 @@ export const fetchTodos = createServerFn({ method: 'GET' })
 
 export const fetchTodoById = createServerFn({ method: 'GET' })
   .middleware([serverFnAuthMiddleware])
-  .inputValidator(todoIdSchema)
+  .inputValidator((data) => validateWithPretty(todoIdSchema, data))
   .handler(async ({ data }) => {
     const id = data;
 

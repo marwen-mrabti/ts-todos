@@ -1,8 +1,9 @@
 import { useRouter } from '@tanstack/react-router';
-import { OctagonAlert } from 'lucide-react';
+import { Home, OctagonAlert, RefreshCw } from 'lucide-react';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 
 export default function ErrorComponent({
   error,
@@ -14,34 +15,63 @@ export default function ErrorComponent({
   const router = useRouter();
 
   return (
-    <div className="mx-4 my-4 flex flex-col items-center gap-4">
-      <Alert className="bg-destructive text-destructive-foreground rounded-md p-2">
-        <OctagonAlert size={100} />
-        <AlertTitle className="text-xl">Something went wrong!</AlertTitle>
-        <AlertDescription className="text-lg">{error.message}</AlertDescription>
-      </Alert>
-      <div className="flex items-center gap-4">
-        <Button
-          variant="outline"
-          className="bg-green-500! text-lg font-medium uppercase"
-          onClick={() => {
-            // Reset the router error boundary
-            reset();
-          }}
-        >
-          retry
-        </Button>
-        <Button
-          variant="secondary"
-          className="bg-blue-500 text-lg font-medium uppercase"
-          onClick={() => {
-            // Invalidate the route to reload the loader, which will also reset the error boundary
-            router.invalidate();
-          }}
-        >
-          reload
-        </Button>
-      </div>
+    <div className="flex min-h-[400px] items-center justify-center p-4">
+      <Card className="w-full max-w-md border-destructive/50 shadow-lg">
+        <CardHeader className="space-y-4 text-center">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-destructive/10">
+            <OctagonAlert className="h-10 w-10 text-destructive" />
+          </div>
+          <div>
+            <AlertTitle className="text-2xl font-bold">
+              Oops! Something went wrong
+            </AlertTitle>
+            <p className="mt-2 text-sm text-muted-foreground">
+              We encountered an unexpected error
+            </p>
+          </div>
+        </CardHeader>
+
+        <CardContent>
+          <Alert variant="destructive" className="border-destructive/50">
+            <AlertDescription className="text-sm font-mono">
+              {error.message || 'An unexpected error occurred'}
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+
+        <CardFooter className="flex flex-col gap-3 sm:flex-row">
+          <Button
+            variant="default"
+            className="w-full sm:w-auto"
+            onClick={() => {
+              reset();
+            }}
+          >
+            <RefreshCw className="mr-2 h-4 w-4" />
+            Try Again
+          </Button>
+          <Button
+            variant="outline"
+            className="w-full sm:w-auto"
+            onClick={() => {
+              router.invalidate();
+            }}
+          >
+            <RefreshCw className="mr-2 h-4 w-4" />
+            Reload Page
+          </Button>
+          <Button
+            variant="ghost"
+            className="w-full sm:w-auto"
+            onClick={() => {
+              router.navigate({ to: '/' });
+            }}
+          >
+            <Home className="mr-2 h-4 w-4" />
+            Go Home
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 }

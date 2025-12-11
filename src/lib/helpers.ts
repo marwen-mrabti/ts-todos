@@ -25,7 +25,6 @@ export class TodoNotFoundError extends Error {
 
 export const removeDataFromLocalStorage = createIsomorphicFn().client(
   (keys: string[]) => {
-    console.log('removeDataFromLocalStorage', keys);
     for (const key of keys) {
       localStorage.removeItem(key);
     }

@@ -20,6 +20,7 @@ import { Route as AuthErrorRouteImport } from './routes/_auth/error'
 import { Route as AuthCheckEmailRouteImport } from './routes/_auth/check-email'
 import { Route as AuthedTodosRouteRouteImport } from './routes/_authed/todos/route'
 import { Route as ApiTodosIndexRouteImport } from './routes/api/todos/index'
+import { Route as AuthedTodosIndexRouteImport } from './routes/_authed/todos/index'
 import { Route as ApiTodosTodoIdRouteImport } from './routes/api/todos/$todoId'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as AuthedTodosTodoIdRouteImport } from './routes/_authed/todos/$todoId'
@@ -78,6 +79,11 @@ const ApiTodosIndexRoute = ApiTodosIndexRouteImport.update({
   path: '/api/todos/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthedTodosIndexRoute = AuthedTodosIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthedTodosRouteRoute,
+} as any)
 const ApiTodosTodoIdRoute = ApiTodosTodoIdRouteImport.update({
   id: '/api/todos/$todoId',
   path: '/api/todos/$todoId',
@@ -111,6 +117,7 @@ export interface FileRoutesByFullPath {
   '/todos/$todoId': typeof AuthedTodosTodoIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRouteWithChildren
+  '/todos/': typeof AuthedTodosIndexRoute
   '/api/todos': typeof ApiTodosIndexRoute
   '/api/todos/$todoId/edit': typeof ApiTodosTodoIdEditRoute
 }
@@ -118,7 +125,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/onboarding': typeof OnboardingRoute
   '/products': typeof ProductsRoute
-  '/todos': typeof AuthedTodosRouteRouteWithChildren
   '/check-email': typeof AuthCheckEmailRoute
   '/error': typeof AuthErrorRoute
   '/login': typeof AuthLoginRoute
@@ -126,6 +132,7 @@ export interface FileRoutesByTo {
   '/todos/$todoId': typeof AuthedTodosTodoIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRouteWithChildren
+  '/todos': typeof AuthedTodosIndexRoute
   '/api/todos': typeof ApiTodosIndexRoute
   '/api/todos/$todoId/edit': typeof ApiTodosTodoIdEditRoute
 }
@@ -144,6 +151,7 @@ export interface FileRoutesById {
   '/_authed/todos/$todoId': typeof AuthedTodosTodoIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRouteWithChildren
+  '/_authed/todos/': typeof AuthedTodosIndexRoute
   '/api/todos/': typeof ApiTodosIndexRoute
   '/api/todos/$todoId/edit': typeof ApiTodosTodoIdEditRoute
 }
@@ -161,6 +169,7 @@ export interface FileRouteTypes {
     | '/todos/$todoId'
     | '/api/auth/$'
     | '/api/todos/$todoId'
+    | '/todos/'
     | '/api/todos'
     | '/api/todos/$todoId/edit'
   fileRoutesByTo: FileRoutesByTo
@@ -168,7 +177,6 @@ export interface FileRouteTypes {
     | '/'
     | '/onboarding'
     | '/products'
-    | '/todos'
     | '/check-email'
     | '/error'
     | '/login'
@@ -176,6 +184,7 @@ export interface FileRouteTypes {
     | '/todos/$todoId'
     | '/api/auth/$'
     | '/api/todos/$todoId'
+    | '/todos'
     | '/api/todos'
     | '/api/todos/$todoId/edit'
   id:
@@ -193,6 +202,7 @@ export interface FileRouteTypes {
     | '/_authed/todos/$todoId'
     | '/api/auth/$'
     | '/api/todos/$todoId'
+    | '/_authed/todos/'
     | '/api/todos/'
     | '/api/todos/$todoId/edit'
   fileRoutesById: FileRoutesById
@@ -288,6 +298,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiTodosIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authed/todos/': {
+      id: '/_authed/todos/'
+      path: '/'
+      fullPath: '/todos/'
+      preLoaderRoute: typeof AuthedTodosIndexRouteImport
+      parentRoute: typeof AuthedTodosRouteRoute
+    }
     '/api/todos/$todoId': {
       id: '/api/todos/$todoId'
       path: '/api/todos/$todoId'
@@ -335,10 +352,12 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface AuthedTodosRouteRouteChildren {
   AuthedTodosTodoIdRoute: typeof AuthedTodosTodoIdRoute
+  AuthedTodosIndexRoute: typeof AuthedTodosIndexRoute
 }
 
 const AuthedTodosRouteRouteChildren: AuthedTodosRouteRouteChildren = {
   AuthedTodosTodoIdRoute: AuthedTodosTodoIdRoute,
+  AuthedTodosIndexRoute: AuthedTodosIndexRoute,
 }
 
 const AuthedTodosRouteRouteWithChildren =

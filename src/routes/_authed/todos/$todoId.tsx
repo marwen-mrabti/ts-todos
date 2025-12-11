@@ -7,7 +7,7 @@ import type { ErrorComponentProps } from '@tanstack/react-router';
 import {
   createFileRoute,
   useNavigate,
-  useRouteContext,
+  useRouteContext
 } from '@tanstack/react-router';
 import { Trash2 } from 'lucide-react';
 import { useEffect } from 'react';
@@ -23,6 +23,7 @@ import { toast } from 'sonner';
 export const Route = createFileRoute('/_authed/todos/$todoId')({
   loader: async ({ params: { todoId }, context }) => {
     return context.queryClient.ensureQueryData(todoQueryOptions({ todoId }));
+
   },
 
   head: ({ loaderData }) => {
