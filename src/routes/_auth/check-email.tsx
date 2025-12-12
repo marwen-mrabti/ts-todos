@@ -58,7 +58,7 @@ function RouteComponent() {
           </Alert>
 
           <div className="space-y-3">
-            <Button asChild className="w-full" size="lg">
+            <Button className="w-full" size="lg">
               <a
                 href="https://mail.google.com"
                 target="_blank"
@@ -70,7 +70,7 @@ function RouteComponent() {
             </Button>
 
             <div className="grid grid-cols-3 gap-2">
-              <Button asChild variant="outline" size="sm">
+              <Button variant="outline" size="sm">
                 <a
                   href="https://outlook.com"
                   target="_blank"
@@ -79,7 +79,7 @@ function RouteComponent() {
                   Outlook
                 </a>
               </Button>
-              <Button asChild variant="outline" size="sm">
+              <Button variant="outline" size="sm">
                 <a
                   href="https://mail.proton.me"
                   target="_blank"
@@ -88,7 +88,7 @@ function RouteComponent() {
                   Proton
                 </a>
               </Button>
-              <Button asChild variant="outline" size="sm">
+              <Button variant="outline" size="sm">
                 <a
                   href="https://mail.yahoo.com"
                   target="_blank"

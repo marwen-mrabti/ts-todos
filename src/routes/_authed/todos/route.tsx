@@ -17,10 +17,13 @@ import { TodoPendingComponent } from '@/routes/_authed/todos/$todoId';
 
 export const Route = createFileRoute('/_authed/todos')({
   loader: async ({ context }) => {
-    return context.queryClient.ensureQueryData(todosQueryOptions());
+    return context.queryClient.ensureQueryData({
+      ...todosQueryOptions(),
+      revalidateIfStale: true
+    });
   },
 
-  head: ({}) => {
+  head: ({ }) => {
     return {
       meta: seo({
         title: 'Todos',

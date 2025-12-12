@@ -5,7 +5,7 @@
     "eslint.config.mjs",
     "prettier.config.mjs",
     "vite.config.js"
-  ],
+, "src/components/auth/resend-magic-link.tsx"  ],
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",

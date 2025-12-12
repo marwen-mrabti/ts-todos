@@ -58,16 +58,32 @@ export function LoginForm({
   const handleSocialSignIn = async (provider: 'github' | 'google') => {
     setSocialSignInPending(true);
 
-    await authClient.signIn.social({
-      provider,
-      callbackURL: '/todos',
-      fetchOptions: {
-        onError: (ctx) => {
-          toast.error(ctx.error.message);
+    // Set a timeout to detect if the user gets stuck
+    const timeoutId = setTimeout(() => {
+      setSocialSignInPending(false);
+      toast.error('Authentication took too long. Please try again.');
+    }, 30000);
+
+    try {
+      await authClient.signIn.social({
+        provider,
+        callbackURL: '/todos',
+        errorCallbackURL: '/error',
+        newUserCallbackURL: '/onboarding',
+        fetchOptions: {
+          onError: (ctx) => {
+            clearTimeout(timeoutId);
+            toast.error(ctx.error.message);
+          },
         },
-      },
-    });
-    setSocialSignInPending(false);
+      });
+    } catch (error) {
+      clearTimeout(timeoutId);
+      toast.error('Authentication failed');
+    } finally {
+      clearTimeout(timeoutId);
+      setSocialSignInPending(false);
+    }
   };
 
   return (

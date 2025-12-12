@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
+import { authClient } from '@/lib/auth/auth-client';
 import { createTodo } from '@/serverFns/todos.actions';
 
 export const Route = createFileRoute('/')({ component: App });
@@ -17,7 +18,8 @@ function App() {
   const context = useRouteContext({ from: '/' });
   const navigate = useNavigate({ from: '/' });
 
-  const user = context.user;
+  const { data: session } = authClient.useSession();
+  const user = session ? session.user : null
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -58,6 +60,10 @@ function App() {
 
   const handleAddTodo = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) {
+      toast.error('You must be logged in to add a todo');
+      return navigate({ to: '/login' })
+    }
     await mutation.mutateAsync(title);
     return;
   };
@@ -78,7 +84,7 @@ function App() {
             type="submit"
             variant="default"
             className="ml-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
-            disabled={mutation.isPending || !user}
+            disabled={mutation.isPending || !title.trim()}
           >
             {mutation.isPending ? 'Adding...' : 'Add Todo'}
           </Button>

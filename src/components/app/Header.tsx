@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -17,8 +18,9 @@ import { Package, User } from 'lucide-react';
 
 export default function Header() {
   const { themeMode } = useTheme();
-  const { data: session } = authClient.useSession();
   const navigate = useNavigate();
+  const { data: session } = authClient.useSession();
+  const user = session ? session.user : null;
 
   const handleLogout = async () => {
     await authClient.signOut({
@@ -49,63 +51,79 @@ export default function Header() {
         </div>
         <nav className="hidden items-center gap-1 md:flex">
           {session?.user && (
-            <Button variant="ghost" size="sm" asChild>
-              <Link to="/todos" preloadDelay={500}>
-                Todos
-              </Link>
+            <Button
+              variant="ghost"
+              size="sm"
+              render={<Link to="/todos" preloadDelay={500} />}
+              nativeButton={false}
+            >
+              Todos
             </Button>
           )}
         </nav>
 
         <div className="flex items-center gap-2">
-          {!session?.user ? (
-            <Button asChild variant="ghost">
-              <Link to="/login">Login</Link>
+          {!user ? (
+            <Button
+              variant="ghost"
+              render={<Link to="/login" />}
+              nativeButton={false}
+            >
+              Login
             </Button>
           ) : (
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-10 w-10 rounded-full"
-                >
-                  <Avatar className="h-9 w-9">
-                    <AvatarImage
-                      src={session?.user.image || undefined}
-                      alt={session?.user.name || 'User'}
-                    />
-                    <AvatarFallback>
-                      <User className="h-5 w-5" />
-                    </AvatarFallback>
-                  </Avatar>
-                  <span className="sr-only">User menu</span>
-                </Button>
+              <DropdownMenuTrigger
+                render={
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-10 w-10 rounded-full"
+                  />
+                }
+              >
+                <Avatar className="h-9 w-9">
+                  <AvatarImage
+                    src={session?.user.image || undefined}
+                    alt={session?.user.name || 'User'}
+                  />
+                  <AvatarFallback>
+                    <User className="h-5 w-5" />
+                  </AvatarFallback>
+                </Avatar>
+                <span className="sr-only">User menu</span>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link
-                    to="/products"
-                    search={{
-                      page: 1,
-                      searchQuery: '',
-                      category: 'all',
-                    }}
-                    className="cursor-pointer"
+                <DropdownMenuGroup>
+                  <DropdownMenuItem
+                    render={
+                      <Link
+                        to="/products"
+                        search={{
+                          page: 1,
+                          searchQuery: '',
+                          category: 'all',
+                        }}
+                      />
+                    }
                   >
-                    <Package className="mr-2 h-4 w-4" />
+                    <Package className="h-4 w-4" data-icon="inline-start" />
                     Products
-                  </Link>
-                </DropdownMenuItem>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={handleLogout}
-                  className="text-destructive focus:text-destructive cursor-pointer"
-                >
-                  Sign out
-                </DropdownMenuItem>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem
+                    onClick={handleLogout}
+                    className="text-destructive focus:text-destructive cursor-pointer"
+                  >
+                    Sign out
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
           )}

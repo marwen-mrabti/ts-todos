@@ -1,7 +1,7 @@
 import {
   useMutation,
   useQueryErrorResetBoundary,
-  useSuspenseQuery,
+  useSuspenseQuery
 } from '@tanstack/react-query';
 import type { ErrorComponentProps } from '@tanstack/react-router';
 import {
@@ -23,7 +23,10 @@ import { toast } from 'sonner';
 export const Route = createFileRoute('/_authed/todos/$todoId')({
   loader: async ({ params: { todoId }, context }) => {
     return context.queryClient.ensureQueryData(
-      todoQueryOptions({ todoId, queryClient: context.queryClient })
+      {
+        ...todoQueryOptions({ todoId, queryClient: context.queryClient }),
+        revalidateIfStale: true
+      }
     );
   },
 
@@ -47,7 +50,7 @@ function TodoPage() {
   const { todoId } = Route.useParams();
 
   const { data: todo } = useSuspenseQuery(
-    todoQueryOptions({ todoId, queryClient: context.queryClient })
+    todoQueryOptions({ todoId, queryClient: context.queryClient }),
   );
 
   // DELETE MUTATION

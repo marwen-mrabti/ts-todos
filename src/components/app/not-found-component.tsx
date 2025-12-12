@@ -13,7 +13,7 @@ export default function NotFound() {
         <CardContent className="flex flex-col items-center p-8 text-center sm:p-12">
           {/* 404 Icon/Number */}
           <div className="relative mb-6">
-            <div className="absolute inset-0 animate-pulse rounded-full bg-primary/20 blur-2xl"></div>
+            <div className="bg-primary/20 absolute inset-0 animate-pulse rounded-full blur-2xl"></div>
             <div className="relative flex h-32 w-32 items-center justify-center rounded-full bg-linear-to-br from-blue-500 to-purple-600 shadow-lg">
               <Search className="h-16 w-16 text-white" strokeWidth={2.5} />
             </div>
@@ -28,7 +28,7 @@ export default function NotFound() {
             Page Not Found
           </h2>
 
-          <p className="mb-8 max-w-md text-sm text-muted-foreground sm:text-base">
+          <p className="text-muted-foreground mb-8 max-w-md text-sm sm:text-base">
             Oops! The page you're looking for doesn't exist or has been moved.
             Let's get you back on track.
           </p>
@@ -45,12 +45,7 @@ export default function NotFound() {
               Go Back
             </Button>
 
-            <Button
-              variant="outline"
-              size="lg"
-              asChild
-              className="w-full sm:w-auto"
-            >
+            <Button variant="outline" size="lg" className="w-full sm:w-auto">
               <Link to="/">
                 <Home className="mr-2 h-4 w-4" />
                 Go Home
@@ -60,21 +55,15 @@ export default function NotFound() {
 
           {/* Optional: Add helpful links */}
           <div className="mt-8 border-t pt-6 dark:border-slate-800">
-            <p className="mb-3 text-sm text-muted-foreground">
+            <p className="text-muted-foreground mb-3 text-sm">
               Quick links to help you navigate:
             </p>
             <div className="flex flex-wrap justify-center gap-2 text-sm">
-              <Link
-                to="/"
-                className="text-primary hover:underline"
-              >
+              <Link to="/" className="text-primary hover:underline">
                 Home
               </Link>
               <span className="text-muted-foreground">•</span>
-              <Link
-                to="/todos"
-                className="text-primary hover:underline"
-              >
+              <Link to="/todos" className="text-primary hover:underline">
                 Todos
               </Link>
               <span className="text-muted-foreground">•</span>

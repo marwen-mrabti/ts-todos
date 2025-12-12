@@ -3,9 +3,9 @@ import { sendEmailWithMagicLink } from '@/lib/emails/send-magicLink';
 import { env } from '@/lib/env';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { APIError } from 'better-auth/api';
 import { createAuthMiddleware, magicLink } from 'better-auth/plugins';
 import { tanstackStartCookies } from 'better-auth/tanstack-start';
-
 // Custom error class for API errors
 class AuthError extends Error {
   statusCode: number;
@@ -18,8 +18,6 @@ class AuthError extends Error {
     this.statusMessage = statusMessage;
   }
 }
-
-
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -44,11 +42,11 @@ export const auth = betterAuth({
   onAPIError: {
     throw: true,
     onError: (error, ctx) => {
-      const err = error as { status?: number; message?: string };
-      throw new AuthError(
-        err.status || 500,
-        err.message || 'Internal Server Error'
-      );
+      const err = error as APIError;
+      throw new APIError('INTERNAL_SERVER_ERROR', {
+        status: err.status || 500,
+        message: err.message || 'Internal Server Error',
+      });
     },
     errorURL: '/error',
   },
