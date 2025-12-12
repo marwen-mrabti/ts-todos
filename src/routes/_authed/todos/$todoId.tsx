@@ -22,9 +22,6 @@ import { toast } from 'sonner';
 
 export const Route = createFileRoute('/_authed/todos/$todoId')({
   loader: async ({ params: { todoId }, context }) => {
-    // const todos = (context.queryClient.getQueryData(['todos']) || []) as TODO[];
-    // const cachedTodo = todos.find((todo) => todo.id === todoId);
-
     return context.queryClient.ensureQueryData(
       todoQueryOptions({ todoId, queryClient: context.queryClient })
     );
@@ -44,9 +41,6 @@ export const Route = createFileRoute('/_authed/todos/$todoId')({
   errorComponent: TodoErrorComponent,
 });
 
-// -----------------------------
-// MAIN PAGE COMPONENT
-// -----------------------------
 function TodoPage() {
   const navigate = useNavigate({ from: '/todos/$todoId' });
   const context = useRouteContext({ from: '/_authed/todos/$todoId' });
