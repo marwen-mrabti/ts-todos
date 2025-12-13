@@ -14,7 +14,7 @@ import { emailColors } from '@/lib/emails/email-colors';
 export const sendEmailWithMagicLink = createServerFn({ method: 'POST' })
   .inputValidator((data) => validateWithPretty(sendMagicLinkInputSchema, data))
   .handler(async ({ data }) => {
-    await sendEmail({
+    void sendEmail({
       data: {
         to: data.email,
         subject: 'Sign in to your account',

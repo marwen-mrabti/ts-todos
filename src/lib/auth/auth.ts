@@ -69,7 +69,7 @@ export const auth = betterAuth({
     magicLink({
       expiresIn: 60 * 30, // 30 minutes in seconds
       sendMagicLink: async ({ email, token, url }, ctx) => {
-        await sendEmailWithMagicLink({ data: { email, url } });
+        void sendEmailWithMagicLink({ data: { email, url } });
       },
     }),
 
