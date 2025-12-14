@@ -41,7 +41,10 @@ export function LoginForm({
       onSubmit: magicLinkLoginSchema,
     },
     onSubmit: async ({ value }) => {
-      const result = await sendMagicLink(value);
+      const result = await sendMagicLink({
+        email: value.email,
+        name: value.name,
+      });
 
       if (result.success) {
         return navigate({
@@ -147,7 +150,7 @@ export function LoginForm({
                         onChange={(e) => field.handleChange(e.target.value)}
                         aria-invalid={isInvalid}
                         placeholder="joe"
-                        autoComplete="off"
+                        autoComplete="on"
                         type="text"
                       />
                       {isInvalid && (
@@ -174,7 +177,7 @@ export function LoginForm({
                         onChange={(e) => field.handleChange(e.target.value)}
                         aria-invalid={isInvalid}
                         placeholder="m@example.com"
-                        autoComplete="off"
+                        autoComplete="on"
                         type="email"
                       />
                       {isInvalid && (

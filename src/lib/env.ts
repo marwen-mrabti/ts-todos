@@ -7,7 +7,9 @@ import { z } from 'zod';
  */
 const envSchema = z.object({
   // Base URL
-  BASE_URL: z.url('BASE_URL must be a valid URL'),
+  BASE_URL: z
+    .url('BASE_URL must be a valid URL')
+    .default('http://localhost:3000'),
 
   // Database Configuration
   DB_HOST: z.string().min(1, 'DB_HOST is required'),

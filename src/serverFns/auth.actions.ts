@@ -46,6 +46,7 @@ export const signInWithMagicLink = createServerFn({ method: 'POST' })
         data: response,
       };
     } catch (error) {
+      console.log('🚨🚨 Failed to send magic link email 🚨🚨', error);
       return {
         success: false,
         error:

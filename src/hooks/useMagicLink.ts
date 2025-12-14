@@ -1,6 +1,5 @@
 import type { MagicLinkCredentials } from '@/lib/utils';
 import { signInWithMagicLink } from '@/serverFns/auth.actions';
-import { useServerFn } from '@tanstack/react-start';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -8,7 +7,6 @@ export const COOLDOWN_KEY = 'magiclink_last_sent';
 const COOLDOWN_MINUTES = 10;
 
 export function useMagicLink() {
-  const magicLinkSignInFn = useServerFn(signInWithMagicLink);
   const [pending, setPending] = useState(false);
   const [cooldown, setCooldown] = useState(0);
 
@@ -51,7 +49,7 @@ export function useMagicLink() {
       setPending(true);
 
       try {
-        const data = await magicLinkSignInFn({
+        const data = await signInWithMagicLink({
           data: credentials,
         });
 
@@ -89,7 +87,7 @@ export function useMagicLink() {
         setPending(false);
       }
     },
-    [cooldown, magicLinkSignInFn]
+    [cooldown]
   );
 
   const formatCooldown = useCallback((seconds: number) => {

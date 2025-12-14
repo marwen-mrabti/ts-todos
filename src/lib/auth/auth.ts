@@ -1,23 +1,12 @@
 import { db } from '@/db';
-import { sendEmailWithMagicLink } from '@/lib/emails/send-magicLink';
 import { env } from '@/lib/env';
+import { sendEmailWithMagicLink } from '@/serverFns/emails/send-magicLink';
+import { sendWelcomeEmail } from '@/serverFns/emails/send-welcome-email';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { APIError } from 'better-auth/api';
 import { createAuthMiddleware, magicLink } from 'better-auth/plugins';
 import { tanstackStartCookies } from 'better-auth/tanstack-start';
-// Custom error class for API errors
-class AuthError extends Error {
-  statusCode: number;
-  statusMessage: string;
-
-  constructor(statusCode: number, statusMessage: string) {
-    super(statusMessage);
-    this.name = 'AuthError';
-    this.statusCode = statusCode;
-    this.statusMessage = statusMessage;
-  }
-}
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -27,6 +16,13 @@ export const auth = betterAuth({
 
   secret: env.BETTER_AUTH_SECRET,
   baseURL: env.BASE_URL,
+
+  trustedOrigins: [
+    env.BASE_URL,
+    'http://localhost:33269',
+    'http://localhost:4173',
+    'http://localhost:3000',
+  ],
 
   socialProviders: {
     github: {
@@ -41,7 +37,7 @@ export const auth = betterAuth({
 
   onAPIError: {
     throw: true,
-    onError: (error, ctx) => {
+    onError: (error, _ctx) => {
       const err = error as APIError;
       throw new APIError('INTERNAL_SERVER_ERROR', {
         status: err.status || 500,
@@ -53,7 +49,15 @@ export const auth = betterAuth({
 
   hooks: {
     after: createAuthMiddleware(async (ctx) => {
-      if (ctx.path === '/get-session') {
+      if (ctx.path.startsWith('/sign-up')) {
+        const newSession = ctx.context.newSession;
+        if (newSession) {
+          void sendWelcomeEmail({
+            email: newSession.user.email,
+            name: newSession.user.name,
+          });
+        }
+      } else if (ctx.path === '/get-session') {
         if (!ctx.context.session) {
           return ctx.json({
             session: null,
@@ -68,13 +72,21 @@ export const auth = betterAuth({
   plugins: [
     magicLink({
       expiresIn: 60 * 30, // 30 minutes in seconds
-      sendMagicLink: async ({ email, token, url }, ctx) => {
-        void sendEmailWithMagicLink({ data: { email, url } });
+      sendMagicLink: async ({ email, url }) => {
+        void sendEmailWithMagicLink({
+          email,
+          url,
+        });
       },
     }),
 
-    tanstackStartCookies(),
+    tanstackStartCookies(), // this needs to be the last plugin
   ],
+
+  logger: {
+    enabled: true,
+    level: 'debug',
+  },
 });
 
 export type Session = typeof auth.$Infer.Session;
