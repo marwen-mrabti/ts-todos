@@ -16,7 +16,7 @@
     "db:pull": "drizzle-kit pull",
     "db:studio": "drizzle-kit studio --port 4982",
     "db:up": "podman-compose up -d",
-    "db:down": "podman-compose down",
+    "db:down": "podman-compose down -v",
     "db:restart": "podman-compose restart",
     "db:logs": "podman-compose logs -f db",
     "db:reset": "podman-compose down -v && podman-compose up -d"

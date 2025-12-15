@@ -1,11 +1,9 @@
 services:
-  # PostgreSQL database service
   db:
-    image: postgres:15-alpine # Lightweight Alpine Linux version
+    image: docker.io/library/postgres:15-alpine
     container_name: ts-todos-postgres
     restart: unless-stopped
 
-    # Database configuration via environment variables
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_USER=${DB_USER}
@@ -15,7 +13,6 @@ services:
     ports:
       - ${DB_PORT}:5432
 
-    # Use named volume instead of bind mount
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -34,6 +31,5 @@ services:
         reservations:
           memory: 256M
 
-# Define named volume at the bottom
 volumes:
   postgres_data:

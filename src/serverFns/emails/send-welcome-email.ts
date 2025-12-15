@@ -1,3 +1,4 @@
+import { emailColors } from '@/lib/email-colors';
 import { sendEmail } from '@/serverFns/emails/send-email';
 
 import { validateWithPretty } from '@/lib/helpers';
@@ -7,8 +8,6 @@ const sendWelcomeEmailSchema = z.object({
   email: z.email(),
   name: z.string(),
 });
-
-import { emailColors } from '@/serverFns/emails/email-colors';
 
 export const sendWelcomeEmail = async (data: {
   email: string;

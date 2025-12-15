@@ -1,5 +1,5 @@
 import { validateWithPretty } from '@/lib/helpers';
-import { emailColors } from '@/serverFns/emails/email-colors';
+import { emailColors } from '@/lib/email-colors';
 import { sendEmail } from '@/serverFns/emails/send-email';
 import { z } from 'zod';
 
