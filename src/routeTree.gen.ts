@@ -20,7 +20,9 @@ import { Route as AuthErrorRouteImport } from './routes/_auth/error'
 import { Route as AuthCheckEmailRouteImport } from './routes/_auth/check-email'
 import { Route as AuthedTodosRouteRouteImport } from './routes/_authed/todos/route'
 import { Route as ApiTodosIndexRouteImport } from './routes/api/todos/index'
+import { Route as ApiChatIndexRouteImport } from './routes/api/chat/index'
 import { Route as AuthedTodosIndexRouteImport } from './routes/_authed/todos/index'
+import { Route as AuthedChatIndexRouteImport } from './routes/_authed/chat/index'
 import { Route as ApiTodosTodoIdRouteImport } from './routes/api/todos/$todoId'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as AuthedTodosTodoIdRouteImport } from './routes/_authed/todos/$todoId'
@@ -79,10 +81,20 @@ const ApiTodosIndexRoute = ApiTodosIndexRouteImport.update({
   path: '/api/todos/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiChatIndexRoute = ApiChatIndexRouteImport.update({
+  id: '/api/chat/',
+  path: '/api/chat/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthedTodosIndexRoute = AuthedTodosIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthedTodosRouteRoute,
+} as any)
+const AuthedChatIndexRoute = AuthedChatIndexRouteImport.update({
+  id: '/chat/',
+  path: '/chat/',
+  getParentRoute: () => AuthedRoute,
 } as any)
 const ApiTodosTodoIdRoute = ApiTodosTodoIdRouteImport.update({
   id: '/api/todos/$todoId',
@@ -117,7 +129,9 @@ export interface FileRoutesByFullPath {
   '/todos/$todoId': typeof AuthedTodosTodoIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRouteWithChildren
+  '/chat': typeof AuthedChatIndexRoute
   '/todos/': typeof AuthedTodosIndexRoute
+  '/api/chat': typeof ApiChatIndexRoute
   '/api/todos': typeof ApiTodosIndexRoute
   '/api/todos/$todoId/edit': typeof ApiTodosTodoIdEditRoute
 }
@@ -132,7 +146,9 @@ export interface FileRoutesByTo {
   '/todos/$todoId': typeof AuthedTodosTodoIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRouteWithChildren
+  '/chat': typeof AuthedChatIndexRoute
   '/todos': typeof AuthedTodosIndexRoute
+  '/api/chat': typeof ApiChatIndexRoute
   '/api/todos': typeof ApiTodosIndexRoute
   '/api/todos/$todoId/edit': typeof ApiTodosTodoIdEditRoute
 }
@@ -151,7 +167,9 @@ export interface FileRoutesById {
   '/_authed/todos/$todoId': typeof AuthedTodosTodoIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRouteWithChildren
+  '/_authed/chat/': typeof AuthedChatIndexRoute
   '/_authed/todos/': typeof AuthedTodosIndexRoute
+  '/api/chat/': typeof ApiChatIndexRoute
   '/api/todos/': typeof ApiTodosIndexRoute
   '/api/todos/$todoId/edit': typeof ApiTodosTodoIdEditRoute
 }
@@ -169,7 +187,9 @@ export interface FileRouteTypes {
     | '/todos/$todoId'
     | '/api/auth/$'
     | '/api/todos/$todoId'
+    | '/chat'
     | '/todos/'
+    | '/api/chat'
     | '/api/todos'
     | '/api/todos/$todoId/edit'
   fileRoutesByTo: FileRoutesByTo
@@ -184,7 +204,9 @@ export interface FileRouteTypes {
     | '/todos/$todoId'
     | '/api/auth/$'
     | '/api/todos/$todoId'
+    | '/chat'
     | '/todos'
+    | '/api/chat'
     | '/api/todos'
     | '/api/todos/$todoId/edit'
   id:
@@ -202,7 +224,9 @@ export interface FileRouteTypes {
     | '/_authed/todos/$todoId'
     | '/api/auth/$'
     | '/api/todos/$todoId'
+    | '/_authed/chat/'
     | '/_authed/todos/'
+    | '/api/chat/'
     | '/api/todos/'
     | '/api/todos/$todoId/edit'
   fileRoutesById: FileRoutesById
@@ -216,6 +240,7 @@ export interface RootRouteChildren {
   ApiHelloRoute: typeof ApiHelloRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiTodosTodoIdRoute: typeof ApiTodosTodoIdRouteWithChildren
+  ApiChatIndexRoute: typeof ApiChatIndexRoute
   ApiTodosIndexRoute: typeof ApiTodosIndexRoute
 }
 
@@ -298,12 +323,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiTodosIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/chat/': {
+      id: '/api/chat/'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authed/todos/': {
       id: '/_authed/todos/'
       path: '/'
       fullPath: '/todos/'
       preLoaderRoute: typeof AuthedTodosIndexRouteImport
       parentRoute: typeof AuthedTodosRouteRoute
+    }
+    '/_authed/chat/': {
+      id: '/_authed/chat/'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof AuthedChatIndexRouteImport
+      parentRoute: typeof AuthedRoute
     }
     '/api/todos/$todoId': {
       id: '/api/todos/$todoId'
@@ -365,10 +404,12 @@ const AuthedTodosRouteRouteWithChildren =
 
 interface AuthedRouteChildren {
   AuthedTodosRouteRoute: typeof AuthedTodosRouteRouteWithChildren
+  AuthedChatIndexRoute: typeof AuthedChatIndexRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedTodosRouteRoute: AuthedTodosRouteRouteWithChildren,
+  AuthedChatIndexRoute: AuthedChatIndexRoute,
 }
 
 const AuthedRouteWithChildren =
@@ -395,6 +436,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiHelloRoute: ApiHelloRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiTodosTodoIdRoute: ApiTodosTodoIdRouteWithChildren,
+  ApiChatIndexRoute: ApiChatIndexRoute,
   ApiTodosIndexRoute: ApiTodosIndexRoute,
 }
 export const routeTree = rootRouteImport

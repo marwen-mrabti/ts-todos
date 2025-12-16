@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start';
-import { eq } from 'drizzle-orm';
+import { count, eq } from 'drizzle-orm';
 
 import { db } from '@/db';
 import { todoIdSchema, todos } from '@/db/schema/todos.schema';
@@ -13,6 +13,15 @@ export const fetchTodos = createServerFn({ method: 'GET' })
     const allTodos = await db.query.todos.findMany({});
 
     return allTodos;
+  });
+
+export const getTodosCount = createServerFn({ method: 'GET' })
+  .middleware([serverFnAuthMiddleware])
+  .handler(async () => {
+    const todosCount = await db
+      .select({ todosCount: count(todos.id) })
+      .from(todos);
+    return todosCount[0]?.todosCount ?? 0;
   });
 
 export const fetchTodoById = createServerFn({ method: 'GET' })

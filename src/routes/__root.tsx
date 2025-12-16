@@ -1,3 +1,4 @@
+import { aiDevtoolsPlugin } from '@tanstack/react-ai-devtools';
 import { TanStackDevtools } from '@tanstack/react-devtools';
 import type { QueryClient } from '@tanstack/react-query';
 import {
@@ -89,8 +90,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                 name: 'Tanstack Router',
                 render: <TanStackRouterDevtoolsPanel />,
               },
+              aiDevtoolsPlugin(),
               TanStackQueryDevtools,
             ]}
+            // this config is important to connect to the server event bus
+            eventBusConfig={{
+              connectToServerBus: true,
+            }}
           />
           <Scripts />
         </ThemeProvider>

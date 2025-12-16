@@ -38,6 +38,10 @@ const envSchema = z.object({
   SMTP_USER: z.email('SMTP_USER must be a valid email'),
   SMTP_PASSWORD: z.string().min(1, 'SMTP_PASSWORD is required'),
 
+  //AI Configuration
+  OPENAI_API_KEY: z.string().min(1, 'OPENAI_API_KEY is required'),
+  GEMINI_API_KEY: z.string().min(1, 'GEMINI_API_KEY is required'),
+
   // Node Environment
   NODE_ENV: z
     .enum(['development', 'production', 'test'])

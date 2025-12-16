@@ -14,7 +14,7 @@ import {
 import { authClient } from '@/lib/auth/auth-client';
 import { cn } from '@/lib/utils';
 import { Link, useNavigate } from '@tanstack/react-router';
-import { Package, User } from 'lucide-react';
+import { BotMessageSquare, LogOutIcon, Package, User } from 'lucide-react';
 
 export default function Header() {
   const { themeMode } = useTheme();
@@ -93,12 +93,12 @@ export default function Header() {
                 </Avatar>
                 <span className="sr-only">User menu</span>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuGroup>
+              <DropdownMenuContent align="end" className="w-56" >
+                <DropdownMenuGroup className={cn('cursor-pointer')}>
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuGroup>
+                <DropdownMenuGroup >
                   <DropdownMenuItem
                     render={
                       <Link
@@ -110,17 +110,33 @@ export default function Header() {
                         }}
                       />
                     }
+                    className={cn('cursor-pointer')}
                   >
                     <Package className="h-4 w-4" data-icon="inline-start" />
                     Products
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuGroup>
+                <DropdownMenuGroup  >
+                  <DropdownMenuItem
+                    render={
+                      <Link
+                        to="/chat"
+                      />
+                    }
+                    className={cn('cursor-pointer')}
+                  >
+                    <BotMessageSquare className="h-4 w-4" data-icon="inline-start" />
+                    Chat
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup className="hover:cursor-pointer">
                   <DropdownMenuItem
                     onClick={handleLogout}
                     className="text-destructive focus:text-destructive cursor-pointer"
                   >
+                    <LogOutIcon className='size-4 ' data-icon="inline-start" />
                     Sign out
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
