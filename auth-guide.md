@@ -1,4 +1,4 @@
-# 🔐 Authentication Guide
+# 🔐 Authentication Guide :
 
 This guide provides a comprehensive overview of the authentication system in the TanStack Todos application, built with [Better Auth](https://www.better-auth.com/).
 
