@@ -77,6 +77,13 @@ export function LoginForm({
           onError: (ctx) => {
             clearTimeout(timeoutId);
             toast.error(ctx.error.message);
+            navigate({
+              to: '/error',
+              search: {
+                error: ctx.error.message,
+                type: 'social',
+              },
+            });
           },
         },
       });

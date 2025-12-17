@@ -1,6 +1,7 @@
 export {
   accounts,
   accountsRelations,
+  rateLimits,
   sessions,
   sessionsRelations,
   users,

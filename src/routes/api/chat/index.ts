@@ -24,7 +24,7 @@ export const Route = createFileRoute('/api/chat/')({
               const openaiAdapter = openai();
               const stream = chat({
                 adapter: geminiAdapter, //openaiAdapter,
-                model: 'gemini-2.5-pro', //'gpt-3.5-turbo',
+                model: 'gemini-2.0-flash', //'gpt-3.5-turbo',
                 messages,
                 conversationId,
                 tools: [getTodosCountTool, showTodosTool],

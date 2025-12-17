@@ -15,68 +15,146 @@ import { zodValidator } from '@tanstack/zod-adapter';
 import { AlertCircle, Home, RefreshCw } from 'lucide-react';
 import { z } from 'zod';
 
+
 export const searchSchema = z.object({
   error: z.string().optional(),
+  type: z.enum(['magic-link', 'social']).optional(),
 });
+
+type ErrorType = 'magic-link' | 'social';
+
+type ErrorDetails = {
+  title: string;
+  message: string;
+  suggestion: string;
+};
 
 export const Route = createFileRoute('/_auth/error')({
   validateSearch: zodValidator(searchSchema),
 
   loader: async () => {
     const cookie = await getMagicLinkData();
-    const data = (
-      cookie ? JSON.parse(cookie) : { email: '', name: '' }
-    ) as MagicLinkCredentials;
-    return data;
+    return (cookie ? JSON.parse(cookie) : { email: '', name: '' }) as MagicLinkCredentials;
   },
+
   component: RouteComponent,
 });
+
+/* ---------------------------------------------
+ * Error catalogs
+ * -------------------------------------------- */
+
+const SHARED_ERRORS: Record<string, ErrorDetails> = {
+  RATE_LIMIT_EXCEEDED: {
+    title: 'Too Many Attempts',
+    message: 'You have made too many sign-in attempts.',
+    suggestion:
+      'Please wait a few minutes before trying again. This helps protect your account security.',
+  },
+  PLEASE_RESTART_THE_PROCESS: {
+    title: 'Session Interrupted',
+    message: 'The sign-in process was interrupted.',
+    suggestion: 'Please start over and try again.',
+  },
+};
+
+const SOCIAL_ERRORS: Record<string, ErrorDetails> = {
+  ACCESS_DENIED: {
+    title: 'Access Denied',
+    message: 'You cancelled the sign-in process.',
+    suggestion:
+      'If you want to sign in, please try again and grant the necessary permissions.',
+  },
+  ACCOUNT_NOT_LINKED: {
+    title: 'Account Not Linked',
+    message: 'This social account is not linked to any user.',
+    suggestion:
+      'Please sign in with your original method first, then link your social account in settings.',
+  },
+  EMAIL_CONFLICT: {
+    title: 'Email Already in Use',
+    message: 'An account with this email already exists.',
+    suggestion:
+      'Please sign in with your existing account or use a different social provider.',
+  },
+  PROVIDER_ERROR: {
+    title: 'Provider Error',
+    message: 'The authentication provider encountered an error.',
+    suggestion: 'This might be a temporary issue. Please try again in a few moments.',
+  },
+  ...SHARED_ERRORS,
+};
+
+const MAGIC_LINK_ERRORS: Record<string, ErrorDetails> = {
+  INVALID_TOKEN: {
+    title: 'Invalid or Expired Link',
+    message: 'This magic link is no longer valid.',
+    suggestion:
+      'Magic links expire after 30 minutes or can only be used once. Please request a new one.',
+  },
+  EXPIRED_TOKEN: {
+    title: 'Link Expired',
+    message: 'This magic link has expired.',
+    suggestion:
+      'Magic links expire after 30 minutes for security. Please request a new one.',
+  },
+  VERIFICATION_FAILED: {
+    title: 'Verification Failed',
+    message: "We couldn't verify your email address.",
+    suggestion: 'Please try requesting a new magic link.',
+  },
+  ...SHARED_ERRORS,
+};
+
+const DEFAULT_ERROR: ErrorDetails = {
+  title: 'Something Went Wrong',
+  message: 'An unexpected error occurred during sign in.',
+  suggestion: 'Please try again or contact support if the problem persists.',
+};
+
+/* ---------------------------------------------
+ * Helpers
+ * -------------------------------------------- */
+
+function normalizeErrorCode(error?: string): string {
+  return (error || 'UNKNOWN_ERROR').toUpperCase();
+}
+
+function resolveErrorType(
+  paramsType: ErrorType | undefined,
+  errorCode: string,
+  hasEmail: boolean,
+): ErrorType {
+  if (paramsType) return paramsType;
+
+  if (errorCode in SOCIAL_ERRORS) return 'social';
+  if (errorCode in MAGIC_LINK_ERRORS) return 'magic-link';
+
+  // fallback heuristic
+  return hasEmail ? 'magic-link' : 'social';
+}
+
+function getErrorDetails(errorType: ErrorType, errorCode: string): ErrorDetails {
+  const source =
+    errorType === 'social' ? SOCIAL_ERRORS : MAGIC_LINK_ERRORS;
+
+  return source[errorCode] ?? DEFAULT_ERROR;
+}
+
+/* ---------------------------------------------
+ * Component
+ * -------------------------------------------- */
 
 function RouteComponent() {
   const navigate = useNavigate();
   const { email, name } = Route.useLoaderData();
-  const searchParams = Route.useSearch();
+  const search = Route.useSearch();
 
-  // Extract error from URL params and normalize to uppercase
-  const errorCode = (
-    (searchParams as any)?.error || 'UNKNOWN_ERROR'
-  ).toUpperCase();
+  const errorCode = normalizeErrorCode(search.error);
+  const errorType = resolveErrorType(search.type, errorCode, Boolean(email));
+  const errorDetails = getErrorDetails(errorType, errorCode);
 
-  // Map error codes to user-friendly messages
-  const getErrorDetails = (code: string) => {
-    const errors: Record<
-      string,
-      { title: string; message: string; suggestion: string }
-    > = {
-      INVALID_TOKEN: {
-        title: 'Invalid or Expired Link',
-        message: 'This magic link is no longer valid.',
-        suggestion:
-          'Magic links expire after 30 minutes or can only be used once. Please request a new one to sign in.',
-      },
-      EXPIRED_TOKEN: {
-        title: 'Link Expired',
-        message: 'This magic link has expired.',
-        suggestion:
-          'Magic links expire after 30 minutes for security. Please request a new one.',
-      },
-      VERIFICATION_FAILED: {
-        title: 'Verification Failed',
-        message: "We couldn't verify your email address.",
-        suggestion: 'Please try requesting a new magic link.',
-      },
-      UNKNOWN_ERROR: {
-        title: 'Something Went Wrong',
-        message: 'An unexpected error occurred during sign in.',
-        suggestion:
-          'Please try again or contact support if the problem persists.',
-      },
-    };
-
-    return errors[code] || errors.UNKNOWN_ERROR;
-  };
-
-  const errorDetails = getErrorDetails(errorCode);
+  const showResendButton = errorType === 'magic-link' && Boolean(email);
 
   return (
     <div className="from-background to-muted flex h-full w-full items-center justify-center bg-linear-to-br p-4">
@@ -88,7 +166,9 @@ function RouteComponent() {
             </div>
           </div>
 
-          <CardTitle className="mb-2 text-3xl">{errorDetails.title}</CardTitle>
+          <CardTitle className="mb-2 text-3xl">
+            {errorDetails.title}
+          </CardTitle>
 
           <CardDescription className="text-base">
             {errorDetails.message}
@@ -106,19 +186,22 @@ function RouteComponent() {
           </Alert>
 
           <div className="space-y-3">
-            <ResendMagicLinkButton email={email} name={name} />
+            {showResendButton && (
+              <ResendMagicLinkButton email={email} name={name} />
+            )}
 
             <div className="grid grid-cols-2 gap-2">
               <Button variant="outline" onClick={() => navigate({ to: '/' })}>
                 <Home className="mr-2 h-4 w-4" />
                 Go Home
               </Button>
+
               <Button
                 variant="outline"
-                onClick={() => window.location.reload()}
+                onClick={() => navigate({ to: '/login' })}
               >
                 <RefreshCw className="mr-2 h-4 w-4" />
-                Retry
+                Try Again
               </Button>
             </div>
           </div>
