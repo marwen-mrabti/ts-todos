@@ -2,6 +2,7 @@ import { getTodosCountTool, showTodosTool } from '@/lib/ai-tools-definition';
 import { authMiddleware } from '@/middleware/auth-middleware';
 import { chat, toStreamResponse } from '@tanstack/ai';
 import { gemini } from '@tanstack/ai-gemini';
+import { openai } from '@tanstack/ai-openai';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/api/chat/')({
@@ -16,16 +17,15 @@ export const Route = createFileRoute('/api/chat/')({
 
             try {
               // Create a streaming chat response
-              const adapter = gemini();
+              const geminiAdapter = gemini();
+              const openaiAdapter = openai();
               const stream = chat({
-                adapter,
-                model: 'gemini-2.5-flash',
+                adapter: openaiAdapter,
+                model: 'gpt-3.5-turbo',
                 messages,
                 conversationId,
                 tools: [getTodosCountTool, showTodosTool],
               });
-
-              console.info('\n🚩🚩 chat messages 🚩🚩\n', messages);
 
               // Convert stream to HTTP response
               return toStreamResponse(stream);
