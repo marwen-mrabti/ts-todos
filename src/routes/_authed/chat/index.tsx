@@ -1,10 +1,15 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAIErrorDisplay } from "@/hooks/useAIErrorDisplay";
 import { cn } from "@/lib/utils";
-import { fetchServerSentEvents, useChat } from "@tanstack/ai-react";
+import { saveToLocalStorage } from "@/routes/_authed/chat/client-tools-definition";
+
+import { clientTools } from '@tanstack/ai-client';
+import { fetchServerSentEvents, useChat, } from "@tanstack/ai-react";
+
 import { createFileRoute } from '@tanstack/react-router';
-import { AlertCircle, X } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { useState } from "react";
 
 export const Route = createFileRoute('/_authed/chat/')({
@@ -13,23 +18,13 @@ export const Route = createFileRoute('/_authed/chat/')({
 
 function RouteComponent() {
   const [input, setInput] = useState("");
-  const [error, setError] = useState<{ message: string, code: string }>({
-    message: "",
-    code: "",
-  });
 
-  const { messages, sendMessage, isLoading } = useChat({
+  const { messages, sendMessage, isLoading, error } = useChat({
     connection: fetchServerSentEvents("/api/chat"),
-    onChunk: (chunk) => {
-      if (chunk.type === "error") {
-        setError({
-          code: chunk.error.code || "UNKNOWN_ERROR",
-          message: chunk.error.message || "An unknown error occurred",
-        });
-      }
-    },
+    tools: clientTools(saveToLocalStorage), // clientTools(t1, t2, ...)
   });
 
+  const errorDisplay = useAIErrorDisplay(error)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,27 +34,18 @@ function RouteComponent() {
     }
   };
 
-  const dismissError = () => setError({ message: "", code: "" });
 
   return (
     <div className="flex flex-col h-full w-full max-w-3xl mx-auto bg-background">
-      {error.code !== "" && (
+      {error && (
         <div className="p-4 pb-0">
           <Alert variant="destructive" className="relative">
-            <AlertCircle className="h-4 w-4" />
+            <AlertCircle className="h-4 w-4 animate-pulse duration-[3000]" />
             <AlertTitle className="flex items-center justify-between uppercase font-bold">
-              Error: {error.code}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-6 w-6 -mr-2 "
-                onClick={dismissError}
-              >
-                <X className="h-4 w-4 animate-pulse duration-[3000]" />
-              </Button>
+              {errorDisplay?.code}
             </AlertTitle>
             <AlertDescription className="text-sm font-medium mt-1 text-muted-foreground!">
-              {error.message}
+              {errorDisplay?.message}
             </AlertDescription>
           </Alert>
         </div>

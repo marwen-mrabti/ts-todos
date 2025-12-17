@@ -1,5 +1,8 @@
-import { getTodosCountTool, showTodosTool } from '@/lib/ai-tools-definition';
 import { authMiddleware } from '@/middleware/auth-middleware';
+import {
+  getTodosCountTool,
+  showTodosTool,
+} from '@/routes/api/chat/server-tools-definition';
 import { chat, toStreamResponse } from '@tanstack/ai';
 import { gemini } from '@tanstack/ai-gemini';
 import { openai } from '@tanstack/ai-openai';
@@ -20,8 +23,8 @@ export const Route = createFileRoute('/api/chat/')({
               const geminiAdapter = gemini();
               const openaiAdapter = openai();
               const stream = chat({
-                adapter: openaiAdapter,
-                model: 'gpt-3.5-turbo',
+                adapter: geminiAdapter, //openaiAdapter,
+                model: 'gemini-2.5-pro', //'gpt-3.5-turbo',
                 messages,
                 conversationId,
                 tools: [getTodosCountTool, showTodosTool],

@@ -23,6 +23,9 @@ importers:
       '@tanstack/ai':
         specifier: ^0.0.3
         version: 0.0.3(@alcyone-labs/zod-to-json-schema@4.0.10(zod@4.1.13))(zod@4.1.13)
+      '@tanstack/ai-client':
+        specifier: ^0.0.3
+        version: 0.0.3(@alcyone-labs/zod-to-json-schema@4.0.10(zod@4.1.13))(zod@4.1.13)
       '@tanstack/ai-gemini':
         specifier: ^0.0.3
         version: 0.0.3(@modelcontextprotocol/sdk@1.24.3(zod@4.1.13))(@tanstack/ai@0.0.3(@alcyone-labs/zod-to-json-schema@4.0.10(zod@4.1.13))(zod@4.1.13))
