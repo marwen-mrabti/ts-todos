@@ -103,10 +103,11 @@ export default function ProductList({
                         category: cat,
                         page: 1, // Reset to page 1 when changing filters
                       })}
-                      className={`px-4 py-2 rounded-lg transition-colors ${category === cat
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-gray-200 text-muted-foreground hover:bg-gray-300'
-                        }`}
+                      className={`px-4 py-2 rounded-lg transition-colors ${
+                        category === cat
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-gray-200 text-muted-foreground hover:bg-gray-300'
+                      }`}
                     >
                       {cat.charAt(0).toUpperCase() + cat.slice(1)}
                     </Link>
@@ -131,10 +132,11 @@ export default function ProductList({
                       minPrice: price,
                       page: 1,
                     })}
-                    className={`px-3 py-1 rounded-lg text-sm transition-colors ${minPrice === price
-                      ? 'bg-green-500 text-white'
-                      : 'bg-gray-200 text-muted-foreground hover:bg-gray-300'
-                      }`}
+                    className={`px-3 py-1 rounded-lg text-sm transition-colors ${
+                      minPrice === price
+                        ? 'bg-green-500 text-white'
+                        : 'bg-gray-200 text-muted-foreground hover:bg-gray-300'
+                    }`}
                   >
                     ${price}+
                   </Link>
@@ -209,10 +211,11 @@ export default function ProductList({
                 page: Math.max(1, page - 1),
               })}
               disabled={page === 1}
-              className={`px-4 py-2 bg-white border border-gray-300 rounded-lg transition-colors ${page === 1
-                ? 'opacity-50 cursor-not-allowed'
-                : 'hover:bg-gray-50'
-                }`}
+              className={`px-4 py-2 bg-white border border-gray-300 rounded-lg transition-colors ${
+                page === 1
+                  ? 'opacity-50 cursor-not-allowed'
+                  : 'hover:bg-gray-50'
+              }`}
             >
               Previous
             </Link>
@@ -227,10 +230,11 @@ export default function ProductList({
                     ...prev,
                     page: pageNum,
                   })}
-                  className={`px-4 py-2 rounded-lg transition-colors ${page === pageNum
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-white border border-gray-300 hover:bg-gray-50'
-                    }`}
+                  className={`px-4 py-2 rounded-lg transition-colors ${
+                    page === pageNum
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-white border border-gray-300 hover:bg-gray-50'
+                  }`}
                 >
                   {pageNum}
                 </Link>
@@ -245,10 +249,11 @@ export default function ProductList({
                 page: Math.min(totalPages, page + 1),
               })}
               disabled={page === totalPages}
-              className={`px-4 py-2 bg-white border border-gray-300 rounded-lg transition-colors ${page === totalPages
-                ? 'opacity-50 cursor-not-allowed'
-                : 'hover:bg-gray-50'
-                }`}
+              className={`px-4 py-2 bg-white border border-gray-300 rounded-lg transition-colors ${
+                page === totalPages
+                  ? 'opacity-50 cursor-not-allowed'
+                  : 'hover:bg-gray-50'
+              }`}
             >
               Next
             </Link>

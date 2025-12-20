@@ -285,7 +285,6 @@ function TodosPendingComponent() {
 
         {/* Main Content Skeleton */}
         <Skeleton className='rounded-xl border border-slate-200  shadow-sm dark:border-slate-800  ' />
-
       </div>
     </main>
   );

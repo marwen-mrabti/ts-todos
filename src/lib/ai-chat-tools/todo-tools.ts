@@ -7,10 +7,10 @@ import { z } from 'zod';
 export const getTodosCountDef = toolDefinition({
   name: 'get_todos_count',
   description: 'Get the number of todos',
-  inputSchema: z.object({ }),
+  inputSchema: z.object({}),
   outputSchema: z.number(),
 });
-export const getTodosCountTool = getTodosCountDef.server(async ({ }) => {
+export const getTodosCountTool = getTodosCountDef.server(async ({}) => {
   return await getTodosCount();
 });
 
@@ -19,18 +19,17 @@ export const showTodosDef = toolDefinition({
   description: 'list the user todos',
   inputSchema: todosQuerySchema,
   outputSchema: z.array(
-   TodoSchema.omit({
-    createdAt: true,
-    updatedAt: true,
-   })
+    TodoSchema.omit({
+      createdAt: true,
+      updatedAt: true,
+    })
   ),
   needsApproval: false,
 });
-export const showTodosTool = showTodosDef.server(async ( data ) => {
-  const todos = await fetchTodos({ data })
-  return todos
+export const showTodosTool = showTodosDef.server(async (data) => {
+  const todos = await fetchTodos({ data });
+  return todos;
 });
-
 
 export const saveToLocalStorageDef = toolDefinition({
   name: 'save_to_local_storage',

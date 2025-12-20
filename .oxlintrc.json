@@ -38,7 +38,7 @@
         "no-console": "off"
       }
     },
-    
+
     {
       "files": ["**/*.{ts,tsx}"],
       "plugins": ["typescript"],

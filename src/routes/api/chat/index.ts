@@ -1,5 +1,8 @@
 import { authMiddleware } from '@/middleware/auth-middleware';
-import { getTodosCountTool, showTodosTool } from '@/lib/ai-chat-tools/todo-tools';
+import {
+  getTodosCountTool,
+  showTodosTool,
+} from '@/lib/ai-chat-tools/todo-tools';
 import { chat, maxIterations, toServerSentEventsStream } from '@tanstack/ai';
 import { openaiText } from '@tanstack/ai-openai';
 import { createFileRoute } from '@tanstack/react-router';
@@ -51,7 +54,6 @@ export const Route = createFileRoute('/api/chat/')({
                 stream,
                 abortController
               );
-
 
               // Convert stream to HTTP response
               return new Response(readableStream, {
