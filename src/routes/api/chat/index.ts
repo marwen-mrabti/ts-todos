@@ -1,13 +1,15 @@
 import { authMiddleware } from '@/middleware/auth-middleware';
-import {
-  getTodosCountTool,
-  showTodosTool,
-} from '@/routes/api/chat/server-tools-definition';
+import { getTodosCountTool, showTodosTool } from '@/lib/ai-chat-tools/todo-tools';
 import { chat, maxIterations, toServerSentEventsStream } from '@tanstack/ai';
 import { openaiText } from '@tanstack/ai-openai';
 import { createFileRoute } from '@tanstack/react-router';
 
-const SYSTEM_PROMPT = `You are a helpful assistant
+const SYSTEM_PROMPT = `
+You are a helpful assistant that can help the user manage their todos.
+
+Tools:
+1- getTodosCount: Get the number of todos
+2- showTodos: List the user todos
 
 Example workflow:
 User: "How many todos do I have?"
@@ -37,7 +39,7 @@ export const Route = createFileRoute('/api/chat/')({
             try {
               // Create a streaming chat response
               const stream = chat({
-                adapter:openaiText("gpt-4o") ,//geminiText('gemini-2.5-flash'),
+                adapter: openaiText('gpt-4o-mini'), //geminiText('gemini-2.5-flash'),
                 messages,
                 conversationId,
                 tools: [getTodosCountTool, showTodosTool],
@@ -50,8 +52,7 @@ export const Route = createFileRoute('/api/chat/')({
                 abortController
               );
 
-              console.log('chat stream********\n', stream);
-              console.log('readableStream********\n', readableStream);
+
               // Convert stream to HTTP response
               return new Response(readableStream, {
                 headers: {

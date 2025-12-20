@@ -2,9 +2,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAIErrorDisplay } from '@/hooks/useAIErrorDisplay';
+import { saveToLocalStorage } from "@/lib/ai-chat-tools/todo-tools";
 import { cn } from '@/lib/utils';
-import { saveToLocalStorage } from '@/routes/_authed/chat/client-tools-definition';
-
 import { clientTools } from '@tanstack/ai-client';
 import { fetchServerSentEvents, useChat } from '@tanstack/ai-react';
 
@@ -24,7 +23,10 @@ function RouteComponent() {
     tools: clientTools(saveToLocalStorage), // clientTools(t1, t2, ...)
   });
 
-  const errorDisplay = useAIErrorDisplay(error);
+  const errorDisplay = useAIErrorDisplay(error, {
+simplifyQuotaErrors:false
+  });
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
