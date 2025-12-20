@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm run db:down && pnpm run db:up && vite dev --port 3000",
-    "build": "vite build",
+    "build": "pnpm run format && vite build",
     "serve": "vite preview",
     "test": "vitest run",
     "lint": "oxlint --fix-suggestions",

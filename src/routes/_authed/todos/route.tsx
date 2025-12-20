@@ -16,6 +16,7 @@ import NotFound from '@/components/app/not-found-component';
 import TodoList from '@/components/todo-list';
 import TodoListSkeleton from '@/components/todo-list-skeleton';
 
+import { Button } from '@/components/ui/button';
 import { Field, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import {
@@ -26,7 +27,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useDebounce } from '@/hooks/use-debounce';
 import {
   directionOptions,
   orderByOptions,
@@ -73,26 +73,27 @@ function RouteComponent() {
   const navigate = useNavigate({ from: Route.fullPath });
 
   const [queryInput, setQueryInput] = useState(searchParams.query ?? '');
-  const debouncedQuery = useDebounce(queryInput, 400);
-
   const { data: todos } = useSuspenseQuery(todosQueryOptions(searchParams));
 
-  useEffect(() => {
-    if (debouncedQuery === searchParams.query) return;
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    navigate({ search: (prev) => ({ query: queryInput }), replace: true });
+  };
 
-    navigate({
-      to: '/todos',
-      search: (prev) => ({
-        ...prev,
-        query: debouncedQuery || undefined,
-        page: 1,
-      }),
-      replace: true,
-    });
-  }, [debouncedQuery, searchParams.query]);
+  useEffect(() => {
+    queryInput.trim() === ''
+      ? navigate({
+          search: (prev) => ({ ...prev, query: undefined }),
+          replace: true,
+        })
+      : null;
+  }, [queryInput]);
 
   const updateFilters = (name: keyof TodosQuery, value: unknown) => {
-    navigate({ search: (prev) => ({ ...prev, [name]: value }), replace: true });
+    navigate({
+      search: (prev) => ({ ...prev, [name]: value }),
+      replace: false,
+    });
   };
 
   //TODO : handle pagination
@@ -127,20 +128,24 @@ function RouteComponent() {
 
           {/* Filters */}
           <div className='mb-4 space-y-3'>
-            <Input
-              placeholder='Search todos...'
-              value={queryInput}
-              onChange={(e) => setQueryInput(e.target.value)}
-            />
+            <form onSubmit={handleSearch} className='flex items-center gap-2'>
+              <Input
+                placeholder='Search todos...'
+                value={queryInput}
+                onChange={(e) => setQueryInput(e.target.value)}
+                className='flex-1'
+              />
+              <Button type='submit'>Search</Button>
+            </form>
 
             <Field className='flex-1 '>
               <FieldLabel htmlFor='select-orderBy'>Select Status</FieldLabel>
               <Select
                 items={statusOptions}
                 value={
-                  searchParams.status === undefined
+                  searchParams.status === 'all'
                     ? 'all'
-                    : searchParams.status
+                    : searchParams.status === 'completed'
                       ? 'completed'
                       : 'pending'
                 }
@@ -165,7 +170,7 @@ function RouteComponent() {
               <Field className='flex-1 '>
                 <FieldLabel htmlFor='select-orderBy'>Order By</FieldLabel>
                 <Select
-                  items={directionOptions}
+                  items={orderByOptions}
                   value={searchParams.orderBy}
                   onValueChange={(value) =>
                     updateFilters('orderBy', value as TodosQuery['orderBy'])

@@ -8,173 +8,173 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root';
-import { Route as ProductsRouteImport } from './routes/products';
-import { Route as OnboardingRouteImport } from './routes/onboarding';
-import { Route as AuthedRouteImport } from './routes/_authed';
-import { Route as AuthRouteImport } from './routes/_auth';
-import { Route as IndexRouteImport } from './routes/index';
-import { Route as ApiHelloRouteImport } from './routes/api/hello';
-import { Route as AuthLoginRouteImport } from './routes/_auth/login';
-import { Route as AuthErrorRouteImport } from './routes/_auth/error';
-import { Route as AuthCheckEmailRouteImport } from './routes/_auth/check-email';
-import { Route as AuthedTodosRouteRouteImport } from './routes/_authed/todos/route';
-import { Route as ApiTodosIndexRouteImport } from './routes/api/todos/index';
-import { Route as ApiChatIndexRouteImport } from './routes/api/chat/index';
-import { Route as AuthedTodosIndexRouteImport } from './routes/_authed/todos/index';
-import { Route as AuthedChatIndexRouteImport } from './routes/_authed/chat/index';
-import { Route as ApiTodosTodoIdRouteImport } from './routes/api/todos/$todoId';
-import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$';
-import { Route as AuthedTodosTodoIdRouteImport } from './routes/_authed/todos/$todoId';
-import { Route as ApiTodosTodoIdEditRouteImport } from './routes/api/todos/$todoId.edit';
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as ProductsRouteImport } from './routes/products'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as AuthedRouteImport } from './routes/_authed'
+import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiHelloRouteImport } from './routes/api/hello'
+import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AuthErrorRouteImport } from './routes/_auth/error'
+import { Route as AuthCheckEmailRouteImport } from './routes/_auth/check-email'
+import { Route as AuthedTodosRouteRouteImport } from './routes/_authed/todos/route'
+import { Route as ApiTodosIndexRouteImport } from './routes/api/todos/index'
+import { Route as ApiChatIndexRouteImport } from './routes/api/chat/index'
+import { Route as AuthedTodosIndexRouteImport } from './routes/_authed/todos/index'
+import { Route as AuthedChatIndexRouteImport } from './routes/_authed/chat/index'
+import { Route as ApiTodosTodoIdRouteImport } from './routes/api/todos/$todoId'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as AuthedTodosTodoIdRouteImport } from './routes/_authed/todos/$todoId'
+import { Route as ApiTodosTodoIdEditRouteImport } from './routes/api/todos/$todoId.edit'
 
 const ProductsRoute = ProductsRouteImport.update({
   id: '/products',
   path: '/products',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AuthedRoute = AuthedRouteImport.update({
   id: '/_authed',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ApiHelloRoute = ApiHelloRouteImport.update({
   id: '/api/hello',
   path: '/api/hello',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => AuthRoute,
-} as any);
+} as any)
 const AuthErrorRoute = AuthErrorRouteImport.update({
   id: '/error',
   path: '/error',
   getParentRoute: () => AuthRoute,
-} as any);
+} as any)
 const AuthCheckEmailRoute = AuthCheckEmailRouteImport.update({
   id: '/check-email',
   path: '/check-email',
   getParentRoute: () => AuthRoute,
-} as any);
+} as any)
 const AuthedTodosRouteRoute = AuthedTodosRouteRouteImport.update({
   id: '/todos',
   path: '/todos',
   getParentRoute: () => AuthedRoute,
-} as any);
+} as any)
 const ApiTodosIndexRoute = ApiTodosIndexRouteImport.update({
   id: '/api/todos/',
   path: '/api/todos/',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ApiChatIndexRoute = ApiChatIndexRouteImport.update({
   id: '/api/chat/',
   path: '/api/chat/',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AuthedTodosIndexRoute = AuthedTodosIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthedTodosRouteRoute,
-} as any);
+} as any)
 const AuthedChatIndexRoute = AuthedChatIndexRouteImport.update({
   id: '/chat/',
   path: '/chat/',
   getParentRoute: () => AuthedRoute,
-} as any);
+} as any)
 const ApiTodosTodoIdRoute = ApiTodosTodoIdRouteImport.update({
   id: '/api/todos/$todoId',
   path: '/api/todos/$todoId',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AuthedTodosTodoIdRoute = AuthedTodosTodoIdRouteImport.update({
   id: '/$todoId',
   path: '/$todoId',
   getParentRoute: () => AuthedTodosRouteRoute,
-} as any);
+} as any)
 const ApiTodosTodoIdEditRoute = ApiTodosTodoIdEditRouteImport.update({
   id: '/edit',
   path: '/edit',
   getParentRoute: () => ApiTodosTodoIdRoute,
-} as any);
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute;
-  '/onboarding': typeof OnboardingRoute;
-  '/products': typeof ProductsRoute;
-  '/todos': typeof AuthedTodosRouteRouteWithChildren;
-  '/check-email': typeof AuthCheckEmailRoute;
-  '/error': typeof AuthErrorRoute;
-  '/login': typeof AuthLoginRoute;
-  '/api/hello': typeof ApiHelloRoute;
-  '/todos/$todoId': typeof AuthedTodosTodoIdRoute;
-  '/api/auth/$': typeof ApiAuthSplatRoute;
-  '/api/todos/$todoId': typeof ApiTodosTodoIdRouteWithChildren;
-  '/chat': typeof AuthedChatIndexRoute;
-  '/todos/': typeof AuthedTodosIndexRoute;
-  '/api/chat': typeof ApiChatIndexRoute;
-  '/api/todos': typeof ApiTodosIndexRoute;
-  '/api/todos/$todoId/edit': typeof ApiTodosTodoIdEditRoute;
+  '/': typeof IndexRoute
+  '/onboarding': typeof OnboardingRoute
+  '/products': typeof ProductsRoute
+  '/todos': typeof AuthedTodosRouteRouteWithChildren
+  '/check-email': typeof AuthCheckEmailRoute
+  '/error': typeof AuthErrorRoute
+  '/login': typeof AuthLoginRoute
+  '/api/hello': typeof ApiHelloRoute
+  '/todos/$todoId': typeof AuthedTodosTodoIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/todos/$todoId': typeof ApiTodosTodoIdRouteWithChildren
+  '/chat': typeof AuthedChatIndexRoute
+  '/todos/': typeof AuthedTodosIndexRoute
+  '/api/chat': typeof ApiChatIndexRoute
+  '/api/todos': typeof ApiTodosIndexRoute
+  '/api/todos/$todoId/edit': typeof ApiTodosTodoIdEditRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute;
-  '/onboarding': typeof OnboardingRoute;
-  '/products': typeof ProductsRoute;
-  '/check-email': typeof AuthCheckEmailRoute;
-  '/error': typeof AuthErrorRoute;
-  '/login': typeof AuthLoginRoute;
-  '/api/hello': typeof ApiHelloRoute;
-  '/todos/$todoId': typeof AuthedTodosTodoIdRoute;
-  '/api/auth/$': typeof ApiAuthSplatRoute;
-  '/api/todos/$todoId': typeof ApiTodosTodoIdRouteWithChildren;
-  '/chat': typeof AuthedChatIndexRoute;
-  '/todos': typeof AuthedTodosIndexRoute;
-  '/api/chat': typeof ApiChatIndexRoute;
-  '/api/todos': typeof ApiTodosIndexRoute;
-  '/api/todos/$todoId/edit': typeof ApiTodosTodoIdEditRoute;
+  '/': typeof IndexRoute
+  '/onboarding': typeof OnboardingRoute
+  '/products': typeof ProductsRoute
+  '/check-email': typeof AuthCheckEmailRoute
+  '/error': typeof AuthErrorRoute
+  '/login': typeof AuthLoginRoute
+  '/api/hello': typeof ApiHelloRoute
+  '/todos/$todoId': typeof AuthedTodosTodoIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/todos/$todoId': typeof ApiTodosTodoIdRouteWithChildren
+  '/chat': typeof AuthedChatIndexRoute
+  '/todos': typeof AuthedTodosIndexRoute
+  '/api/chat': typeof ApiChatIndexRoute
+  '/api/todos': typeof ApiTodosIndexRoute
+  '/api/todos/$todoId/edit': typeof ApiTodosTodoIdEditRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  '/': typeof IndexRoute;
-  '/_auth': typeof AuthRouteWithChildren;
-  '/_authed': typeof AuthedRouteWithChildren;
-  '/onboarding': typeof OnboardingRoute;
-  '/products': typeof ProductsRoute;
-  '/_authed/todos': typeof AuthedTodosRouteRouteWithChildren;
-  '/_auth/check-email': typeof AuthCheckEmailRoute;
-  '/_auth/error': typeof AuthErrorRoute;
-  '/_auth/login': typeof AuthLoginRoute;
-  '/api/hello': typeof ApiHelloRoute;
-  '/_authed/todos/$todoId': typeof AuthedTodosTodoIdRoute;
-  '/api/auth/$': typeof ApiAuthSplatRoute;
-  '/api/todos/$todoId': typeof ApiTodosTodoIdRouteWithChildren;
-  '/_authed/chat/': typeof AuthedChatIndexRoute;
-  '/_authed/todos/': typeof AuthedTodosIndexRoute;
-  '/api/chat/': typeof ApiChatIndexRoute;
-  '/api/todos/': typeof ApiTodosIndexRoute;
-  '/api/todos/$todoId/edit': typeof ApiTodosTodoIdEditRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/_auth': typeof AuthRouteWithChildren
+  '/_authed': typeof AuthedRouteWithChildren
+  '/onboarding': typeof OnboardingRoute
+  '/products': typeof ProductsRoute
+  '/_authed/todos': typeof AuthedTodosRouteRouteWithChildren
+  '/_auth/check-email': typeof AuthCheckEmailRoute
+  '/_auth/error': typeof AuthErrorRoute
+  '/_auth/login': typeof AuthLoginRoute
+  '/api/hello': typeof ApiHelloRoute
+  '/_authed/todos/$todoId': typeof AuthedTodosTodoIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/todos/$todoId': typeof ApiTodosTodoIdRouteWithChildren
+  '/_authed/chat/': typeof AuthedChatIndexRoute
+  '/_authed/todos/': typeof AuthedTodosIndexRoute
+  '/api/chat/': typeof ApiChatIndexRoute
+  '/api/todos/': typeof ApiTodosIndexRoute
+  '/api/todos/$todoId/edit': typeof ApiTodosTodoIdEditRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/onboarding'
@@ -191,8 +191,8 @@ export interface FileRouteTypes {
     | '/todos/'
     | '/api/chat'
     | '/api/todos'
-    | '/api/todos/$todoId/edit';
-  fileRoutesByTo: FileRoutesByTo;
+    | '/api/todos/$todoId/edit'
+  fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/onboarding'
@@ -208,7 +208,7 @@ export interface FileRouteTypes {
     | '/todos'
     | '/api/chat'
     | '/api/todos'
-    | '/api/todos/$todoId/edit';
+    | '/api/todos/$todoId/edit'
   id:
     | '__root__'
     | '/'
@@ -228,204 +228,204 @@ export interface FileRouteTypes {
     | '/_authed/todos/'
     | '/api/chat/'
     | '/api/todos/'
-    | '/api/todos/$todoId/edit';
-  fileRoutesById: FileRoutesById;
+    | '/api/todos/$todoId/edit'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  AuthRoute: typeof AuthRouteWithChildren;
-  AuthedRoute: typeof AuthedRouteWithChildren;
-  OnboardingRoute: typeof OnboardingRoute;
-  ProductsRoute: typeof ProductsRoute;
-  ApiHelloRoute: typeof ApiHelloRoute;
-  ApiAuthSplatRoute: typeof ApiAuthSplatRoute;
-  ApiTodosTodoIdRoute: typeof ApiTodosTodoIdRouteWithChildren;
-  ApiChatIndexRoute: typeof ApiChatIndexRoute;
-  ApiTodosIndexRoute: typeof ApiTodosIndexRoute;
+  IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRouteWithChildren
+  AuthedRoute: typeof AuthedRouteWithChildren
+  OnboardingRoute: typeof OnboardingRoute
+  ProductsRoute: typeof ProductsRoute
+  ApiHelloRoute: typeof ApiHelloRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiTodosTodoIdRoute: typeof ApiTodosTodoIdRouteWithChildren
+  ApiChatIndexRoute: typeof ApiChatIndexRoute
+  ApiTodosIndexRoute: typeof ApiTodosIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/products': {
-      id: '/products';
-      path: '/products';
-      fullPath: '/products';
-      preLoaderRoute: typeof ProductsRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/onboarding': {
-      id: '/onboarding';
-      path: '/onboarding';
-      fullPath: '/onboarding';
-      preLoaderRoute: typeof OnboardingRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authed': {
-      id: '/_authed';
-      path: '';
-      fullPath: '';
-      preLoaderRoute: typeof AuthedRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/_authed'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_auth': {
-      id: '/_auth';
-      path: '';
-      fullPath: '';
-      preLoaderRoute: typeof AuthRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
-      id: '/';
-      path: '/';
-      fullPath: '/';
-      preLoaderRoute: typeof IndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/hello': {
-      id: '/api/hello';
-      path: '/api/hello';
-      fullPath: '/api/hello';
-      preLoaderRoute: typeof ApiHelloRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/api/hello'
+      path: '/api/hello'
+      fullPath: '/api/hello'
+      preLoaderRoute: typeof ApiHelloRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_auth/login': {
-      id: '/_auth/login';
-      path: '/login';
-      fullPath: '/login';
-      preLoaderRoute: typeof AuthLoginRouteImport;
-      parentRoute: typeof AuthRoute;
-    };
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/error': {
-      id: '/_auth/error';
-      path: '/error';
-      fullPath: '/error';
-      preLoaderRoute: typeof AuthErrorRouteImport;
-      parentRoute: typeof AuthRoute;
-    };
+      id: '/_auth/error'
+      path: '/error'
+      fullPath: '/error'
+      preLoaderRoute: typeof AuthErrorRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/check-email': {
-      id: '/_auth/check-email';
-      path: '/check-email';
-      fullPath: '/check-email';
-      preLoaderRoute: typeof AuthCheckEmailRouteImport;
-      parentRoute: typeof AuthRoute;
-    };
+      id: '/_auth/check-email'
+      path: '/check-email'
+      fullPath: '/check-email'
+      preLoaderRoute: typeof AuthCheckEmailRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_authed/todos': {
-      id: '/_authed/todos';
-      path: '/todos';
-      fullPath: '/todos';
-      preLoaderRoute: typeof AuthedTodosRouteRouteImport;
-      parentRoute: typeof AuthedRoute;
-    };
+      id: '/_authed/todos'
+      path: '/todos'
+      fullPath: '/todos'
+      preLoaderRoute: typeof AuthedTodosRouteRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/api/todos/': {
-      id: '/api/todos/';
-      path: '/api/todos';
-      fullPath: '/api/todos';
-      preLoaderRoute: typeof ApiTodosIndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/api/todos/'
+      path: '/api/todos'
+      fullPath: '/api/todos'
+      preLoaderRoute: typeof ApiTodosIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/chat/': {
-      id: '/api/chat/';
-      path: '/api/chat';
-      fullPath: '/api/chat';
-      preLoaderRoute: typeof ApiChatIndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/api/chat/'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authed/todos/': {
-      id: '/_authed/todos/';
-      path: '/';
-      fullPath: '/todos/';
-      preLoaderRoute: typeof AuthedTodosIndexRouteImport;
-      parentRoute: typeof AuthedTodosRouteRoute;
-    };
+      id: '/_authed/todos/'
+      path: '/'
+      fullPath: '/todos/'
+      preLoaderRoute: typeof AuthedTodosIndexRouteImport
+      parentRoute: typeof AuthedTodosRouteRoute
+    }
     '/_authed/chat/': {
-      id: '/_authed/chat/';
-      path: '/chat';
-      fullPath: '/chat';
-      preLoaderRoute: typeof AuthedChatIndexRouteImport;
-      parentRoute: typeof AuthedRoute;
-    };
+      id: '/_authed/chat/'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof AuthedChatIndexRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/api/todos/$todoId': {
-      id: '/api/todos/$todoId';
-      path: '/api/todos/$todoId';
-      fullPath: '/api/todos/$todoId';
-      preLoaderRoute: typeof ApiTodosTodoIdRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/api/todos/$todoId'
+      path: '/api/todos/$todoId'
+      fullPath: '/api/todos/$todoId'
+      preLoaderRoute: typeof ApiTodosTodoIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/$': {
-      id: '/api/auth/$';
-      path: '/api/auth/$';
-      fullPath: '/api/auth/$';
-      preLoaderRoute: typeof ApiAuthSplatRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authed/todos/$todoId': {
-      id: '/_authed/todos/$todoId';
-      path: '/$todoId';
-      fullPath: '/todos/$todoId';
-      preLoaderRoute: typeof AuthedTodosTodoIdRouteImport;
-      parentRoute: typeof AuthedTodosRouteRoute;
-    };
+      id: '/_authed/todos/$todoId'
+      path: '/$todoId'
+      fullPath: '/todos/$todoId'
+      preLoaderRoute: typeof AuthedTodosTodoIdRouteImport
+      parentRoute: typeof AuthedTodosRouteRoute
+    }
     '/api/todos/$todoId/edit': {
-      id: '/api/todos/$todoId/edit';
-      path: '/edit';
-      fullPath: '/api/todos/$todoId/edit';
-      preLoaderRoute: typeof ApiTodosTodoIdEditRouteImport;
-      parentRoute: typeof ApiTodosTodoIdRoute;
-    };
+      id: '/api/todos/$todoId/edit'
+      path: '/edit'
+      fullPath: '/api/todos/$todoId/edit'
+      preLoaderRoute: typeof ApiTodosTodoIdEditRouteImport
+      parentRoute: typeof ApiTodosTodoIdRoute
+    }
   }
 }
 
 interface AuthRouteChildren {
-  AuthCheckEmailRoute: typeof AuthCheckEmailRoute;
-  AuthErrorRoute: typeof AuthErrorRoute;
-  AuthLoginRoute: typeof AuthLoginRoute;
+  AuthCheckEmailRoute: typeof AuthCheckEmailRoute
+  AuthErrorRoute: typeof AuthErrorRoute
+  AuthLoginRoute: typeof AuthLoginRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthCheckEmailRoute: AuthCheckEmailRoute,
   AuthErrorRoute: AuthErrorRoute,
   AuthLoginRoute: AuthLoginRoute,
-};
+}
 
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren);
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface AuthedTodosRouteRouteChildren {
-  AuthedTodosTodoIdRoute: typeof AuthedTodosTodoIdRoute;
-  AuthedTodosIndexRoute: typeof AuthedTodosIndexRoute;
+  AuthedTodosTodoIdRoute: typeof AuthedTodosTodoIdRoute
+  AuthedTodosIndexRoute: typeof AuthedTodosIndexRoute
 }
 
 const AuthedTodosRouteRouteChildren: AuthedTodosRouteRouteChildren = {
   AuthedTodosTodoIdRoute: AuthedTodosTodoIdRoute,
   AuthedTodosIndexRoute: AuthedTodosIndexRoute,
-};
+}
 
 const AuthedTodosRouteRouteWithChildren =
-  AuthedTodosRouteRoute._addFileChildren(AuthedTodosRouteRouteChildren);
+  AuthedTodosRouteRoute._addFileChildren(AuthedTodosRouteRouteChildren)
 
 interface AuthedRouteChildren {
-  AuthedTodosRouteRoute: typeof AuthedTodosRouteRouteWithChildren;
-  AuthedChatIndexRoute: typeof AuthedChatIndexRoute;
+  AuthedTodosRouteRoute: typeof AuthedTodosRouteRouteWithChildren
+  AuthedChatIndexRoute: typeof AuthedChatIndexRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedTodosRouteRoute: AuthedTodosRouteRouteWithChildren,
   AuthedChatIndexRoute: AuthedChatIndexRoute,
-};
+}
 
 const AuthedRouteWithChildren =
-  AuthedRoute._addFileChildren(AuthedRouteChildren);
+  AuthedRoute._addFileChildren(AuthedRouteChildren)
 
 interface ApiTodosTodoIdRouteChildren {
-  ApiTodosTodoIdEditRoute: typeof ApiTodosTodoIdEditRoute;
+  ApiTodosTodoIdEditRoute: typeof ApiTodosTodoIdEditRoute
 }
 
 const ApiTodosTodoIdRouteChildren: ApiTodosTodoIdRouteChildren = {
   ApiTodosTodoIdEditRoute: ApiTodosTodoIdEditRoute,
-};
+}
 
 const ApiTodosTodoIdRouteWithChildren = ApiTodosTodoIdRoute._addFileChildren(
-  ApiTodosTodoIdRouteChildren
-);
+  ApiTodosTodoIdRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -438,16 +438,16 @@ const rootRouteChildren: RootRouteChildren = {
   ApiTodosTodoIdRoute: ApiTodosTodoIdRouteWithChildren,
   ApiChatIndexRoute: ApiChatIndexRoute,
   ApiTodosIndexRoute: ApiTodosIndexRoute,
-};
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
 
-import type { getRouter } from './router.tsx';
-import type { createStart } from '@tanstack/react-start';
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
 declare module '@tanstack/react-start' {
   interface Register {
-    ssr: true;
-    router: Awaited<ReturnType<typeof getRouter>>;
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
   }
 }
