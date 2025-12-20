@@ -1,6 +1,6 @@
-import { validateWithPretty } from '@/lib/helpers';
 import { emailColors } from '@/lib/email-colors';
-import { sendEmail } from '@/serverFns/emails/send-email';
+import { validateWithPretty } from '@/lib/helpers';
+import { sendEmail } from '@/server/emails/send-email';
 import { z } from 'zod';
 
 const sendMagicLinkInputSchema = z.object({

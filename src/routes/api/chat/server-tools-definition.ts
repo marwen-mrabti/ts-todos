@@ -1,5 +1,5 @@
-import { TodoSchema } from '@/db/schema/todos.schema';
-import { fetchTodos, getTodosCount } from '@/serverFns/todos.queries';
+import { TodoSchema } from '@/server/db/schema/todos.schema';
+import { fetchTodos, getTodosCount } from '@/server/todos.queries';
 import { toolDefinition } from '@tanstack/ai';
 import { z } from 'zod';
 

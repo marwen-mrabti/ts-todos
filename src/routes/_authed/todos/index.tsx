@@ -6,7 +6,7 @@ export const Route = createFileRoute('/_authed/todos/')({
 
 function RouteComponent() {
   return (
-    <div className="p-8 text-center">
+    <div className='p-8 text-center'>
       <h2>Select a todo from the list</h2>
       <p>Click on any todo to view details</p>
     </div>

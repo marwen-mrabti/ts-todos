@@ -1,7 +1,7 @@
-import { db } from '@/db';
 import { env } from '@/lib/env';
-import { sendEmailWithMagicLink } from '@/serverFns/emails/send-magicLink';
-import { sendWelcomeEmail } from '@/serverFns/emails/send-welcome-email';
+import { db } from '@/server/db';
+import { sendEmailWithMagicLink } from '@/server/emails/send-magicLink';
+import { sendWelcomeEmail } from '@/server/emails/send-welcome-email';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { APIError } from 'better-auth/api';

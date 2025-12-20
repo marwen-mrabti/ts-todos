@@ -19,7 +19,7 @@ import { ThemeProvider } from '@/components/app/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 import { COOLDOWN_KEY } from '@/hooks/useMagicLink';
 import { removeDataFromLocalStorage } from '@/lib/helpers';
-import { getCurrentUser } from '@/serverFns/auth.queries';
+import { getCurrentUser } from '@/server/auth.queries';
 
 interface MyRouterContext {
   queryClient: QueryClient;
@@ -72,15 +72,15 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang='en' suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
-      <body className="bg-background text-foreground relative grid min-h-dvh max-w-screen grid-rows-[auto_1fr] overflow-x-hidden">
+      <body className='bg-background text-foreground relative grid min-h-dvh max-w-screen grid-rows-[auto_1fr] overflow-x-hidden'>
         <ThemeProvider>
           <Header />
-          <main className="h-full w-full">{children}</main>
-          <Toaster position="top-right" />
+          <main className='h-full w-full'>{children}</main>
+          <Toaster position='top-right' />
           <TanStackDevtools
             config={{
               position: 'bottom-right',

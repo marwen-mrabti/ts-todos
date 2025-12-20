@@ -76,41 +76,41 @@ function OnboardingPage() {
   };
 
   return (
-    <div className="from-background to-muted flex min-h-screen items-center justify-center bg-linear-to-br p-4">
-      <Card className="w-full max-w-2xl">
+    <div className='from-background to-muted flex min-h-screen items-center justify-center bg-linear-to-br p-4'>
+      <Card className='w-full max-w-2xl'>
         <CardHeader>
-          <div className="mb-4 flex items-center justify-between">
-            <CardTitle className="text-2xl">
+          <div className='mb-4 flex items-center justify-between'>
+            <CardTitle className='text-2xl'>
               Welcome! Let's get you set up
             </CardTitle>
-            <Button variant="ghost" size="sm" onClick={handleSkip}>
+            <Button variant='ghost' size='sm' onClick={handleSkip}>
               Skip for now
             </Button>
           </div>
-          <Progress value={progress} className="h-2" />
-          <CardDescription className="mt-2">
+          <Progress value={progress} className='h-2' />
+          <CardDescription className='mt-2'>
             Step {step} of {totalSteps}
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="space-y-6">
+        <CardContent className='space-y-6'>
           {/* Step 1: Basic Info */}
           {step === 1 && (
-            <div className="animate-in fade-in space-y-4 duration-300">
-              <div className="mb-4 flex items-center gap-3">
-                <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
-                  <span className="text-primary font-bold">1</span>
+            <div className='animate-in fade-in space-y-4 duration-300'>
+              <div className='mb-4 flex items-center gap-3'>
+                <div className='bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full'>
+                  <span className='text-primary font-bold'>1</span>
                 </div>
-                <h3 className="text-xl font-semibold">
+                <h3 className='text-xl font-semibold'>
                   Tell us about yourself
                 </h3>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="fullName">Full Name</Label>
+              <div className='space-y-2'>
+                <Label htmlFor='fullName'>Full Name</Label>
                 <Input
-                  id="fullName"
-                  placeholder="John Doe"
+                  id='fullName'
+                  placeholder='John Doe'
                   value={formData.fullName}
                   onChange={(e) =>
                     setFormData({ ...formData, fullName: e.target.value })
@@ -118,17 +118,17 @@ function OnboardingPage() {
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
+              <div className='space-y-2'>
+                <Label htmlFor='username'>Username</Label>
                 <Input
-                  id="username"
-                  placeholder="johndoe"
+                  id='username'
+                  placeholder='johndoe'
                   value={formData.username}
                   onChange={(e) =>
                     setFormData({ ...formData, username: e.target.value })
                   }
                 />
-                <p className="text-muted-foreground text-xs">
+                <p className='text-muted-foreground text-xs'>
                   This will be your unique identifier
                 </p>
               </div>
@@ -137,26 +137,26 @@ function OnboardingPage() {
 
           {/* Step 2: Bio */}
           {step === 2 && (
-            <div className="animate-in fade-in space-y-4 duration-300">
-              <div className="mb-4 flex items-center gap-3">
-                <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
-                  <span className="text-primary font-bold">2</span>
+            <div className='animate-in fade-in space-y-4 duration-300'>
+              <div className='mb-4 flex items-center gap-3'>
+                <div className='bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full'>
+                  <span className='text-primary font-bold'>2</span>
                 </div>
-                <h3 className="text-xl font-semibold">Introduce yourself</h3>
+                <h3 className='text-xl font-semibold'>Introduce yourself</h3>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="bio">Bio (Optional)</Label>
+              <div className='space-y-2'>
+                <Label htmlFor='bio'>Bio (Optional)</Label>
                 <Textarea
-                  id="bio"
-                  placeholder="Tell us a bit about yourself..."
+                  id='bio'
+                  placeholder='Tell us a bit about yourself...'
                   rows={5}
                   value={formData.bio}
                   onChange={(e) =>
                     setFormData({ ...formData, bio: e.target.value })
                   }
                 />
-                <p className="text-muted-foreground text-xs">
+                <p className='text-muted-foreground text-xs'>
                   {formData.bio.length}/200 characters
                 </p>
               </div>
@@ -165,19 +165,19 @@ function OnboardingPage() {
 
           {/* Step 3: Interests */}
           {step === 3 && (
-            <div className="animate-in fade-in space-y-4 duration-300">
-              <div className="mb-4 flex items-center gap-3">
-                <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
-                  <span className="text-primary font-bold">3</span>
+            <div className='animate-in fade-in space-y-4 duration-300'>
+              <div className='mb-4 flex items-center gap-3'>
+                <div className='bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full'>
+                  <span className='text-primary font-bold'>3</span>
                 </div>
-                <h3 className="text-xl font-semibold">What interests you?</h3>
+                <h3 className='text-xl font-semibold'>What interests you?</h3>
               </div>
 
-              <p className="text-muted-foreground text-sm">
+              <p className='text-muted-foreground text-sm'>
                 Select topics you'd like to explore (optional)
               </p>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className='grid grid-cols-2 gap-3'>
                 {availableInterests.map((interest) => (
                   <button
                     key={interest}
@@ -188,12 +188,12 @@ function OnboardingPage() {
                         : 'border-border hover:border-primary/50'
                     }`}
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">{interest}</span>
+                    <div className='flex items-center justify-between'>
+                      <span className='font-medium'>{interest}</span>
                       {formData.interests.includes(interest) && (
                         <CheckCircle
-                          className="h-5 w-5"
-                          data-icon="inline-end"
+                          className='h-5 w-5'
+                          data-icon='inline-end'
                         />
                       )}
                     </div>
@@ -204,23 +204,23 @@ function OnboardingPage() {
           )}
 
           {/* Navigation Buttons */}
-          <div className="flex gap-3 pt-4">
+          <div className='flex gap-3 pt-4'>
             {step > 1 && (
-              <Button variant="outline" onClick={handleBack} className="flex-1">
-                <ArrowLeft className="h-4 w-4" data-icon="inline-start" />
+              <Button variant='outline' onClick={handleBack} className='flex-1'>
+                <ArrowLeft className='h-4 w-4' data-icon='inline-start' />
                 Back
               </Button>
             )}
-            <Button onClick={handleNext} className="flex-1">
+            <Button onClick={handleNext} className='flex-1'>
               {step === totalSteps ? (
                 <>
                   Complete
-                  <CheckCircle className="h-4 w-4" data-icon="inline-end" />
+                  <CheckCircle className='h-4 w-4' data-icon='inline-end' />
                 </>
               ) : (
                 <>
                   Next
-                  <ArrowRight className="h-4 w-4" data-icon="inline-end" />
+                  <ArrowRight className='h-4 w-4' data-icon='inline-end' />
                 </>
               )}
             </Button>

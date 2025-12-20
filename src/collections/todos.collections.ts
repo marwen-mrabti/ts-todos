@@ -1,6 +1,6 @@
-import { TodoSchema } from '@/db/schema/todos.schema';
-import { createTodo, deleteTodo, updateTodo } from '@/serverFns/todos.actions';
-import { fetchTodos } from '@/serverFns/todos.queries';
+import { TodoSchema } from '@/server/db/schema/todos.schema';
+import { createTodo, deleteTodo, updateTodo } from '@/server/todos.actions';
+import { fetchTodos } from '@/server/todos.queries';
 import { queryCollectionOptions } from '@tanstack/query-db-collection';
 import { createCollection } from '@tanstack/react-db';
 import { QueryClient } from '@tanstack/react-query';

@@ -1,15 +1,15 @@
 import { createServerFn } from '@tanstack/react-start';
 import { eq } from 'drizzle-orm';
 
-import { db } from '@/db';
+import { TodoNotFoundError, validateWithPretty } from '@/lib/helpers';
+import { serverFnAuthMiddleware } from '@/middleware/auth-middleware';
+import { db } from '@/server/db';
 import {
   insertTodoSchema,
   todoIdSchema,
   todos,
   updateTodoSchema,
-} from '@/db/schema/todos.schema';
-import { TodoNotFoundError, validateWithPretty } from '@/lib/helpers';
-import { serverFnAuthMiddleware } from '@/middleware/auth-middleware';
+} from '@/server/db/schema/todos.schema';
 
 export const createTodo = createServerFn({ method: 'POST' })
   .middleware([serverFnAuthMiddleware])

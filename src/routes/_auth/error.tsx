@@ -9,12 +9,11 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import type { MagicLinkCredentials } from '@/lib/utils';
-import { getMagicLinkData } from '@/serverFns/auth.actions';
+import { getMagicLinkData } from '@/server/auth.actions';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { zodValidator } from '@tanstack/zod-adapter';
 import { AlertCircle, Home, RefreshCw } from 'lucide-react';
 import { z } from 'zod';
-
 
 export const searchSchema = z.object({
   error: z.string().optional(),
@@ -34,7 +33,9 @@ export const Route = createFileRoute('/_auth/error')({
 
   loader: async () => {
     const cookie = await getMagicLinkData();
-    return (cookie ? JSON.parse(cookie) : { email: '', name: '' }) as MagicLinkCredentials;
+    return (
+      cookie ? JSON.parse(cookie) : { email: '', name: '' }
+    ) as MagicLinkCredentials;
   },
 
   component: RouteComponent,
@@ -80,7 +81,8 @@ const SOCIAL_ERRORS: Record<string, ErrorDetails> = {
   PROVIDER_ERROR: {
     title: 'Provider Error',
     message: 'The authentication provider encountered an error.',
-    suggestion: 'This might be a temporary issue. Please try again in a few moments.',
+    suggestion:
+      'This might be a temporary issue. Please try again in a few moments.',
   },
   ...SHARED_ERRORS,
 };
@@ -123,7 +125,7 @@ function normalizeErrorCode(error?: string): string {
 function resolveErrorType(
   paramsType: ErrorType | undefined,
   errorCode: string,
-  hasEmail: boolean,
+  hasEmail: boolean
 ): ErrorType {
   if (paramsType) return paramsType;
 
@@ -134,9 +136,11 @@ function resolveErrorType(
   return hasEmail ? 'magic-link' : 'social';
 }
 
-function getErrorDetails(errorType: ErrorType, errorCode: string): ErrorDetails {
-  const source =
-    errorType === 'social' ? SOCIAL_ERRORS : MAGIC_LINK_ERRORS;
+function getErrorDetails(
+  errorType: ErrorType,
+  errorCode: string
+): ErrorDetails {
+  const source = errorType === 'social' ? SOCIAL_ERRORS : MAGIC_LINK_ERRORS;
 
   return source[errorCode] ?? DEFAULT_ERROR;
 }
@@ -157,59 +161,57 @@ function RouteComponent() {
   const showResendButton = errorType === 'magic-link' && Boolean(email);
 
   return (
-    <div className="from-background to-muted flex h-full w-full items-center justify-center bg-linear-to-br p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="pb-4 text-center">
-          <div className="mb-4 flex justify-center">
-            <div className="bg-destructive/10 flex h-20 w-20 items-center justify-center rounded-full">
-              <AlertCircle className="text-destructive h-10 w-10" />
+    <div className='from-background to-muted flex h-full w-full items-center justify-center bg-linear-to-br p-4'>
+      <Card className='w-full max-w-md'>
+        <CardHeader className='pb-4 text-center'>
+          <div className='mb-4 flex justify-center'>
+            <div className='bg-destructive/10 flex h-20 w-20 items-center justify-center rounded-full'>
+              <AlertCircle className='text-destructive h-10 w-10' />
             </div>
           </div>
 
-          <CardTitle className="mb-2 text-3xl">
-            {errorDetails.title}
-          </CardTitle>
+          <CardTitle className='mb-2 text-3xl'>{errorDetails.title}</CardTitle>
 
-          <CardDescription className="text-base">
+          <CardDescription className='text-base'>
             {errorDetails.message}
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="space-y-6">
+        <CardContent className='space-y-6'>
           <Alert>
             <AlertDescription>
-              <p className="mb-2 font-medium">What happened?</p>
-              <p className="text-muted-foreground text-sm">
+              <p className='mb-2 font-medium'>What happened?</p>
+              <p className='text-muted-foreground text-sm'>
                 {errorDetails.suggestion}
               </p>
             </AlertDescription>
           </Alert>
 
-          <div className="space-y-3">
+          <div className='space-y-3'>
             {showResendButton && (
               <ResendMagicLinkButton email={email} name={name} />
             )}
 
-            <div className="grid grid-cols-2 gap-2">
-              <Button variant="outline" onClick={() => navigate({ to: '/' })}>
-                <Home className="mr-2 h-4 w-4" />
+            <div className='grid grid-cols-2 gap-2'>
+              <Button variant='outline' onClick={() => navigate({ to: '/' })}>
+                <Home className='mr-2 h-4 w-4' />
                 Go Home
               </Button>
 
               <Button
-                variant="outline"
+                variant='outline'
                 onClick={() => navigate({ to: '/login' })}
               >
-                <RefreshCw className="mr-2 h-4 w-4" />
+                <RefreshCw className='mr-2 h-4 w-4' />
                 Try Again
               </Button>
             </div>
           </div>
 
-          <div className="text-center">
-            <p className="text-muted-foreground text-xs">
+          <div className='text-center'>
+            <p className='text-muted-foreground text-xs'>
               Need help?{' '}
-              <a href="/support" className="text-primary hover:underline">
+              <a href='/support' className='text-primary hover:underline'>
                 Contact support
               </a>
             </p>

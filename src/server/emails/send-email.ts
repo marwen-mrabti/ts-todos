@@ -48,8 +48,8 @@ export async function sendEmail(data: SendEmailInput) {
       messageId: info.messageId,
       response: info.response,
     };
-  } catch (error: any) {
-    console.log('🚨🚨 Send email error 🚨🚨 ', error?.message);
+  } catch (error: unknown) {
+    console.log('🚨🚨 Send email error 🚨🚨 ', (error as Error)?.message);
     throw error;
   }
 }

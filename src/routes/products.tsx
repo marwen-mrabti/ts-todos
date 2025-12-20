@@ -15,7 +15,7 @@ const allProducts = [
   { id: 10, name: 'Tablet', category: 'electronics', price: 449 },
 ];
 
-export type Products = typeof allProducts
+export type Products = typeof allProducts;
 
 const productSearchSchema = z.object({
   page: z.number().default(1),
@@ -29,33 +29,37 @@ export type ProductSearch = z.infer<typeof productSearchSchema>;
 export const Route = createFileRoute('/products')({
   validateSearch: productSearchSchema,
   beforeLoad: ({ search }) => {
-    return search
+    return search;
   },
   loader: async ({ context }) => {
-    const { page, searchQuery, category, minPrice } = context
+    const { page, searchQuery, category, minPrice } = context;
 
     const filteredProducts = allProducts.filter((product) => {
-      const matchesQuery = product.name.toLowerCase().includes(searchQuery.toLowerCase())
-      const matchesCategory = category === 'all' || product.category === category
-      const matchesMinPrice = product.price >= minPrice
-      return matchesQuery && matchesCategory && matchesMinPrice
-    })
-    return { products: filteredProducts }
+      const matchesQuery = product.name
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      const matchesCategory =
+        category === 'all' || product.category === category;
+      const matchesMinPrice = product.price >= minPrice;
+      return matchesQuery && matchesCategory && matchesMinPrice;
+    });
+    return { products: filteredProducts };
   },
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  const { products } = Route.useLoaderData()
-  const { page, searchQuery, category, minPrice } = Route.useSearch()
+  const { products } = Route.useLoaderData();
+  const { page, searchQuery, category, minPrice } = Route.useSearch();
 
-
-  return <ProductList
-    Route={Route}
-    products={products}
-    page={page}
-    searchQuery={searchQuery || ''}
-    category={category}
-    minPrice={minPrice || 0}
-  />
+  return (
+    <ProductList
+      Route={Route}
+      products={products}
+      page={page}
+      searchQuery={searchQuery || ''}
+      category={category}
+      minPrice={minPrice || 0}
+    />
+  );
 }

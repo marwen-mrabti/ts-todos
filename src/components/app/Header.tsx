@@ -33,28 +33,28 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-secondary/70 sticky top-0 z-50 w-full border-b backdrop-blur-sm">
-      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4">
-        <div className="flex items-center gap-6">
+    <header className='bg-secondary/70 sticky top-0 z-50 w-full border-b backdrop-blur-sm'>
+      <div className='mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4'>
+        <div className='flex items-center gap-6'>
           <Link
-            to="/"
-            className="flex items-center space-x-2 transition-opacity hover:opacity-80"
+            to='/'
+            className='flex items-center space-x-2 transition-opacity hover:opacity-80'
           >
             <img
-              src="/tanstack-word-logo-white.svg"
-              alt="TanStack Logo"
+              src='/tanstack-word-logo-white.svg'
+              alt='TanStack Logo'
               className={cn('h-8', {
                 invert: themeMode === 'light',
               })}
             />
           </Link>
         </div>
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className='hidden items-center gap-1 md:flex'>
           {session?.user && (
             <Button
-              variant="ghost"
-              size="sm"
-              render={<Link to="/todos" preloadDelay={500} />}
+              variant='ghost'
+              size='sm'
+              render={<Link to='/todos' preloadDelay={500} />}
               nativeButton={false}
             >
               Todos
@@ -62,11 +62,11 @@ export default function Header() {
           )}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className='flex items-center gap-2'>
           {!user ? (
             <Button
-              variant="ghost"
-              render={<Link to="/login" />}
+              variant='ghost'
+              render={<Link to='/login' />}
               nativeButton={false}
             >
               Login
@@ -76,33 +76,33 @@ export default function Header() {
               <DropdownMenuTrigger
                 render={
                   <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-10 w-10 rounded-full"
+                    variant='ghost'
+                    size='icon'
+                    className='h-10 w-10 rounded-full'
                   />
                 }
               >
-                <Avatar className="h-9 w-9">
+                <Avatar className='h-9 w-9'>
                   <AvatarImage
                     src={session?.user.image || undefined}
                     alt={session?.user.name || 'User'}
                   />
                   <AvatarFallback>
-                    <User className="h-5 w-5" />
+                    <User className='h-5 w-5' />
                   </AvatarFallback>
                 </Avatar>
-                <span className="sr-only">User menu</span>
+                <span className='sr-only'>User menu</span>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56" >
+              <DropdownMenuContent align='end' className='w-56'>
                 <DropdownMenuGroup className={cn('cursor-pointer')}>
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuGroup >
+                <DropdownMenuGroup>
                   <DropdownMenuItem
                     render={
                       <Link
-                        to="/products"
+                        to='/products'
                         search={{
                           page: 1,
                           searchQuery: '',
@@ -112,31 +112,30 @@ export default function Header() {
                     }
                     className={cn('cursor-pointer')}
                   >
-                    <Package className="h-4 w-4" data-icon="inline-start" />
+                    <Package className='h-4 w-4' data-icon='inline-start' />
                     Products
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuGroup  >
+                <DropdownMenuGroup>
                   <DropdownMenuItem
-                    render={
-                      <Link
-                        to="/chat"
-                      />
-                    }
+                    render={<Link to='/chat' />}
                     className={cn('cursor-pointer')}
                   >
-                    <BotMessageSquare className="h-4 w-4" data-icon="inline-start" />
+                    <BotMessageSquare
+                      className='h-4 w-4'
+                      data-icon='inline-start'
+                    />
                     Chat
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuGroup className="hover:cursor-pointer">
+                <DropdownMenuGroup className='hover:cursor-pointer'>
                   <DropdownMenuItem
                     onClick={handleLogout}
-                    className="text-destructive focus:text-destructive cursor-pointer"
+                    className='text-destructive focus:text-destructive cursor-pointer'
                   >
-                    <LogOutIcon className='size-4 ' data-icon="inline-start" />
+                    <LogOutIcon className='size-4 ' data-icon='inline-start' />
                     Sign out
                   </DropdownMenuItem>
                 </DropdownMenuGroup>

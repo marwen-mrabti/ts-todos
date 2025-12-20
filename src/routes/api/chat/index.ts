@@ -3,10 +3,17 @@ import {
   getTodosCountTool,
   showTodosTool,
 } from '@/routes/api/chat/server-tools-definition';
-import { chat, toStreamResponse } from '@tanstack/ai';
-import { gemini } from '@tanstack/ai-gemini';
-import { openai } from '@tanstack/ai-openai';
+import { chat, maxIterations, toServerSentEventsStream } from '@tanstack/ai';
+import { openaiText } from '@tanstack/ai-openai';
 import { createFileRoute } from '@tanstack/react-router';
+
+const SYSTEM_PROMPT = `You are a helpful assistant
+
+Example workflow:
+User: "How many todos do I have?"
+Step 1: Call getTodosCount()
+Step 2: Done - do NOT add any text after calling getTodosCount
+`;
 
 export const Route = createFileRoute('/api/chat/')({
   server: {
@@ -15,25 +22,52 @@ export const Route = createFileRoute('/api/chat/')({
       createHandlers({
         POST: {
           middleware: [],
-          handler: async ({ request, context }) => {
-            const { messages, conversationId } = await request.json();
+          handler: async ({ request }) => {
+            const requestSignal = request.signal;
+
+            // If request is already aborted, return early
+            if (requestSignal.aborted) {
+              return new Response(null, { status: 499 }); // 499 = Client Closed Request
+            }
+            const abortController = new AbortController();
+            const body = await request.json();
+            const { messages, data } = body;
+            const conversationId: string | undefined = data?.conversationId;
 
             try {
               // Create a streaming chat response
-              const geminiAdapter = gemini();
-              const openaiAdapter = openai();
               const stream = chat({
-                adapter: geminiAdapter, //openaiAdapter,
-                model: 'gemini-2.0-flash', //'gpt-3.5-turbo',
+                adapter:openaiText("gpt-4o") ,//geminiText('gemini-2.5-flash'),
                 messages,
                 conversationId,
                 tools: [getTodosCountTool, showTodosTool],
+                systemPrompts: [SYSTEM_PROMPT],
+                agentLoopStrategy: maxIterations(20),
               });
 
+              const readableStream = toServerSentEventsStream(
+                stream,
+                abortController
+              );
+
+              console.log('chat stream********\n', stream);
+              console.log('readableStream********\n', readableStream);
               // Convert stream to HTTP response
-              return toStreamResponse(stream);
-            } catch (error) {
+              return new Response(readableStream, {
+                headers: {
+                  'Content-Type': 'text/event-stream',
+                  'Cache-Control': 'no-cache',
+                  Connection: 'keep-alive',
+                },
+              });
+            } catch (error: unknown) {
               console.error('\n🚩🚩 chat error 🚩🚩\n', error);
+              if (
+                (error instanceof Error && error.name === 'AbortError') ||
+                abortController.signal.aborted
+              ) {
+                return new Response(null, { status: 499 }); // 499 = Client Closed Request
+              }
               return new Response(
                 JSON.stringify({
                   error:

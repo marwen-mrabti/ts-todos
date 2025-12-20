@@ -1,7 +1,7 @@
 import {
   useMutation,
   useQueryErrorResetBoundary,
-  useSuspenseQuery
+  useSuspenseQuery,
 } from '@tanstack/react-query';
 import type { ErrorComponentProps } from '@tanstack/react-router';
 import {
@@ -17,17 +17,15 @@ import NotFound from '@/components/app/not-found-component';
 import { Button } from '@/components/ui/button';
 import { todoQueryOptions } from '@/lib/query-options';
 import { seo } from '@/lib/seo';
-import { deleteTodo } from '@/serverFns/todos.actions';
+import { deleteTodo } from '@/server/todos.actions';
 import { toast } from 'sonner';
 
 export const Route = createFileRoute('/_authed/todos/$todoId')({
   loader: async ({ params: { todoId }, context }) => {
-    return context.queryClient.ensureQueryData(
-      {
-        ...todoQueryOptions({ todoId, queryClient: context.queryClient }),
-        revalidateIfStale: true
-      }
-    );
+    return context.queryClient.ensureQueryData({
+      ...todoQueryOptions({ todoId, queryClient: context.queryClient }),
+      revalidateIfStale: true,
+    });
   },
 
   head: ({ loaderData }) => {
@@ -50,7 +48,7 @@ function TodoPage() {
   const { todoId } = Route.useParams();
 
   const { data: todo } = useSuspenseQuery(
-    todoQueryOptions({ todoId, queryClient: context.queryClient }),
+    todoQueryOptions({ todoId, queryClient: context.queryClient })
   );
 
   // DELETE MUTATION
@@ -59,7 +57,7 @@ function TodoPage() {
     onSuccess: () => {
       toast('Todo Deleted', {
         description: (
-          <pre className="text-secondary-foreground mt-2 w-xs overflow-x-auto rounded-md bg-green-400/50 p-4 text-pretty">
+          <pre className='text-secondary-foreground mt-2 w-xs overflow-x-auto rounded-md bg-green-400/50 p-4 text-pretty'>
             Todo has been removed.
           </pre>
         ),
@@ -79,7 +77,7 @@ function TodoPage() {
 
       toast('Failed to delete todo', {
         description: (
-          <pre className="bg-destructive text-destructive-foreground mt-2 w-xs overflow-x-auto rounded-md p-4 text-pretty">
+          <pre className='bg-destructive text-destructive-foreground mt-2 w-xs overflow-x-auto rounded-md p-4 text-pretty'>
             {errorMessage}
           </pre>
         ),
@@ -105,45 +103,45 @@ function TodoPage() {
   };
 
   return (
-    <div className="w-full p-6">
-      <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-primary text-3xl font-semibold tracking-tight">
+    <div className='w-full p-6'>
+      <div className='mb-6 flex items-center justify-between'>
+        <h2 className='text-primary text-3xl font-semibold tracking-tight'>
           Todo Details
         </h2>
 
         <Button
-          variant="destructive"
-          size="sm"
-          className="flex gap-2"
+          variant='destructive'
+          size='sm'
+          className='flex gap-2'
           disabled={mutation.isPending}
           onClick={handleDeleteTodo}
         >
-          <Trash2 className="h-4 w-4" />
+          <Trash2 className='h-4 w-4' />
           Delete
         </Button>
       </div>
 
-      <div className="rounded-xl border p-5 shadow-sm dark:border-slate-700">
-        <p className="text-muted-foreground mb-3 text-sm">
+      <div className='rounded-xl border p-5 shadow-sm dark:border-slate-700'>
+        <p className='text-muted-foreground mb-3 text-sm'>
           Here are the details of your selected todo.
         </p>
 
         {todo && (
-          <div className="space-y-3">
+          <div className='space-y-3'>
             <p>
-              <strong className="text-slate-700 dark:text-slate-300">
+              <strong className='text-slate-700 dark:text-slate-300'>
                 ID:
               </strong>{' '}
               {todo.id}
             </p>
             <p>
-              <strong className="text-slate-700 dark:text-slate-300">
+              <strong className='text-slate-700 dark:text-slate-300'>
                 Title:
               </strong>{' '}
               {todo.title}
             </p>
             <p>
-              <strong className="text-slate-700 dark:text-slate-300">
+              <strong className='text-slate-700 dark:text-slate-300'>
                 Completed:
               </strong>{' '}
               {todo.isCompleted ? 'Yes' : 'No'}
@@ -160,28 +158,28 @@ function TodoPage() {
 // -----------------------------
 export function TodoPendingComponent() {
   return (
-    <div className="w-full p-6">
-      <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-primary text-3xl font-semibold tracking-tight">
+    <div className='w-full p-6'>
+      <div className='mb-6 flex items-center justify-between'>
+        <h2 className='text-primary text-3xl font-semibold tracking-tight'>
           Todo Details
         </h2>
 
-        <Button variant="destructive" size="sm" className="flex gap-2" disabled>
-          <Trash2 className="h-4 w-4" />
+        <Button variant='destructive' size='sm' className='flex gap-2' disabled>
+          <Trash2 className='h-4 w-4' />
           Delete
         </Button>
       </div>
 
-      <div className="rounded-xl border p-5 shadow-sm dark:border-slate-700">
-        <p className="text-muted-foreground mb-3 text-sm">
+      <div className='rounded-xl border p-5 shadow-sm dark:border-slate-700'>
+        <p className='text-muted-foreground mb-3 text-sm'>
           Here are the details of your selected todo.
         </p>
 
-        <div className="space-y-3">
-          <div className="mb-4 h-8 w-48 animate-pulse rounded bg-slate-200 dark:bg-slate-700"></div>
-          <div className="mb-6 h-4 w-1/2 animate-pulse rounded bg-slate-200 dark:bg-slate-700"></div>
-          <div className="mb-4 h-4 w-32 animate-pulse rounded bg-slate-200 dark:bg-slate-700"></div>
-          <div className="h-4 w-1/3 animate-pulse rounded bg-slate-200 dark:bg-slate-700"></div>
+        <div className='space-y-3'>
+          <div className='mb-4 h-8 w-48 animate-pulse rounded bg-slate-200 dark:bg-slate-700'></div>
+          <div className='mb-6 h-4 w-1/2 animate-pulse rounded bg-slate-200 dark:bg-slate-700'></div>
+          <div className='mb-4 h-4 w-32 animate-pulse rounded bg-slate-200 dark:bg-slate-700'></div>
+          <div className='h-4 w-1/3 animate-pulse rounded bg-slate-200 dark:bg-slate-700'></div>
         </div>
       </div>
     </div>
@@ -199,7 +197,7 @@ function TodoErrorComponent({ error, reset }: ErrorComponentProps) {
   }, [resetBoundary]);
 
   return (
-    <div className="p-6">
+    <div className='p-6'>
       <ErrorComponent error={error} reset={reset} />
     </div>
   );

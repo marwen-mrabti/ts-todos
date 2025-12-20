@@ -1,5 +1,5 @@
-import { db } from '@/db';
 import { authMiddleware } from '@/middleware/auth-middleware';
+import { db } from '@/server/db';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/api/todos/')({
