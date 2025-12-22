@@ -1,22 +1,24 @@
 import { todosQuerySchema } from '@/lib/query-options';
-import { TodoSchema } from '@/server/db/schema/todos.schema';
+import { insertTodoSchema, TodoSchema } from '@/server/db/schema/todos.schema';
+import { createTodo } from '@/server/todos.actions';
 import { fetchTodos, getTodosCount } from '@/server/todos.queries';
 import { toolDefinition } from '@tanstack/ai';
 import { z } from 'zod';
 
+// server tools
 export const getTodosCountDef = toolDefinition({
   name: 'get_todos_count',
   description: 'Get the number of todos',
   inputSchema: z.object({}),
-  outputSchema: z.number(),
+  outputSchema: z.number().catch(0),
 });
-export const getTodosCountTool = getTodosCountDef.server(async ({}) => {
+export const getTodosCountTool = getTodosCountDef.server(async () => {
   return await getTodosCount();
 });
 
-export const showTodosDef = toolDefinition({
-  name: 'show_todos',
-  description: 'list the user todos',
+export const getTodosDef = toolDefinition({
+  name: 'get_todos',
+  description: 'Get the todos list.',
   inputSchema: todosQuerySchema,
   outputSchema: z.array(
     TodoSchema.omit({
@@ -26,11 +28,24 @@ export const showTodosDef = toolDefinition({
   ),
   needsApproval: false,
 });
-export const showTodosTool = showTodosDef.server(async (data) => {
+export const getTodosTool = getTodosDef.server(async (data) => {
   const todos = await fetchTodos({ data });
   return todos;
 });
 
+export const addTodoDef = toolDefinition({
+  name: 'add_todo',
+  description: 'Add a new todo',
+  inputSchema: insertTodoSchema,
+  outputSchema: z.object({
+    message: z.string(),
+  }),
+});
+export const addTodoTool = addTodoDef.server(async (data) => {
+  return await createTodo({ data });
+});
+
+//client tools
 export const saveToLocalStorageDef = toolDefinition({
   name: 'save_to_local_storage',
   description: 'Save data to browser local storage',

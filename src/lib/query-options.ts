@@ -65,21 +65,19 @@ export const todosQuerySchema = z.object({
       statusOptions[1].value,
       statusOptions[2].value,
     ])
-    .optional()
-    .default(statusOptions[0].value),
+    .optional().default(statusOptions[0].value),
+
   orderBy: z
     .enum([
       orderByOptions[0].value,
       orderByOptions[1].value,
       orderByOptions[2].value,
     ])
-    .optional()
-    .default(orderByOptions[0].value),
+    .optional().default(orderByOptions[0].value),
   direction: z
     .enum([directionOptions[0].value, directionOptions[1].value])
-    .optional()
-    .default(directionOptions[0].value),
-  page: z.coerce.number().optional().default(1),
+    .optional().default(directionOptions[0].value),
+  page: z.coerce.number().optional(),
 });
 
 export type TodosQuery = z.infer<typeof todosQuerySchema>;

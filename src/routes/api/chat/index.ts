@@ -1,11 +1,12 @@
-import { authMiddleware } from '@/middleware/auth-middleware';
 import {
+  addTodoTool,
   getTodosCountTool,
-  showTodosTool,
-} from '@/lib/ai-chat-tools/todo-tools';
-import { chat, maxIterations, toServerSentEventsStream } from '@tanstack/ai';
-import { openaiText } from '@tanstack/ai-openai';
-import { createFileRoute } from '@tanstack/react-router';
+  getTodosTool,
+} from "@/lib/ai-chat-tools/todo-tools";
+import { authMiddleware } from "@/middleware/auth-middleware";
+import { chat, maxIterations, toServerSentEventsStream } from "@tanstack/ai";
+import { geminiText } from "@tanstack/ai-gemini";
+import { createFileRoute } from "@tanstack/react-router";
 
 const SYSTEM_PROMPT = `
 You are a helpful assistant that can help the user manage their todos.
@@ -13,6 +14,7 @@ You are a helpful assistant that can help the user manage their todos.
 Tools:
 1- getTodosCount: Get the number of todos
 2- showTodos: List the user todos
+3- addTodo: Add a new todo
 
 Example workflow:
 User: "How many todos do I have?"
@@ -20,7 +22,7 @@ Step 1: Call getTodosCount()
 Step 2: Done - do NOT add any text after calling getTodosCount
 `;
 
-export const Route = createFileRoute('/api/chat/')({
+export const Route = createFileRoute("/api/chat/")({
   server: {
     middleware: [authMiddleware],
     handlers: ({ createHandlers }) =>
@@ -42,31 +44,31 @@ export const Route = createFileRoute('/api/chat/')({
             try {
               // Create a streaming chat response
               const stream = chat({
-                adapter: openaiText('gpt-4o-mini'), //geminiText('gemini-2.5-flash'),
-                messages,
+                adapter: geminiText('gemini-2.5-flash'),
+                agentLoopStrategy: maxIterations(5),
                 conversationId,
-                tools: [getTodosCountTool, showTodosTool],
+                messages,
                 systemPrompts: [SYSTEM_PROMPT],
-                agentLoopStrategy: maxIterations(20),
+                tools: [getTodosCountTool, getTodosTool, addTodoTool],
               });
 
               const readableStream = toServerSentEventsStream(
                 stream,
-                abortController
+                abortController,
               );
 
               // Convert stream to HTTP response
               return new Response(readableStream, {
                 headers: {
-                  'Content-Type': 'text/event-stream',
-                  'Cache-Control': 'no-cache',
-                  Connection: 'keep-alive',
+                  "Content-Type": "text/event-stream",
+                  "Cache-Control": "no-cache",
+                  Connection: "keep-alive",
                 },
               });
             } catch (error: unknown) {
-              console.error('\n🚩🚩 chat error 🚩🚩\n', error);
+              console.error("\n🚩🚩 chat error 🚩🚩\n", error);
               if (
-                (error instanceof Error && error.name === 'AbortError') ||
+                (error instanceof Error && error.name === "AbortError") ||
                 abortController.signal.aborted
               ) {
                 return new Response(null, { status: 499 }); // 499 = Client Closed Request
@@ -76,12 +78,12 @@ export const Route = createFileRoute('/api/chat/')({
                   error:
                     error instanceof Error
                       ? error.message
-                      : 'An error occurred',
+                      : "An error occurred",
                 }),
                 {
                   status: 500,
-                  headers: { 'Content-Type': 'application/json' },
-                }
+                  headers: { "Content-Type": "application/json" },
+                },
               );
             }
           },

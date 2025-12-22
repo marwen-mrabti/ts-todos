@@ -1,21 +1,28 @@
-import { TodoSchema } from '@/server/db/schema/todos.schema';
-import { createTodo, deleteTodo, updateTodo } from '@/server/todos.actions';
-import { fetchTodos } from '@/server/todos.queries';
-import { queryCollectionOptions } from '@tanstack/query-db-collection';
-import { createCollection } from '@tanstack/react-db';
-import { QueryClient } from '@tanstack/react-query';
+import { TodoSchema } from "@/server/db/schema/todos.schema";
+import { createTodo, deleteTodo, updateTodo } from "@/server/todos.actions";
+import { fetchTodos } from "@/server/todos.queries";
+import {
+  parseLoadSubsetOptions,
+  queryCollectionOptions,
+} from "@tanstack/query-db-collection";
+import { createCollection } from "@tanstack/react-db";
+import { QueryClient } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
 
 // Define a collection that loads data using TanStack Query
 export const todosCollection = createCollection(
   queryCollectionOptions({
-    queryKey: ['todos'],
-    syncMode: 'on-demand',
+    queryKey: ["todos"],
+    syncMode: "eager",
     queryClient,
     schema: TodoSchema,
 
-    queryFn: async () => await fetchTodos(),
+    queryFn: async (ctx) => {
+      const _options = parseLoadSubsetOptions(ctx.meta?.loadSubsetOptions);
+      // console.log(_options);
+      return await fetchTodos({ data: {} });
+    },
     getKey: (item) => item.id,
 
     // Handle mutations
@@ -38,5 +45,5 @@ export const todosCollection = createCollection(
       const { original } = transaction.mutations[0];
       return await deleteTodo({ data: original.id });
     },
-  })
+  }),
 );

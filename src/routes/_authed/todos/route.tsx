@@ -37,7 +37,7 @@ import {
 } from '@/lib/query-options';
 import { seo } from '@/lib/seo';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { useEffectEvent, useState } from 'react';
 
 export const Route = createFileRoute('/_authed/todos')({
   validateSearch: todosQuerySchema,
@@ -77,16 +77,23 @@ function RouteComponent() {
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    navigate({ search: (prev) => ({ query: queryInput }), replace: true });
+    navigate({ search: (_prev) => ({ query: queryInput }), replace: true });
   };
 
+
+
+  const onQueryClear = useEffectEvent(() => {
+    if (queryInput.trim() === '') {
+      setQueryInput('');
+      return navigate({
+        search: (prev) => ({ ...prev, query: undefined }),
+        replace: true,
+      })
+    }
+  });
+
   useEffect(() => {
-    queryInput.trim() === ''
-      ? navigate({
-          search: (prev) => ({ ...prev, query: undefined }),
-          replace: true,
-        })
-      : null;
+    onQueryClear();
   }, [queryInput]);
 
   const updateFilters = (name: keyof TodosQuery, value: unknown) => {
