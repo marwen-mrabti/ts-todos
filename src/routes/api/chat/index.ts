@@ -4,9 +4,12 @@ import {
   getTodosTool,
 } from '@/lib/ai-chat-tools/todo-tools';
 import { authMiddleware } from '@/middleware/auth-middleware';
-import { chat, maxIterations, toServerSentEventsStream } from '@tanstack/ai';
+import { chat, createChatOptions, maxIterations, toServerSentEventsStream } from '@tanstack/ai';
 import { geminiText } from '@tanstack/ai-gemini';
 import { createFileRoute } from '@tanstack/react-router';
+
+
+
 
 const SYSTEM_PROMPT = `
 You are a helpful assistant that can help the user manage their todos.
@@ -21,6 +24,13 @@ User: "How many todos do I have?"
 Step 1: Call getTodosCount()
 Step 2: Done - do NOT add any text after calling getTodosCount
 `;
+
+const todoAgent = createChatOptions({
+  adapter: geminiText('gemini-2.5-flash'),
+  agentLoopStrategy: maxIterations(5),
+  systemPrompts: [SYSTEM_PROMPT],
+  tools: [getTodosCountTool, getTodosTool, addTodoTool],
+});
 
 export const Route = createFileRoute('/api/chat/')({
   server: {
@@ -44,12 +54,10 @@ export const Route = createFileRoute('/api/chat/')({
             try {
               // Create a streaming chat response
               const stream = chat({
-                adapter: geminiText('gemini-2.5-flash'),
-                agentLoopStrategy: maxIterations(5),
+                ...todoAgent,
                 conversationId,
                 messages,
-                systemPrompts: [SYSTEM_PROMPT],
-                tools: [getTodosCountTool, getTodosTool, addTodoTool],
+                abortController
               });
 
               const readableStream = toServerSentEventsStream(
