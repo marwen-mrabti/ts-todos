@@ -65,7 +65,8 @@ export const todosQuerySchema = z.object({
       statusOptions[1].value,
       statusOptions[2].value,
     ])
-    .optional().default(statusOptions[0].value),
+    .optional()
+    .default(statusOptions[0].value),
 
   orderBy: z
     .enum([
@@ -73,10 +74,12 @@ export const todosQuerySchema = z.object({
       orderByOptions[1].value,
       orderByOptions[2].value,
     ])
-    .optional().default(orderByOptions[0].value),
+    .optional()
+    .default(orderByOptions[0].value),
   direction: z
     .enum([directionOptions[0].value, directionOptions[1].value])
-    .optional().default(directionOptions[0].value),
+    .optional()
+    .default(directionOptions[0].value),
   page: z.coerce.number().optional(),
 });
 

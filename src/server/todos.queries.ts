@@ -37,8 +37,8 @@ export const fetchTodos = createServerFn({ method: 'GET' })
       : undefined;
 
     // build pagination
-    const limit = 10;
-    const offset = (data.page - 1) * limit;
+    const limit = data.page ? 10 : undefined;
+    const offset = data.page && limit ? (data.page - 1) * limit : 0;
 
     const allTodos = await db.query.todos.findMany({
       where: conditions.length > 0 ? and(...conditions) : undefined,

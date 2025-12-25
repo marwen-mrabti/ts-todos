@@ -11,7 +11,8 @@
     "unicorn/filename-case": [
       "error",
       {
-        "case": "kebabCase, pascalCase, snakeCase"
+        "case": "kebabCase, pascalCase, camelCase",
+        "ignore": ["src/server/db/migrations/**"]
       }
     ],
     "import/order": [
@@ -39,7 +40,6 @@
         "no-console": "off"
       }
     },
-
     {
       "files": ["**/*.{ts,tsx}"],
       "plugins": ["typescript"],

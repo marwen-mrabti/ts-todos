@@ -2,11 +2,11 @@ import {
   addTodoTool,
   getTodosCountTool,
   getTodosTool,
-} from "@/lib/ai-chat-tools/todo-tools";
-import { authMiddleware } from "@/middleware/auth-middleware";
-import { chat, maxIterations, toServerSentEventsStream } from "@tanstack/ai";
-import { geminiText } from "@tanstack/ai-gemini";
-import { createFileRoute } from "@tanstack/react-router";
+} from '@/lib/ai-chat-tools/todo-tools';
+import { authMiddleware } from '@/middleware/auth-middleware';
+import { chat, maxIterations, toServerSentEventsStream } from '@tanstack/ai';
+import { geminiText } from '@tanstack/ai-gemini';
+import { createFileRoute } from '@tanstack/react-router';
 
 const SYSTEM_PROMPT = `
 You are a helpful assistant that can help the user manage their todos.
@@ -22,7 +22,7 @@ Step 1: Call getTodosCount()
 Step 2: Done - do NOT add any text after calling getTodosCount
 `;
 
-export const Route = createFileRoute("/api/chat/")({
+export const Route = createFileRoute('/api/chat/')({
   server: {
     middleware: [authMiddleware],
     handlers: ({ createHandlers }) =>
@@ -54,21 +54,21 @@ export const Route = createFileRoute("/api/chat/")({
 
               const readableStream = toServerSentEventsStream(
                 stream,
-                abortController,
+                abortController
               );
 
               // Convert stream to HTTP response
               return new Response(readableStream, {
                 headers: {
-                  "Content-Type": "text/event-stream",
-                  "Cache-Control": "no-cache",
-                  Connection: "keep-alive",
+                  'Content-Type': 'text/event-stream',
+                  'Cache-Control': 'no-cache',
+                  Connection: 'keep-alive',
                 },
               });
             } catch (error: unknown) {
-              console.error("\n🚩🚩 chat error 🚩🚩\n", error);
+              console.error('\n🚩🚩 chat error 🚩🚩\n', error);
               if (
-                (error instanceof Error && error.name === "AbortError") ||
+                (error instanceof Error && error.name === 'AbortError') ||
                 abortController.signal.aborted
               ) {
                 return new Response(null, { status: 499 }); // 499 = Client Closed Request
@@ -78,12 +78,12 @@ export const Route = createFileRoute("/api/chat/")({
                   error:
                     error instanceof Error
                       ? error.message
-                      : "An error occurred",
+                      : 'An error occurred',
                 }),
                 {
                   status: 500,
-                  headers: { "Content-Type": "application/json" },
-                },
+                  headers: { 'Content-Type': 'application/json' },
+                }
               );
             }
           },

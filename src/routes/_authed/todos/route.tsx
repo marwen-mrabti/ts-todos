@@ -80,15 +80,13 @@ function RouteComponent() {
     navigate({ search: (_prev) => ({ query: queryInput }), replace: true });
   };
 
-
-
   const onQueryClear = useEffectEvent(() => {
     if (queryInput.trim() === '') {
       setQueryInput('');
       return navigate({
         search: (prev) => ({ ...prev, query: undefined }),
         replace: true,
-      })
+      });
     }
   });
 
@@ -99,7 +97,7 @@ function RouteComponent() {
   const updateFilters = (name: keyof TodosQuery, value: unknown) => {
     navigate({
       search: (prev) => ({ ...prev, [name]: value }),
-      replace: false,
+      replace: true, // prevent adding a new entry to the browser history (can't go back to previous filter state with back button when true)
     });
   };
 

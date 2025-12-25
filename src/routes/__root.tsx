@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-router';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
 
-import Header from '../components/app/Header';
+import Header from '../components/app/header';
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools';
 
 import appCss from '@/assets/styles.css?url';

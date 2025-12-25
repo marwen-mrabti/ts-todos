@@ -1,10 +1,9 @@
+import { THEME_COLORS } from '@/lib/utils';
 import { ScriptOnce } from '@tanstack/react-router';
 import { createClientOnlyFn, createIsomorphicFn } from '@tanstack/react-start';
-import * as React from 'react';
-import { createContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { z } from 'zod';
-import { THEME_COLORS } from '@/lib/utils';
 
 const themeModeSchema = z.enum(['light', 'dark', 'system']);
 const resolvedThemeSchema = z.enum(['light', 'dark']);
@@ -143,7 +142,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 }
 
 export const useTheme = () => {
-  const context = React.useContext(ThemeContext);
+  const context = useContext(ThemeContext);
   if (!context) {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
